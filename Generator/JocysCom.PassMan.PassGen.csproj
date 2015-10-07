@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3F56D4E5-FB68-4167-9C71-F6F8366DAA74}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JocysCom.PassMan.PassGen</RootNamespace>
+    <AssemblyName>JocysCom.PassMan.PassGen</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>PassGen.ico</ApplicationIcon>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <ManifestCertificateThumbprint>251696B3E0F6BB989DD2F4840F2939B9F4050B96</ManifestCertificateThumbprint>
+    <ManifestKeyFile>Jocys.com.CodeSign.pfx</ManifestKeyFile>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ManifestTimestampUrl>http://timestamp.verisign.com/scripts/timestamp.dll</ManifestTimestampUrl>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject>JocysCom.PassMan.PassGen.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\NativeMethods.cs" />
+    <Compile Include="Common\PassGenHelper.cs" />
+    <Compile Include="Common\PasswordRevealer.cs" />
+    <Compile Include="Controls\AboutControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AboutControl.Designer.cs">
+      <DependentUpon>AboutControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OptionsControl.Designer.cs">
+      <DependentUpon>OptionsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GeneratorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GeneratorControl.Designer.cs">
+      <DependentUpon>GeneratorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="JocysCom\Collections\KeyValue.cs" />
+    <Compile Include="JocysCom\Common\Helper.cs" />
+    <Compile Include="JocysCom\Common\TraceFormat.cs" />
+    <Compile Include="JocysCom\Configuration\AssemblyInfo.cs" />
+    <Compile Include="JocysCom\Controls\DynamicCompile\DcControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="JocysCom\Controls\DynamicCompile\DcControl.Designer.cs">
+      <DependentUpon>DcControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="JocysCom\Controls\DynamicCompile\DcEngine.cs" />
+    <Compile Include="JocysCom\Controls\DynamicCompile\DemoClass.cs" />
+    <Compile Include="JocysCom\Controls\DynamicCompile\DemoClass2.cs" />
+    <Compile Include="JocysCom\Controls\DynamicCompile\LanguageType.cs" />
+    <EmbeddedResource Include="JocysCom\Controls\DynamicCompile\Templates\CSharp.cs" />
+    <Compile Include="JocysCom\Mail\MailFromUser.cs" />
+    <Compile Include="JocysCom\Mail\MailTextType.cs" />
+    <Compile Include="JocysCom\Mail\SmtpClientEx.cs" />
+    <Compile Include="JocysCom\Mail\UserToken.cs" />
+    <Compile Include="JocysCom\Mail\WebMail.cs" />
+    <Compile Include="JocysCom\Processes\BaseHook.cs" />
+    <Compile Include="JocysCom\Processes\CURSORINFO.cs" />
+    <Compile Include="JocysCom\Processes\HookType.cs" />
+    <Compile Include="JocysCom\Processes\MouseHook.cs" />
+    <Compile Include="JocysCom\Processes\MouseHookEventArgs.cs" />
+    <Compile Include="JocysCom\Processes\MouseHookStruct.cs" />
+    <Compile Include="JocysCom\Processes\MouseKey.cs" />
+    <Compile Include="JocysCom\Processes\MouseTouchEventArgs.cs" />
+    <Compile Include="JocysCom\Processes\MSLLHOOKSTRUCT.cs" />
+    <Compile Include="JocysCom\Processes\ProcessControl.cs" />
+    <Compile Include="JocysCom\Processes\TestUnion.cs" />
+    <Compile Include="JocysCom\Processes\TOUCHINPUT.cs" />
+    <Compile Include="JocysCom\Runtime\ChangeState.cs" />
+    <Compile Include="JocysCom\Runtime\Helper.cs" />
+    <Compile Include="JocysCom\Runtime\Serializer.cs" />
+    <Compile Include="JocysCom\Security\Password\Generator.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Call.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\CallItem.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\CallName.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Charsets.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Filter.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\FilterName.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Filters\ASCII.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Filters\Chars.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Filters\Enforce.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Filters\Keyboard.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Filters\Phone.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Filters\Remember.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\Preset.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\PresetBase.cs" />
+    <Compile Include="JocysCom\Security\Password\Templates\PresetName.cs" />
+    <Compile Include="JocysCom\Security\Password\Word.cs" />
+    <Compile Include="JocysCom\Text\Filters.cs" />
+    <Compile Include="JocysCom\Text\Helper.cs" />
+    <Compile Include="JocysCom\Win32\POINT.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.NotifyIcon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.OneInstance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <EmbeddedResource Include="Controls\AboutControl.resx">
+      <DependentUpon>AboutControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OptionsControl.resx">
+      <DependentUpon>OptionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GeneratorControl.resx">
+      <DependentUpon>GeneratorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JocysCom\Controls\DynamicCompile\DcControl.resx">
+      <DependentUpon>DcControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sources\Images\TrayIcon-0000.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-0001.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-0010.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-0011.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-0100.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-0101.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-0110.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-0111.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-1000.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-1001.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-1010.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-1011.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-1100.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-1101.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-1110.ico" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-1111.ico" />
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Images\generator_128x128.png" />
+    <EmbeddedResource Include="Sources\Images\TrayIcon-C0C0C0.ico" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Calls\EN_NamesAndThings.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Calls\EN_NATO.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Calls\EN_Pronunciation.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Calls\EN_TelecomB.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Calls\EN_Unicode.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Calls\LT_Unicode.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Calls\SP_Braille.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Calls\SP_Morse.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\ChildLaaLaa.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\ChildNano.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\ChildTinkyWinky.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DecCodePASS.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DecCodePIN.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DecDefault.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DecIMEI.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\Default.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DefaultCrazy.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DefaultEasyToEnter.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DefaultEasyToRemember.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DefaultGood.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DefaultLinuxManiac.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DefaultNormal.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\DefaultPhone.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\GuidAccess.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\GuidDefault.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\GuidPlain.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\HexHEXLowercase.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\HexHEXUppercase.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\HexMAC.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\HexMD5.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\NumBinary.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\NumOctet.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\OtherAppleMacUser.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\OtherDragon.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\ScriptHMACMD5.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\ScriptSimple.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\WEPWEPASCII128bit.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\WEPWEPASCII64bit.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\WEPWEPHEX128bit.js" />
+    <EmbeddedResource Include="JocysCom\Security\Password\Templates\Presets\WEPWEPHEX64bit.js" />
+    <EmbeddedResource Include="Documents\ChangeLog.txt" />
+    <EmbeddedResource Include="Documents\License.txt" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\check2.ico" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\check2_16x16.png" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\disk_blue.ico" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\disk_blue_16x16.png" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\folder-16x16.png" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\folder.ico" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\gear_refresh-16x16.png" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\gear_refresh.ico" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\gear_run-16x16.png" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\gear_run.ico" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\media_play_green-16x16.png" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\media_play_green.ico" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\refresh-16x16.png" />
+    <Content Include="JocysCom\Controls\DynamicCompile\Images\refresh.ico" />
+    <EmbeddedResource Include="JocysCom\Controls\DynamicCompile\Templates\JScript.js" />
+    <EmbeddedResource Include="JocysCom\Controls\DynamicCompile\Templates\VB.vb" />
+    <Content Include="PassGen.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

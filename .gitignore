@@ -1,0 +1,8 @@
+/.svn
+/Generator/bin
+/Generator/obj
+/*.suo
+/*.user
+/Generator/*.suo
+/Generator/*.user
+/*.sdf

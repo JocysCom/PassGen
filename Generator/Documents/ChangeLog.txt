@@ -1,0 +1,2 @@
+﻿v2.0.6.0 (2015-10-07)
+- New: Open source release.
