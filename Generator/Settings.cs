@@ -1,4 +1,4 @@
-﻿namespace JocysCom.PassMan.PassGen.Properties {
+﻿namespace JocysCom.Password.Generator.Properties {
 	
 	
 	// This class allows you to handle specific events on the settings class:

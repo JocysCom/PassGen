@@ -1,4 +1,4 @@
-﻿namespace JocysCom.PassMan.PassGen.Controls
+﻿namespace JocysCom.Password.Generator.Controls
 {
 	partial class AboutControl
 	{
@@ -165,7 +165,7 @@
 			// 
 			// ProductPictureBox
 			// 
-			this.ProductPictureBox.Image = global::JocysCom.PassMan.PassGen.Properties.Resources.generator_128x128;
+			this.ProductPictureBox.Image = global::JocysCom.Password.Generator.Properties.Resources.generator_128x128;
 			this.ProductPictureBox.Location = new System.Drawing.Point(3, 3);
 			this.ProductPictureBox.Name = "ProductPictureBox";
 			this.ProductPictureBox.Size = new System.Drawing.Size(128, 128);

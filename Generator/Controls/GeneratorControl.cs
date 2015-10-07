@@ -1,6 +1,6 @@
 ﻿using JocysCom.ClassLibrary.Security.Password;
 using JocysCom.ClassLibrary.Security.Password.Templates;
-using JocysCom.PassMan.PassGen.Properties;
+using JocysCom.Password.Generator.Properties;
 using Microsoft.CSharp;
 using System;
 using System.CodeDom;
@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using JocysCom.ClassLibrary.Controls.DynamicCompile;
 
-namespace JocysCom.PassMan.PassGen.Controls
+namespace JocysCom.Password.Generator.Controls
 {
 	public partial class GeneratorControl : UserControl
 	{
@@ -287,7 +287,7 @@ namespace JocysCom.PassMan.PassGen.Controls
 		}
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-		public Generator PassGen = new Generator();
+		public JocysCom.ClassLibrary.Security.Password.Generator PassGen = new JocysCom.ClassLibrary.Security.Password.Generator();
 
 		public bool _displayAllCalls;
 

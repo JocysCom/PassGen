@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using JocysCom.PassMan.PassGen.Properties;
+using JocysCom.Password.Generator.Properties;
 using System.Configuration.Install;
 using System.Configuration;
 using System.IO;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace JocysCom.PassMan.PassGen
+namespace JocysCom.Password.Generator
 {
 	static class Program
 	{

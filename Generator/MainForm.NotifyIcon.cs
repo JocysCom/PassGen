@@ -7,7 +7,7 @@ using JocysCom.ClassLibrary.Security.Password;
 using JocysCom.ClassLibrary.Security.Password.Templates;
 using System.Text.RegularExpressions;
 
-namespace JocysCom.PassMan.PassGen
+namespace JocysCom.Password.Generator
 {
 
 	public partial class MainForm
@@ -75,7 +75,7 @@ namespace JocysCom.PassMan.PassGen
 			bool isNumber = int.TryParse(item.Text, out count);
 			if (isNumber && count > 0)
 			{
-				Generator passGen = new Generator();
+				var passGen = new JocysCom.ClassLibrary.Security.Password.Generator();
 				ToolStripItem owner = item.OwnerItem;
 				while (!owner.Name.StartsWith("Preset")) owner = owner.OwnerItem;
 				switch (owner.Text)

@@ -5,9 +5,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using JocysCom.PassMan.PassGen.Properties;
+using JocysCom.Password.Generator.Properties;
 
-namespace JocysCom.PassMan.PassGen.Controls
+namespace JocysCom.Password.Generator.Controls
 {
 	public partial class OptionsControl : UserControl
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace JocysCom.PassMan.PassGen
+namespace JocysCom.Password.Generator
 {
 	public class NativeMethods
 	{

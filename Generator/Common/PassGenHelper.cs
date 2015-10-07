@@ -6,7 +6,7 @@ using System.Reflection;
 using JocysCom.ClassLibrary.Runtime;
 using System.Windows.Forms;
 
-namespace JocysCom.PassMan.PassGen
+namespace JocysCom.Password.Generator
 {
 	public class PassGenHelper
 	{

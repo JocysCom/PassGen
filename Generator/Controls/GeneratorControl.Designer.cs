@@ -1,4 +1,4 @@
-﻿namespace JocysCom.PassMan.PassGen.Controls
+﻿namespace JocysCom.Password.Generator.Controls
 {
 	partial class GeneratorControl
 	{
@@ -748,7 +748,7 @@
 			this.PresetSaveButton.Enabled = false;
 			this.PresetSaveButton.FlatAppearance.BorderSize = 0;
 			this.PresetSaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.PresetSaveButton.Image = global::JocysCom.PassMan.PassGen.Properties.Resources.disk_blue;
+			this.PresetSaveButton.Image = global::JocysCom.Password.Generator.Properties.Resources.disk_blue;
 			this.PresetSaveButton.Location = new System.Drawing.Point(172, 33);
 			this.PresetSaveButton.Name = "PresetSaveButton";
 			this.PresetSaveButton.Size = new System.Drawing.Size(21, 21);

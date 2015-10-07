@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using JocysCom.PassMan.PassGen.Properties;
+using JocysCom.Password.Generator.Properties;
 
-namespace JocysCom.PassMan.PassGen
+namespace JocysCom.Password.Generator
 {
 	public partial class MainForm
 	{

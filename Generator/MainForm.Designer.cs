@@ -1,4 +1,4 @@
-﻿namespace JocysCom.PassMan.PassGen
+﻿namespace JocysCom.Password.Generator
 {
 	partial class MainForm
 	{
@@ -49,10 +49,10 @@
 			this.MinimizeToTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StartWithWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.GeneratorPanel = new JocysCom.PassMan.PassGen.Controls.GeneratorControl();
+			this.GeneratorPanel = new JocysCom.Password.Generator.Controls.GeneratorControl();
 			this.ScriptPanel = new JocysCom.ClassLibrary.Controls.DynamicCompile.DcControl();
-			this.OptionsPanel = new JocysCom.PassMan.PassGen.Controls.OptionsControl();
-			this.AboutPanel = new JocysCom.PassMan.PassGen.Controls.AboutControl();
+			this.OptionsPanel = new JocysCom.Password.Generator.Controls.OptionsControl();
+			this.AboutPanel = new JocysCom.Password.Generator.Controls.AboutControl();
 			this.TopPanel.SuspendLayout();
 			this.NotifyIconContextMenuStrip.SuspendLayout();
 			this.MainTabControl.SuspendLayout();

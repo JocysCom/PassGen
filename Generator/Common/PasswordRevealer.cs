@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using JocysCom.ClassLibrary.Processes;
 
-namespace JocysCom.PassMan.PassGen
+namespace JocysCom.Password.Generator
 {
 	public partial class PasswordRevealer : IDisposable
 	{

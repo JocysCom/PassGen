@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using JocysCom.ClassLibrary.Controls.DynamicCompile;
-using JocysCom.PassMan.PassGen.Properties;
+using JocysCom.Password.Generator.Properties;
 using JocysCom.ClassLibrary.Security.Password;
 using System.Web.Security;
 using Microsoft.Win32;
 using JocysCom.ClassLibrary.Configuration;
 
-namespace JocysCom.PassMan.PassGen
+namespace JocysCom.Password.Generator
 {
 	public partial class MainForm : Form
 	{

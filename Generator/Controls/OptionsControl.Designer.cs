@@ -1,4 +1,4 @@
-﻿namespace JocysCom.PassMan.PassGen.Controls
+﻿namespace JocysCom.Password.Generator.Controls
 {
 	partial class OptionsControl
 	{
@@ -161,9 +161,9 @@
 			// GenerateOnCopyCheckBox
 			// 
 			this.GenerateOnCopyCheckBox.AutoSize = true;
-			this.GenerateOnCopyCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.GenerateOnCopy;
+			this.GenerateOnCopyCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.GenerateOnCopy;
 			this.GenerateOnCopyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.GenerateOnCopyCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "GenerateOnCopy", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.GenerateOnCopyCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "GenerateOnCopy", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.GenerateOnCopyCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.GenerateOnCopyCheckBox.Location = new System.Drawing.Point(6, 67);
 			this.GenerateOnCopyCheckBox.Name = "GenerateOnCopyCheckBox";
@@ -174,9 +174,9 @@
 			// CopyOnGenerateCheckBox
 			// 
 			this.CopyOnGenerateCheckBox.AutoSize = true;
-			this.CopyOnGenerateCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.CopyOnGenerate;
+			this.CopyOnGenerateCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.CopyOnGenerate;
 			this.CopyOnGenerateCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.CopyOnGenerateCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "CopyOnGenerate", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.CopyOnGenerateCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "CopyOnGenerate", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.CopyOnGenerateCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.CopyOnGenerateCheckBox.Location = new System.Drawing.Point(6, 19);
 			this.CopyOnGenerateCheckBox.Name = "CopyOnGenerateCheckBox";
@@ -187,8 +187,8 @@
 			// CopyPasswordWhenStartCheckBox
 			// 
 			this.CopyPasswordWhenStartCheckBox.AutoSize = true;
-			this.CopyPasswordWhenStartCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.CopyPasswordWhenStart;
-			this.CopyPasswordWhenStartCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "CopyPasswordWhenStart", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.CopyPasswordWhenStartCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.CopyPasswordWhenStart;
+			this.CopyPasswordWhenStartCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "CopyPasswordWhenStart", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.CopyPasswordWhenStartCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.CopyPasswordWhenStartCheckBox.Location = new System.Drawing.Point(6, 139);
 			this.CopyPasswordWhenStartCheckBox.Name = "CopyPasswordWhenStartCheckBox";
@@ -199,9 +199,9 @@
 			// GeneratePasswordOnStartCheckBox
 			// 
 			this.GeneratePasswordOnStartCheckBox.AutoSize = true;
-			this.GeneratePasswordOnStartCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.GeneratePasswordOnStart;
+			this.GeneratePasswordOnStartCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.GeneratePasswordOnStart;
 			this.GeneratePasswordOnStartCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.GeneratePasswordOnStartCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "GeneratePasswordOnStart", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.GeneratePasswordOnStartCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "GeneratePasswordOnStart", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.GeneratePasswordOnStartCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.GeneratePasswordOnStartCheckBox.Location = new System.Drawing.Point(6, 115);
 			this.GeneratePasswordOnStartCheckBox.Name = "GeneratePasswordOnStartCheckBox";
@@ -212,8 +212,8 @@
 			// OpenPasswordListFileAfterSaveCheckBox
 			// 
 			this.OpenPasswordListFileAfterSaveCheckBox.AutoSize = true;
-			this.OpenPasswordListFileAfterSaveCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.OpenPasswordListFileAfterSave;
-			this.OpenPasswordListFileAfterSaveCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "OpenPasswordListFileAfterSave", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.OpenPasswordListFileAfterSaveCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.OpenPasswordListFileAfterSave;
+			this.OpenPasswordListFileAfterSaveCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "OpenPasswordListFileAfterSave", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.OpenPasswordListFileAfterSaveCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.OpenPasswordListFileAfterSaveCheckBox.Location = new System.Drawing.Point(6, 43);
 			this.OpenPasswordListFileAfterSaveCheckBox.Name = "OpenPasswordListFileAfterSaveCheckBox";
@@ -224,8 +224,8 @@
 			// GenerateTimerCheckBox
 			// 
 			this.GenerateTimerCheckBox.AutoSize = true;
-			this.GenerateTimerCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.GenerateTimer;
-			this.GenerateTimerCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "GenerateTimer", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.GenerateTimerCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.GenerateTimer;
+			this.GenerateTimerCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "GenerateTimer", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.GenerateTimerCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.GenerateTimerCheckBox.Location = new System.Drawing.Point(6, 192);
 			this.GenerateTimerCheckBox.Name = "GenerateTimerCheckBox";
@@ -237,9 +237,9 @@
 			// SaveProgramSettingsCheckBox
 			// 
 			this.SaveProgramSettingsCheckBox.AutoSize = true;
-			this.SaveProgramSettingsCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.SaveProgramSettings;
+			this.SaveProgramSettingsCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.SaveProgramSettings;
 			this.SaveProgramSettingsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.SaveProgramSettingsCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "SaveProgramSettings", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.SaveProgramSettingsCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "SaveProgramSettings", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.SaveProgramSettingsCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.SaveProgramSettingsCheckBox.Location = new System.Drawing.Point(6, 91);
 			this.SaveProgramSettingsCheckBox.Name = "SaveProgramSettingsCheckBox";
@@ -268,7 +268,7 @@
 			// 
 			// StartWithWindowsStateComboBox
 			// 
-			this.StartWithWindowsStateComboBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "StartWithWindowsState", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.StartWithWindowsStateComboBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::JocysCom.Password.Generator.Properties.Settings.Default, "StartWithWindowsState", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.StartWithWindowsStateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.StartWithWindowsStateComboBox.FormattingEnabled = true;
 			this.StartWithWindowsStateComboBox.Items.AddRange(new object[] {
@@ -284,8 +284,8 @@
 			// MinimizeOnCloseCheckBox
 			// 
 			this.MinimizeOnCloseCheckBox.AutoSize = true;
-			this.MinimizeOnCloseCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.MinimizeOnClose;
-			this.MinimizeOnCloseCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "MinimizeOnClose", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.MinimizeOnCloseCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.MinimizeOnClose;
+			this.MinimizeOnCloseCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "MinimizeOnClose", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.MinimizeOnCloseCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.MinimizeOnCloseCheckBox.Location = new System.Drawing.Point(6, 142);
 			this.MinimizeOnCloseCheckBox.Name = "MinimizeOnCloseCheckBox";
@@ -298,9 +298,9 @@
 			// AllowOnlyOneCopyCheckBox
 			// 
 			this.AllowOnlyOneCopyCheckBox.AutoSize = true;
-			this.AllowOnlyOneCopyCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.AllowOnlyOneCopy;
+			this.AllowOnlyOneCopyCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.AllowOnlyOneCopy;
 			this.AllowOnlyOneCopyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.AllowOnlyOneCopyCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "AllowOnlyOneCopy", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.AllowOnlyOneCopyCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "AllowOnlyOneCopy", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.AllowOnlyOneCopyCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.AllowOnlyOneCopyCheckBox.Location = new System.Drawing.Point(6, 118);
 			this.AllowOnlyOneCopyCheckBox.Name = "AllowOnlyOneCopyCheckBox";
@@ -312,9 +312,9 @@
 			// MinimizeToTrayCheckBox
 			// 
 			this.MinimizeToTrayCheckBox.AutoSize = true;
-			this.MinimizeToTrayCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.MinimizeToTray;
+			this.MinimizeToTrayCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.MinimizeToTray;
 			this.MinimizeToTrayCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.MinimizeToTrayCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.MinimizeToTrayCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.MinimizeToTrayCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.MinimizeToTrayCheckBox.Location = new System.Drawing.Point(6, 94);
 			this.MinimizeToTrayCheckBox.Name = "MinimizeToTrayCheckBox";
@@ -339,9 +339,9 @@
 			// AlwaysOnTopCheckBox
 			// 
 			this.AlwaysOnTopCheckBox.AutoSize = true;
-			this.AlwaysOnTopCheckBox.Checked = global::JocysCom.PassMan.PassGen.Properties.Settings.Default.AlwaysOnTop;
+			this.AlwaysOnTopCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.AlwaysOnTop;
 			this.AlwaysOnTopCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.AlwaysOnTopCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.PassMan.PassGen.Properties.Settings.Default, "AlwaysOnTop", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.AlwaysOnTopCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "AlwaysOnTop", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.AlwaysOnTopCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.AlwaysOnTopCheckBox.Location = new System.Drawing.Point(6, 70);
 			this.AlwaysOnTopCheckBox.Name = "AlwaysOnTopCheckBox";

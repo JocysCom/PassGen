@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using JocysCom.ClassLibrary.Configuration;
 
-namespace JocysCom.PassMan.PassGen.Controls
+namespace JocysCom.Password.Generator.Controls
 {
 	public partial class AboutControl : UserControl
 	{
