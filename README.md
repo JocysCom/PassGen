@@ -5,7 +5,7 @@ This program can generate easy to remember passwords which look like real words 
 
 Digitally Signed Application v2.0.6.0 (2015-10-08)
 
-[32-bit Download](http://www.jocys.com/Files/Software/passgen.zip)
+[Click Here to Download](http://www.jocys.com/Files/Software/passgen.zip)
 
 # Screenshots
 
