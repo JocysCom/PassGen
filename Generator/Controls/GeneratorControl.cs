@@ -320,7 +320,7 @@ namespace JocysCom.Password.Generator.Controls
 		Call GetCurrentCall()
 		{
 			var row = CallNamesDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
-			return (Call)row.DataBoundItem;
+			return row == null ? null : (Call)row.DataBoundItem;
 		}
 
 		private void CallsDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -368,6 +368,21 @@ namespace JocysCom.Password.Generator.Controls
 			ShowCalls(false);
 			CallsTimer.Stop();
 			CallsTimer.Start();
+		}
+
+		public void RegeneratePassword(string presetName)
+		{
+			if (PresetNameComboBox.Items.Contains(presetName))
+			{
+				if (PresetNameComboBox.Text != presetName)
+				{
+					PresetNameComboBox.Text = presetName;
+				}
+				else
+				{
+					GeneratePasswords(true);
+				}
+			}
 		}
 
 		private void PresetNameComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -621,17 +636,17 @@ namespace JocysCom.Password.Generator.Controls
 
 		private void FavPreset1Button_Click(object sender, EventArgs e)
 		{
-			PresetNameComboBox.Text = Settings.Default.FavPreset1ComboBox;
+			RegeneratePassword(Settings.Default.FavPreset1ComboBox);
 		}
 
 		private void FavPreset2Button_Click(object sender, EventArgs e)
 		{
-			PresetNameComboBox.Text = Settings.Default.FavPreset2ComboBox;
+			RegeneratePassword(Settings.Default.FavPreset2ComboBox);
 		}
 
 		private void FavPreset3Button_Click(object sender, EventArgs e)
 		{
-			PresetNameComboBox.Text = Settings.Default.FavPreset3ComboBox;
+			RegeneratePassword(Settings.Default.FavPreset3ComboBox);
 		}
 
 		private void easyToolStripMenuItem_MouseLeave(object sender, EventArgs e)

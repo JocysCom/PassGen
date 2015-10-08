@@ -50,11 +50,17 @@
 			this.StartWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
 			this.AlwaysOnTopCheckBox = new System.Windows.Forms.CheckBox();
 			this.DataAndConfigurationGroupBox = new System.Windows.Forms.GroupBox();
+			this.RoamingUserSettingsTextBox = new System.Windows.Forms.TextBox();
+			this.RoamingUserSettingsButton = new System.Windows.Forms.Button();
+			this.LocalUserSettingsTextBox = new System.Windows.Forms.TextBox();
+			this.LocalUserSettingsButton = new System.Windows.Forms.Button();
 			this.LocalUserFolderOpenButton = new System.Windows.Forms.Button();
 			this.RoamingUserFolderOpenButton = new System.Windows.Forms.Button();
 			this.AllUsersFolderOpenButton = new System.Windows.Forms.Button();
 			this.AllUsersFolderLabel = new System.Windows.Forms.Label();
+			this.RoamingUserSettingsLabel = new System.Windows.Forms.Label();
 			this.RoamingUserFolderLabel = new System.Windows.Forms.Label();
+			this.LocalUserSettingsLabel = new System.Windows.Forms.Label();
 			this.LocalUserFolderLabel = new System.Windows.Forms.Label();
 			this.RoamingUserFolderTextBox = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -107,9 +113,9 @@
 			this.AutoOptionsGroupBox.Controls.Add(this.GenerateTimerCheckBox);
 			this.AutoOptionsGroupBox.Controls.Add(this.SaveProgramSettingsCheckBox);
 			this.AutoOptionsGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.AutoOptionsGroupBox.Location = new System.Drawing.Point(146, 253);
+			this.AutoOptionsGroupBox.Location = new System.Drawing.Point(146, 333);
 			this.AutoOptionsGroupBox.Name = "AutoOptionsGroupBox";
-			this.AutoOptionsGroupBox.Size = new System.Drawing.Size(374, 322);
+			this.AutoOptionsGroupBox.Size = new System.Drawing.Size(374, 242);
 			this.AutoOptionsGroupBox.TabIndex = 107;
 			this.AutoOptionsGroupBox.TabStop = false;
 			this.AutoOptionsGroupBox.Text = "Auto Options:";
@@ -259,9 +265,9 @@
 			this.ProgramStartGroupBox.Controls.Add(this.StartWithWindowsCheckBox);
 			this.ProgramStartGroupBox.Controls.Add(this.AlwaysOnTopCheckBox);
 			this.ProgramStartGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.ProgramStartGroupBox.Location = new System.Drawing.Point(3, 253);
+			this.ProgramStartGroupBox.Location = new System.Drawing.Point(3, 333);
 			this.ProgramStartGroupBox.Name = "ProgramStartGroupBox";
-			this.ProgramStartGroupBox.Size = new System.Drawing.Size(137, 322);
+			this.ProgramStartGroupBox.Size = new System.Drawing.Size(137, 242);
 			this.ProgramStartGroupBox.TabIndex = 104;
 			this.ProgramStartGroupBox.TabStop = false;
 			this.ProgramStartGroupBox.Text = "Program Start:";
@@ -354,21 +360,69 @@
 			// 
 			this.DataAndConfigurationGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.DataAndConfigurationGroupBox.Controls.Add(this.RoamingUserSettingsTextBox);
+			this.DataAndConfigurationGroupBox.Controls.Add(this.RoamingUserSettingsButton);
+			this.DataAndConfigurationGroupBox.Controls.Add(this.LocalUserSettingsTextBox);
+			this.DataAndConfigurationGroupBox.Controls.Add(this.LocalUserSettingsButton);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.LocalUserFolderOpenButton);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.RoamingUserFolderOpenButton);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.AllUsersFolderOpenButton);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.AllUsersFolderLabel);
+			this.DataAndConfigurationGroupBox.Controls.Add(this.RoamingUserSettingsLabel);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.RoamingUserFolderLabel);
+			this.DataAndConfigurationGroupBox.Controls.Add(this.LocalUserSettingsLabel);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.LocalUserFolderLabel);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.RoamingUserFolderTextBox);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.LocalUserFolderTextBox);
 			this.DataAndConfigurationGroupBox.Controls.Add(this.AllUsersFolderTextBox);
 			this.DataAndConfigurationGroupBox.Location = new System.Drawing.Point(3, 3);
 			this.DataAndConfigurationGroupBox.Name = "DataAndConfigurationGroupBox";
-			this.DataAndConfigurationGroupBox.Size = new System.Drawing.Size(517, 138);
+			this.DataAndConfigurationGroupBox.Size = new System.Drawing.Size(517, 218);
 			this.DataAndConfigurationGroupBox.TabIndex = 105;
 			this.DataAndConfigurationGroupBox.TabStop = false;
-			this.DataAndConfigurationGroupBox.Text = "Data and Configuration Folders:";
+			this.DataAndConfigurationGroupBox.Text = "Data and Configuration";
+			// 
+			// RoamingUserSettingsTextBox
+			// 
+			this.RoamingUserSettingsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.RoamingUserSettingsTextBox.Location = new System.Drawing.Point(6, 188);
+			this.RoamingUserSettingsTextBox.Name = "RoamingUserSettingsTextBox";
+			this.RoamingUserSettingsTextBox.ReadOnly = true;
+			this.RoamingUserSettingsTextBox.Size = new System.Drawing.Size(424, 20);
+			this.RoamingUserSettingsTextBox.TabIndex = 0;
+			// 
+			// RoamingUserSettingsButton
+			// 
+			this.RoamingUserSettingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.RoamingUserSettingsButton.Location = new System.Drawing.Point(436, 186);
+			this.RoamingUserSettingsButton.Name = "RoamingUserSettingsButton";
+			this.RoamingUserSettingsButton.Size = new System.Drawing.Size(75, 23);
+			this.RoamingUserSettingsButton.TabIndex = 93;
+			this.RoamingUserSettingsButton.Text = "Open...";
+			this.RoamingUserSettingsButton.UseVisualStyleBackColor = true;
+			this.RoamingUserSettingsButton.Click += new System.EventHandler(this.RoamingUserSettingsButton_Click);
+			// 
+			// LocalUserSettingsTextBox
+			// 
+			this.LocalUserSettingsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.LocalUserSettingsTextBox.Location = new System.Drawing.Point(6, 149);
+			this.LocalUserSettingsTextBox.Name = "LocalUserSettingsTextBox";
+			this.LocalUserSettingsTextBox.ReadOnly = true;
+			this.LocalUserSettingsTextBox.Size = new System.Drawing.Size(424, 20);
+			this.LocalUserSettingsTextBox.TabIndex = 0;
+			// 
+			// LocalUserSettingsButton
+			// 
+			this.LocalUserSettingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.LocalUserSettingsButton.Location = new System.Drawing.Point(436, 147);
+			this.LocalUserSettingsButton.Name = "LocalUserSettingsButton";
+			this.LocalUserSettingsButton.Size = new System.Drawing.Size(75, 23);
+			this.LocalUserSettingsButton.TabIndex = 93;
+			this.LocalUserSettingsButton.Text = "Open...";
+			this.LocalUserSettingsButton.UseVisualStyleBackColor = true;
+			this.LocalUserSettingsButton.Click += new System.EventHandler(this.LocalUserSettingsButton_Click);
 			// 
 			// LocalUserFolderOpenButton
 			// 
@@ -408,27 +462,45 @@
 			this.AllUsersFolderLabel.AutoSize = true;
 			this.AllUsersFolderLabel.Location = new System.Drawing.Point(6, 16);
 			this.AllUsersFolderLabel.Name = "AllUsersFolderLabel";
-			this.AllUsersFolderLabel.Size = new System.Drawing.Size(216, 13);
+			this.AllUsersFolderLabel.Size = new System.Drawing.Size(242, 13);
 			this.AllUsersFolderLabel.TabIndex = 92;
-			this.AllUsersFolderLabel.Text = "All Users - apply to all users of an application";
+			this.AllUsersFolderLabel.Text = "All Users Data - apply to all users of an application";
+			// 
+			// RoamingUserSettingsLabel
+			// 
+			this.RoamingUserSettingsLabel.AutoSize = true;
+			this.RoamingUserSettingsLabel.Location = new System.Drawing.Point(6, 172);
+			this.RoamingUserSettingsLabel.Name = "RoamingUserSettingsLabel";
+			this.RoamingUserSettingsLabel.Size = new System.Drawing.Size(341, 13);
+			this.RoamingUserSettingsLabel.TabIndex = 92;
+			this.RoamingUserSettingsLabel.Text = "Roaming User Settings - follow the user to any computer in the network";
 			// 
 			// RoamingUserFolderLabel
 			// 
 			this.RoamingUserFolderLabel.AutoSize = true;
 			this.RoamingUserFolderLabel.Location = new System.Drawing.Point(6, 55);
 			this.RoamingUserFolderLabel.Name = "RoamingUserFolderLabel";
-			this.RoamingUserFolderLabel.Size = new System.Drawing.Size(343, 13);
+			this.RoamingUserFolderLabel.Size = new System.Drawing.Size(363, 13);
 			this.RoamingUserFolderLabel.TabIndex = 92;
-			this.RoamingUserFolderLabel.Text = "Current User (Roaming) - follow the user to any computer in the network";
+			this.RoamingUserFolderLabel.Text = "Current User Roaming Data - follow the user to any computer in the network";
+			// 
+			// LocalUserSettingsLabel
+			// 
+			this.LocalUserSettingsLabel.AutoSize = true;
+			this.LocalUserSettingsLabel.Location = new System.Drawing.Point(6, 133);
+			this.LocalUserSettingsLabel.Name = "LocalUserSettingsLabel";
+			this.LocalUserSettingsLabel.Size = new System.Drawing.Size(286, 13);
+			this.LocalUserSettingsLabel.TabIndex = 92;
+			this.LocalUserSettingsLabel.Text = "Local User Settings - local to the user on this computer only";
 			// 
 			// LocalUserFolderLabel
 			// 
 			this.LocalUserFolderLabel.AutoSize = true;
 			this.LocalUserFolderLabel.Location = new System.Drawing.Point(6, 94);
 			this.LocalUserFolderLabel.Name = "LocalUserFolderLabel";
-			this.LocalUserFolderLabel.Size = new System.Drawing.Size(288, 13);
+			this.LocalUserFolderLabel.Size = new System.Drawing.Size(308, 13);
 			this.LocalUserFolderLabel.TabIndex = 92;
-			this.LocalUserFolderLabel.Text = "Current User (Local) - local to the user on this computer only";
+			this.LocalUserFolderLabel.Text = "Current User Local Data - local to the user on this computer only";
 			// 
 			// RoamingUserFolderTextBox
 			// 
@@ -448,7 +520,7 @@
 			this.groupBox1.Controls.Add(this.FavPreset3TextBox);
 			this.groupBox1.Controls.Add(this.FavPreset2TextBox);
 			this.groupBox1.Controls.Add(this.FavPreset1TextBox);
-			this.groupBox1.Location = new System.Drawing.Point(3, 147);
+			this.groupBox1.Location = new System.Drawing.Point(3, 227);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(517, 100);
 			this.groupBox1.TabIndex = 108;
@@ -573,5 +645,11 @@
 		public System.Windows.Forms.ComboBox FavPreset2ComboBox;
 		public System.Windows.Forms.ComboBox FavPreset1ComboBox;
 		internal System.Windows.Forms.CheckBox CopyPasswordWhenStartCheckBox;
+		private System.Windows.Forms.Button LocalUserSettingsButton;
+		private System.Windows.Forms.Label LocalUserSettingsLabel;
+		public System.Windows.Forms.TextBox LocalUserSettingsTextBox;
+		public System.Windows.Forms.TextBox RoamingUserSettingsTextBox;
+		private System.Windows.Forms.Button RoamingUserSettingsButton;
+		private System.Windows.Forms.Label RoamingUserSettingsLabel;
 	}
 }

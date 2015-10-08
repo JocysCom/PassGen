@@ -25,7 +25,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default: Easy To Remember")]
         public string PresetNameComboBox {
             get {
                 return ((string)(this["PresetNameComboBox"]));
@@ -49,7 +49,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool AllowOnlyOneCopy {
             get {
                 return ((bool)(this["AllowOnlyOneCopy"]));
@@ -73,7 +73,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool AlwaysOnTop {
             get {
                 return ((bool)(this["AlwaysOnTop"]));
@@ -109,7 +109,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool OpenPasswordListFileAfterSave {
             get {
                 return ((bool)(this["OpenPasswordListFileAfterSave"]));
@@ -193,7 +193,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Easy")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default: Easy To Remember")]
         public string FavPreset1ComboBox {
             get {
                 return ((string)(this["FavPreset1ComboBox"]));
@@ -205,7 +205,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Hard")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default: Good")]
         public string FavPreset2ComboBox {
             get {
                 return ((string)(this["FavPreset2ComboBox"]));
@@ -217,7 +217,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Guid")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Hex: GUID - Default")]
         public string FavPreset3ComboBox {
             get {
                 return ((string)(this["FavPreset3ComboBox"]));

@@ -190,9 +190,13 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 				compilerParams.CompilerOptions = "/target:library"; // you can add /optimize
 																	//compilerParams.CompilerOptions += @" /lib:""C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.5\""";
 				compilerParams.CompilerOptions += " /errorreport:prompt";
+				var entryAsm = Assembly.GetEntryAssembly();
+				var refs = new List<AssemblyName>();
+				refs.Add(entryAsm.GetName());
 				// Load assemblies (DLL files).
-				AssemblyName[] refs = Assembly.GetEntryAssembly().GetReferencedAssemblies();
-				for (int a = 0; a < refs.Length; a++)
+				var referenced = Assembly.GetEntryAssembly().GetReferencedAssemblies();
+				refs.AddRange(referenced);
+				for (int a = 0; a < refs.Count(); a++)
 				{
 					if (refs[a].Name == "mscorlib") continue;
 					Assembly refAssembly = Assembly.Load(refs[a].FullName);
@@ -228,6 +232,13 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			{
 				compilerParams.ReferencedAssemblies.Add("Microsoft.JScript.dll");
 			}
+
+			//var assemblies = someType.Assembly.GetReferencedAssemblies().ToList();
+			//var assemblyLocations = assemblies.Select(a => Assembly.ReflectionOnlyLoad(a.FullName).Location).ToList();
+			//assemblyLocations.Add(someType.Assembly.Location);
+			//cp.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
+
+
 			// Add any additional references needed.
 			foreach (string refAssembly in References)
 			{

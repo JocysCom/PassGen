@@ -20,48 +20,48 @@
 			this.ImageList16 = new System.Windows.Forms.ImageList(this.components);
 			this.TopPanel = new System.Windows.Forms.Panel();
 			this.HelpBodyLabel = new System.Windows.Forms.Label();
+			this.PictureBox2 = new System.Windows.Forms.PictureBox();
 			this.labHelpSubject = new System.Windows.Forms.Label();
+			this.HeaderPictureBox = new System.Windows.Forms.PictureBox();
 			this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
 			this.MainStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.LeftToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.NotifyIconContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.OpenGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.OptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.AlwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.MinimizeToTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.StartWithWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.RevealerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.Preset1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Preset2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Preset3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.ClickControlTimer = new System.Windows.Forms.Timer(this.components);
 			this.NotifyIconTimer = new System.Windows.Forms.Timer(this.components);
 			this.ImageList48 = new System.Windows.Forms.ImageList(this.components);
 			this.MainTabControl = new System.Windows.Forms.TabControl();
 			this.GeneratorTabPage = new System.Windows.Forms.TabPage();
-			this.ScriptTabPage = new System.Windows.Forms.TabPage();
-			this.OptionsTabPage = new System.Windows.Forms.TabPage();
-			this.AboutTabPage = new System.Windows.Forms.TabPage();
-			this.PictureBox2 = new System.Windows.Forms.PictureBox();
-			this.HeaderPictureBox = new System.Windows.Forms.PictureBox();
-			this.OpenGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.OptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.AlwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.MinimizeToTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.StartWithWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.GeneratorPanel = new JocysCom.Password.Generator.Controls.GeneratorControl();
+			this.ScriptTabPage = new System.Windows.Forms.TabPage();
 			this.ScriptPanel = new JocysCom.ClassLibrary.Controls.DynamicCompile.DcControl();
+			this.OptionsTabPage = new System.Windows.Forms.TabPage();
 			this.OptionsPanel = new JocysCom.Password.Generator.Controls.OptionsControl();
+			this.AboutTabPage = new System.Windows.Forms.TabPage();
 			this.AboutPanel = new JocysCom.Password.Generator.Controls.AboutControl();
 			this.TopPanel.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBox2)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.HeaderPictureBox)).BeginInit();
 			this.NotifyIconContextMenuStrip.SuspendLayout();
 			this.MainTabControl.SuspendLayout();
 			this.GeneratorTabPage.SuspendLayout();
 			this.ScriptTabPage.SuspendLayout();
 			this.OptionsTabPage.SuspendLayout();
 			this.AboutTabPage.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBox2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.HeaderPictureBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// ImageList16
@@ -83,7 +83,7 @@
 			this.TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.TopPanel.Location = new System.Drawing.Point(0, 0);
 			this.TopPanel.Name = "TopPanel";
-			this.TopPanel.Size = new System.Drawing.Size(856, 64);
+			this.TopPanel.Size = new System.Drawing.Size(694, 64);
 			this.TopPanel.TabIndex = 2;
 			// 
 			// HelpBodyLabel
@@ -93,9 +93,18 @@
 			this.HelpBodyLabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.HelpBodyLabel.Location = new System.Drawing.Point(42, 29);
 			this.HelpBodyLabel.Name = "HelpBodyLabel";
-			this.HelpBodyLabel.Size = new System.Drawing.Size(754, 32);
+			this.HelpBodyLabel.Size = new System.Drawing.Size(592, 32);
 			this.HelpBodyLabel.TabIndex = 7;
 			this.HelpBodyLabel.Text = "[HelpDescriptionShort]";
+			// 
+			// PictureBox2
+			// 
+			this.PictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("PictureBox2.Image")));
+			this.PictureBox2.Location = new System.Drawing.Point(6, 29);
+			this.PictureBox2.Name = "PictureBox2";
+			this.PictureBox2.Size = new System.Drawing.Size(24, 24);
+			this.PictureBox2.TabIndex = 8;
+			this.PictureBox2.TabStop = false;
 			// 
 			// labHelpSubject
 			// 
@@ -105,15 +114,25 @@
 			this.labHelpSubject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.labHelpSubject.Location = new System.Drawing.Point(6, 9);
 			this.labHelpSubject.Name = "labHelpSubject";
-			this.labHelpSubject.Size = new System.Drawing.Size(790, 20);
+			this.labHelpSubject.Size = new System.Drawing.Size(628, 20);
 			this.labHelpSubject.TabIndex = 5;
 			this.labHelpSubject.Text = "Welcome to Jocys.com Password Generator";
 			// 
+			// HeaderPictureBox
+			// 
+			this.HeaderPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.HeaderPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("HeaderPictureBox.Image")));
+			this.HeaderPictureBox.Location = new System.Drawing.Point(640, 9);
+			this.HeaderPictureBox.Name = "HeaderPictureBox";
+			this.HeaderPictureBox.Size = new System.Drawing.Size(48, 48);
+			this.HeaderPictureBox.TabIndex = 6;
+			this.HeaderPictureBox.TabStop = false;
+			// 
 			// MainStatusStrip
 			// 
-			this.MainStatusStrip.Location = new System.Drawing.Point(0, 667);
+			this.MainStatusStrip.Location = new System.Drawing.Point(0, 663);
 			this.MainStatusStrip.Name = "MainStatusStrip";
-			this.MainStatusStrip.Size = new System.Drawing.Size(856, 22);
+			this.MainStatusStrip.Size = new System.Drawing.Size(694, 22);
 			this.MainStatusStrip.TabIndex = 3;
 			this.MainStatusStrip.Text = "statusStrip1";
 			// 
@@ -145,10 +164,52 @@
 			this.NotifyIconContextMenuStrip.Name = "NotifyIconContextMenuStrip";
 			this.NotifyIconContextMenuStrip.Size = new System.Drawing.Size(166, 176);
 			// 
+			// OpenGeneratorToolStripMenuItem
+			// 
+			this.OpenGeneratorToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.OpenGeneratorToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("OpenGeneratorToolStripMenuItem.Image")));
+			this.OpenGeneratorToolStripMenuItem.Name = "OpenGeneratorToolStripMenuItem";
+			this.OpenGeneratorToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.OpenGeneratorToolStripMenuItem.Text = "Open Generator";
+			this.OpenGeneratorToolStripMenuItem.Click += new System.EventHandler(this.OpenGeneratorToolStripMenuItem_Click);
+			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(162, 6);
+			// 
+			// OptionsToolStripMenuItem
+			// 
+			this.OptionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AlwaysOnTopToolStripMenuItem,
+            this.MinimizeToTrayToolStripMenuItem,
+            this.StartWithWindowsToolStripMenuItem});
+			this.OptionsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("OptionsToolStripMenuItem.Image")));
+			this.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem";
+			this.OptionsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.OptionsToolStripMenuItem.Text = "Options";
+			this.OptionsToolStripMenuItem.Click += new System.EventHandler(this.OptionsToolStripMenuItem_Click);
+			// 
+			// AlwaysOnTopToolStripMenuItem
+			// 
+			this.AlwaysOnTopToolStripMenuItem.Name = "AlwaysOnTopToolStripMenuItem";
+			this.AlwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.AlwaysOnTopToolStripMenuItem.Text = "Always on Top";
+			this.AlwaysOnTopToolStripMenuItem.Click += new System.EventHandler(this.AlwaysOnTopToolStripMenuItem_Click);
+			// 
+			// MinimizeToTrayToolStripMenuItem
+			// 
+			this.MinimizeToTrayToolStripMenuItem.Name = "MinimizeToTrayToolStripMenuItem";
+			this.MinimizeToTrayToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.MinimizeToTrayToolStripMenuItem.Text = "Minimize to Tray";
+			this.MinimizeToTrayToolStripMenuItem.Click += new System.EventHandler(this.MinimizeToTrayToolStripMenuItem_Click);
+			// 
+			// StartWithWindowsToolStripMenuItem
+			// 
+			this.StartWithWindowsToolStripMenuItem.Name = "StartWithWindowsToolStripMenuItem";
+			this.StartWithWindowsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.StartWithWindowsToolStripMenuItem.Text = "Start with Windows";
+			this.StartWithWindowsToolStripMenuItem.Click += new System.EventHandler(this.StartWithWindowsToolStripMenuItem_Click);
 			// 
 			// RevealerToolStripMenuItem
 			// 
@@ -188,6 +249,14 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(162, 6);
 			// 
+			// ExitToolStripMenuItem
+			// 
+			this.ExitToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ExitToolStripMenuItem.Image")));
+			this.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem";
+			this.ExitToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.ExitToolStripMenuItem.Text = "Exit";
+			this.ExitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+			// 
 			// NotifyIcon
 			// 
 			this.NotifyIcon.ContextMenuStrip = this.NotifyIconContextMenuStrip;
@@ -225,7 +294,7 @@
 			this.MainTabControl.Location = new System.Drawing.Point(6, 70);
 			this.MainTabControl.Name = "MainTabControl";
 			this.MainTabControl.SelectedIndex = 0;
-			this.MainTabControl.Size = new System.Drawing.Size(844, 594);
+			this.MainTabControl.Size = new System.Drawing.Size(682, 590);
 			this.MainTabControl.TabIndex = 4;
 			// 
 			// GeneratorTabPage
@@ -236,9 +305,18 @@
 			this.GeneratorTabPage.Location = new System.Drawing.Point(4, 23);
 			this.GeneratorTabPage.Name = "GeneratorTabPage";
 			this.GeneratorTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.GeneratorTabPage.Size = new System.Drawing.Size(836, 567);
+			this.GeneratorTabPage.Size = new System.Drawing.Size(674, 563);
 			this.GeneratorTabPage.TabIndex = 0;
 			this.GeneratorTabPage.Text = "Generator";
+			// 
+			// GeneratorPanel
+			// 
+			this.GeneratorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.GeneratorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.GeneratorPanel.Location = new System.Drawing.Point(3, 3);
+			this.GeneratorPanel.Name = "GeneratorPanel";
+			this.GeneratorPanel.Size = new System.Drawing.Size(668, 557);
+			this.GeneratorPanel.TabIndex = 0;
 			// 
 			// ScriptTabPage
 			// 
@@ -252,6 +330,14 @@
 			this.ScriptTabPage.TabIndex = 3;
 			this.ScriptTabPage.Text = "Script";
 			// 
+			// ScriptPanel
+			// 
+			this.ScriptPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ScriptPanel.Location = new System.Drawing.Point(3, 3);
+			this.ScriptPanel.Name = "ScriptPanel";
+			this.ScriptPanel.Size = new System.Drawing.Size(830, 561);
+			this.ScriptPanel.TabIndex = 0;
+			// 
 			// OptionsTabPage
 			// 
 			this.OptionsTabPage.BackColor = System.Drawing.SystemColors.Control;
@@ -264,6 +350,14 @@
 			this.OptionsTabPage.TabIndex = 1;
 			this.OptionsTabPage.Text = "Options";
 			// 
+			// OptionsPanel
+			// 
+			this.OptionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.OptionsPanel.Location = new System.Drawing.Point(3, 3);
+			this.OptionsPanel.Name = "OptionsPanel";
+			this.OptionsPanel.Size = new System.Drawing.Size(830, 561);
+			this.OptionsPanel.TabIndex = 0;
+			// 
 			// AboutTabPage
 			// 
 			this.AboutTabPage.BackColor = System.Drawing.SystemColors.Control;
@@ -274,100 +368,6 @@
 			this.AboutTabPage.Size = new System.Drawing.Size(836, 567);
 			this.AboutTabPage.TabIndex = 2;
 			this.AboutTabPage.Text = "About";
-			// 
-			// PictureBox2
-			// 
-			this.PictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("PictureBox2.Image")));
-			this.PictureBox2.Location = new System.Drawing.Point(6, 29);
-			this.PictureBox2.Name = "PictureBox2";
-			this.PictureBox2.Size = new System.Drawing.Size(24, 24);
-			this.PictureBox2.TabIndex = 8;
-			this.PictureBox2.TabStop = false;
-			// 
-			// HeaderPictureBox
-			// 
-			this.HeaderPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.HeaderPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("HeaderPictureBox.Image")));
-			this.HeaderPictureBox.Location = new System.Drawing.Point(802, 9);
-			this.HeaderPictureBox.Name = "HeaderPictureBox";
-			this.HeaderPictureBox.Size = new System.Drawing.Size(48, 48);
-			this.HeaderPictureBox.TabIndex = 6;
-			this.HeaderPictureBox.TabStop = false;
-			// 
-			// OpenGeneratorToolStripMenuItem
-			// 
-			this.OpenGeneratorToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.OpenGeneratorToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("OpenGeneratorToolStripMenuItem.Image")));
-			this.OpenGeneratorToolStripMenuItem.Name = "OpenGeneratorToolStripMenuItem";
-			this.OpenGeneratorToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-			this.OpenGeneratorToolStripMenuItem.Text = "Open Generator";
-			this.OpenGeneratorToolStripMenuItem.Click += new System.EventHandler(this.OpenGeneratorToolStripMenuItem_Click);
-			// 
-			// OptionsToolStripMenuItem
-			// 
-			this.OptionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AlwaysOnTopToolStripMenuItem,
-            this.MinimizeToTrayToolStripMenuItem,
-            this.StartWithWindowsToolStripMenuItem});
-			this.OptionsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("OptionsToolStripMenuItem.Image")));
-			this.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem";
-			this.OptionsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-			this.OptionsToolStripMenuItem.Text = "Options";
-			this.OptionsToolStripMenuItem.Click += new System.EventHandler(this.OptionsToolStripMenuItem_Click);
-			// 
-			// AlwaysOnTopToolStripMenuItem
-			// 
-			this.AlwaysOnTopToolStripMenuItem.Name = "AlwaysOnTopToolStripMenuItem";
-			this.AlwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-			this.AlwaysOnTopToolStripMenuItem.Text = "Always on Top";
-			this.AlwaysOnTopToolStripMenuItem.Click += new System.EventHandler(this.AlwaysOnTopToolStripMenuItem_Click);
-			// 
-			// MinimizeToTrayToolStripMenuItem
-			// 
-			this.MinimizeToTrayToolStripMenuItem.Name = "MinimizeToTrayToolStripMenuItem";
-			this.MinimizeToTrayToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-			this.MinimizeToTrayToolStripMenuItem.Text = "Minimize to Tray";
-			this.MinimizeToTrayToolStripMenuItem.Click += new System.EventHandler(this.MinimizeToTrayToolStripMenuItem_Click);
-			// 
-			// StartWithWindowsToolStripMenuItem
-			// 
-			this.StartWithWindowsToolStripMenuItem.Name = "StartWithWindowsToolStripMenuItem";
-			this.StartWithWindowsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-			this.StartWithWindowsToolStripMenuItem.Text = "Start with Windows";
-			this.StartWithWindowsToolStripMenuItem.Click += new System.EventHandler(this.StartWithWindowsToolStripMenuItem_Click);
-			// 
-			// ExitToolStripMenuItem
-			// 
-			this.ExitToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ExitToolStripMenuItem.Image")));
-			this.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem";
-			this.ExitToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-			this.ExitToolStripMenuItem.Text = "Exit";
-			this.ExitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
-			// 
-			// GeneratorPanel
-			// 
-			this.GeneratorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.GeneratorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.GeneratorPanel.Location = new System.Drawing.Point(3, 3);
-			this.GeneratorPanel.Name = "GeneratorPanel";
-			this.GeneratorPanel.Size = new System.Drawing.Size(830, 561);
-			this.GeneratorPanel.TabIndex = 0;
-			// 
-			// ScriptPanel
-			// 
-			this.ScriptPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ScriptPanel.Location = new System.Drawing.Point(3, 3);
-			this.ScriptPanel.Name = "ScriptPanel";
-			this.ScriptPanel.Size = new System.Drawing.Size(830, 561);
-			this.ScriptPanel.TabIndex = 0;
-			// 
-			// OptionsPanel
-			// 
-			this.OptionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.OptionsPanel.Location = new System.Drawing.Point(3, 3);
-			this.OptionsPanel.Name = "OptionsPanel";
-			this.OptionsPanel.Size = new System.Drawing.Size(830, 561);
-			this.OptionsPanel.TabIndex = 0;
 			// 
 			// AboutPanel
 			// 
@@ -381,7 +381,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(856, 689);
+			this.ClientSize = new System.Drawing.Size(694, 685);
 			this.Controls.Add(this.MainTabControl);
 			this.Controls.Add(this.MainStatusStrip);
 			this.Controls.Add(this.TopPanel);
@@ -391,14 +391,14 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.TopPanel.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.PictureBox2)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.HeaderPictureBox)).EndInit();
 			this.NotifyIconContextMenuStrip.ResumeLayout(false);
 			this.MainTabControl.ResumeLayout(false);
 			this.GeneratorTabPage.ResumeLayout(false);
 			this.ScriptTabPage.ResumeLayout(false);
 			this.OptionsTabPage.ResumeLayout(false);
 			this.AboutTabPage.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.PictureBox2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.HeaderPictureBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using JocysCom.Password.Generator.Properties;
+using System.Configuration;
 
 namespace JocysCom.Password.Generator.Controls
 {
@@ -31,6 +32,10 @@ namespace JocysCom.Password.Generator.Controls
 			// http://www.app-fact.de/uploads/media/System_Configuration_en.pdf
 			AllUsersFolderTextBox.Text = new DirectoryInfo(Application.CommonAppDataPath).Parent.FullName;
 			RoamingUserFolderTextBox.Text = new DirectoryInfo(Application.UserAppDataPath).Parent.FullName;
+			var localSettings = new FileInfo(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
+			LocalUserSettingsTextBox.Text = localSettings.Directory.FullName;
+			var roamingSettings = new FileInfo(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoaming).FilePath);
+			RoamingUserSettingsTextBox.Text = roamingSettings.Directory.FullName;
 			string[] names = mainForm.GeneratorPanel.Presets.Select(x => x.PresetName).ToArray();
 			PassGenHelper.LoadPresets(FavPreset1ComboBox, names, Settings.Default.FavPreset1ComboBox);
 			PassGenHelper.LoadPresets(FavPreset2ComboBox, names, Settings.Default.FavPreset2ComboBox);
@@ -116,17 +121,52 @@ namespace JocysCom.Password.Generator.Controls
 
 		private void AllUsersFolderOpenButton_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start(AllUsersFolderTextBox.Text);
+			OpenPath(AllUsersFolderTextBox.Text);
 		}
 
 		private void RoamingUserFolderOpenButton_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start(RoamingUserFolderTextBox.Text);
+			OpenPath(RoamingUserFolderTextBox.Text);
 		}
 
 		private void LocalUserFolderOpenButton_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start(LocalUserFolderTextBox.Text);
+			OpenPath(LocalUserFolderTextBox.Text);
+		}
+
+		private void LocalUserSettingsButton_Click(object sender, EventArgs e)
+		{
+			OpenPath(LocalUserSettingsTextBox.Text);
+		}
+
+		private void RoamingUserSettingsButton_Click(object sender, EventArgs e)
+		{
+			OpenPath(RoamingUserSettingsTextBox.Text);
+		}
+
+		void OpenPath(string path)
+		{
+			// Process Directory.
+			var dirInfo = new DirectoryInfo(path);
+			var newInfo = dirInfo;
+			// If root folder exist then continue...
+			if (dirInfo.Root.Exists)
+			{
+				bool dirExist = false;
+				while (!dirExist)
+				{
+					if (newInfo.Exists) dirExist = true;
+					else newInfo = newInfo.Parent;
+				}
+				if (dirExist)
+				{
+					System.Diagnostics.Process.Start(newInfo.FullName);
+				}
+				else
+				{
+					MessageBox.Show("Directory not found!", "Directory not found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
 		}
 
 		private void ResetButton_Click(object sender, EventArgs e)
@@ -187,8 +227,9 @@ namespace JocysCom.Password.Generator.Controls
 
 		private void FavPreset3ComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			var text = FavPreset2ComboBox.Text;
-			if (SettingsLoaded) Settings.Default.FavPreset2ComboBox = text;
+			var text = FavPreset3ComboBox.Text;
+			if (SettingsLoaded) Settings.Default.FavPreset3ComboBox = text;
 		}
+
 	}
 }

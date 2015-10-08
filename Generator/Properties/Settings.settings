@@ -3,19 +3,19 @@
   <Profiles />
   <Settings>
     <Setting Name="PresetNameComboBox" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Default: Easy To Remember</Value>
     </Setting>
     <Setting Name="CallNameComboBox" Type="System.String" Scope="User">
       <Value Profile="(Default)">EN: NATO</Value>
     </Setting>
     <Setting Name="AllowOnlyOneCopy" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="StartWithWindowsState" Type="System.String" Scope="User">
       <Value Profile="(Default)">Minimized</Value>
     </Setting>
     <Setting Name="AlwaysOnTop" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="MinimizeToTray" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -24,7 +24,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="OpenPasswordListFileAfterSave" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="GenerateTimer" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -45,13 +45,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="FavPreset1ComboBox" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Easy</Value>
+      <Value Profile="(Default)">Default: Easy To Remember</Value>
     </Setting>
     <Setting Name="FavPreset2ComboBox" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Hard</Value>
+      <Value Profile="(Default)">Default: Good</Value>
     </Setting>
     <Setting Name="FavPreset3ComboBox" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Guid</Value>
+      <Value Profile="(Default)">Hex: GUID - Default</Value>
     </Setting>
     <Setting Name="FavPreset1TextBox" Type="System.String" Scope="User">
       <Value Profile="(Default)">Easy</Value>

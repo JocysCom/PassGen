@@ -107,9 +107,7 @@ namespace JocysCom.ClassLibrary
 			object results = default(T);
 			name = name.Replace("/", ".").Replace(@"\", ".").Replace(' ', '_');
 			var assemblyPrefix = assembly.GetName().Name;
-			string resourceName = name.StartsWith(assemblyPrefix)
-				? name : string.Format("{0}.{1}", assemblyPrefix, name);
-			System.IO.Stream stream = assembly.GetManifestResourceStream(resourceName);
+			System.IO.Stream stream = assembly.GetManifestResourceStream(name);
 			if (stream != null)
 			{
 				if (typeof(T) == typeof(System.Drawing.Image)
