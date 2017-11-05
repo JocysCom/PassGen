@@ -33,7 +33,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		public void Load(CallName name, bool append)
 		{
 			string path = string.Format(@"Security\Password\Templates\Calls\{0}.js", name.ToString());
-			string contents = Helper.FindResource<string>(GetType().Assembly, path);
+			string contents = JocysCom.ClassLibrary.Helper.FindResource<string>(GetType().Assembly, path);
 			loadContents(contents, append);
 		}
 

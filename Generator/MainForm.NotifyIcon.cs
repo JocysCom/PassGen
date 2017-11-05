@@ -87,8 +87,11 @@ namespace JocysCom.Password.Generator
 				}
 				string separator = Regex.Unescape(GeneratorPanel.ListSeparatorComboBox.Text);
 				string list = passGen.NewPasswordList(count, separator);
-				if (list.Length > 0) Clipboard.SetText(list);
-				NotifyIconContextMenuStrip.Close();
+				if (list.Length > 0)
+				{
+					Kolibri.Clippy.PushStringToClipboard(list);
+				}
+				TrayNotifyIconContextMenuStrip.Close();
 			}
 
 		}

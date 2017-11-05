@@ -1,5 +1,7 @@
 using System;
+using System.Configuration;
 using System.IO;
+using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -30,11 +32,22 @@ namespace JocysCom.ClassLibrary.Configuration
 		}
 		private Assembly _assembly;
 
+		DateTime? _BuildDateTime;
+		object BuildDateTimeLock = new object();
+
 		public DateTime BuildDateTime
 		{
 			get
 			{
-				return GetBuildDateTime(_assembly.Location);
+				lock (BuildDateTimeLock)
+				{
+					if (!_BuildDateTime.HasValue)
+					{
+						//_BuildDateTime = GetBuildDateTime(AssemblyPath);
+						_BuildDateTime = GetBuildDateTime(_assembly.Location);
+					}
+					return _BuildDateTime.Value;
+				}
 			}
 		}
 
@@ -48,27 +61,112 @@ namespace JocysCom.ClassLibrary.Configuration
 				{
 					if (string.IsNullOrEmpty(_FullTitle))
 					{
-						var s = string.Format("{0} {1} {2}", Company, Product, Version.ToString(3));
-						// Version = major.minor.build.revision
-						switch (Version.Build)
-						{
-							case 0: s += " Alpha"; break;  // Alpha Release (AR)
-							case 1: s += " Beta 1"; break; // Master Beta (MB)
-							case 2: s += " Beta 2"; break; // Feature Complete (FC)
-							case 3: s += " Beta 3"; break; // Technical Preview (TP)
-							case 4: s += " RC"; break;     // Release Candidate (RC)
-							case 5: s += " RTM"; break; // Release to Manufacturing (RTM)
-							default:
-								// General Availability (GA) - Gold
-								break;
-						}
-						DateTime buildDate = GetBuildDateTime(AssemblyPath);
-						s += buildDate.ToString(" (yyyy-MM-dd)");
-						_FullTitle = s;
+						_FullTitle = GetTitle();
 					}
 					return _FullTitle;
 				}
 			}
+		}
+
+		public string GetTitle(bool showBuild = true, bool showRunMode = true, bool showBuildDate = true, bool showArchitecture = true, bool showDescription = true)
+		{
+			var s = string.Format("{0} {1} {2}", Company, Product, Version.ToString(3));
+			if (showBuild)
+			{
+				// Version = major.minor.build.revision
+				switch (Version.Build)
+				{
+					case 0: s += " Alpha"; break;  // Alpha Release (AR)
+					case 1: s += " Beta 1"; break; // Master Beta (MB)
+					case 2: s += " Beta 2"; break; // Feature Complete (FC)
+					case 3: s += " Beta 3"; break; // Technical Preview (TP)
+					case 4: s += " RC"; break;     // Release Candidate (RC)
+					case 5: s += " RTM"; break; // Release to Manufacturing (RTM)
+					default: break;// General Availability (GA) - Gold
+				}
+			}
+			var runMode = ConfigurationManager.AppSettings["RunMode"];
+			var haveRunMode = !string.IsNullOrEmpty(runMode);
+			// If runmode is not specified then assume live.
+			var nonLive = haveRunMode && string.Compare(runMode, "LIVE", true) != 0;
+			if (showBuildDate || (showRunMode && nonLive))
+			{
+				s += " (";
+				if (showRunMode && nonLive)
+				{
+					s += string.Format("{0}", runMode);
+					if (showBuildDate) s += " ";
+				}
+				if (showBuildDate)
+				{
+					s += string.Format("Build: {0:yyyy-MM-dd}", BuildDateTime);
+				}
+				s += ")";
+			}
+			if (showArchitecture)
+			{
+				switch (Assembly.GetEntryAssembly().GetName().ProcessorArchitecture)
+				{
+					case ProcessorArchitecture.Amd64:
+					case ProcessorArchitecture.IA64:
+						s += " 64-bit";
+						break;
+					case ProcessorArchitecture.X86:
+						s += " 32-bit";
+						break;
+					default: // Default is MSIL: Any CPU, show nothing/
+						break;
+				}
+			}
+			if (showDescription && !string.IsNullOrEmpty(Description) && !s.Contains(Description))
+			{
+				s += " - " + Description;
+			}
+			// Add elevated tag.
+			var identity = System.Security.Principal.WindowsIdentity.GetCurrent();
+			var isElevated = identity.Owner != identity.User;
+			// Add running user.
+			string windowsDomain = GetWindowsDomainName();
+			string windowsUser = GetWindowsUserName();
+			string processDomain = Environment.UserDomainName;
+			string processUser = Environment.UserName;
+			if (string.Compare(windowsDomain, processDomain, true) != 0 || string.Compare(windowsUser, processUser, true) != 0)
+				s += string.Format(" ({0}\\{1})", processDomain, processUser);
+			else if (isElevated)
+				s += " (Administrator)";
+			// if (WinAPI.IsVista && WinAPI.IsElevated() && WinAPI.IsInAdministratorRole) this.Text += " (Administrator)";
+			return s.Trim();
+		}
+
+		[DllImport("wtsapi32.dll")]
+		public static extern bool WTSQuerySessionInformationW(
+			IntPtr hServer,
+			int SessionId,
+			int WTSInfoClass,
+			out IntPtr ppBuffer,
+			out IntPtr pBytesReturned
+		);
+
+		public string GetWindowsDomainName() { return GetInformation(7); }
+
+		public string GetWindowsUserName() { return GetInformation(5); }
+
+		string GetInformation(int WTSInfoClass)
+		{
+			// Use current context.
+			var WTS_CURRENT_SERVER_HANDLE = IntPtr.Zero;
+			var p = System.Diagnostics.Process.GetCurrentProcess();
+			IntPtr AnswerBytes;
+			IntPtr AnswerCount;
+			// Get domain name.
+			var success = WTSQuerySessionInformationW(
+				WTS_CURRENT_SERVER_HANDLE,
+				p.SessionId,
+				WTSInfoClass,
+				out AnswerBytes,
+				out AnswerCount
+			);
+			return Marshal.PtrToStringUni(AnswerBytes);
 		}
 
 		public static DateTime GetBuildDateTime(string filePath)

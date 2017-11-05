@@ -46,7 +46,7 @@ namespace JocysCom.Password.Generator
 				: true;
 			if (notRunning)
 			{
-				mainForm.NotifyIcon.Visible = true;
+				mainForm.TrayNotifyIcon.Visible = true;
 				if (ic.Parameters.ContainsKey("WindowState"))
 				{
 					switch (ic.Parameters["WindowState"])

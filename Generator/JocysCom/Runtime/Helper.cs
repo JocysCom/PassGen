@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Data;
+using System.Runtime.Serialization;
+using System.Data.Objects.DataClasses;
 
 namespace JocysCom.ClassLibrary.Runtime
 {
@@ -17,6 +19,26 @@ namespace JocysCom.ClassLibrary.Runtime
 				|| type.IsPrimitive
 				|| type.IsSerializable;
 		}
+
+		static readonly HashSet<Type> numericTypes = new HashSet<Type>
+		{
+			typeof(int),  typeof(double),  typeof(decimal),
+			typeof(long), typeof(short),   typeof(sbyte),
+			typeof(byte), typeof(ulong),   typeof(ushort),
+			typeof(uint), typeof(float),   //typeof(BigInteger)
+		};
+
+		public static bool IsNumeric(Type type)
+		{
+			return numericTypes.Contains(type);
+		}
+
+		//public static bool IsNumeric<T>(T item)
+		//{
+		//	return item == null
+		//	? false
+		//	: numericTypes.Contains(item.GetType());
+		//}
 
 		private static Type GetFirstArgumentOfGenericType(Type type)
 		{
@@ -46,15 +68,70 @@ namespace JocysCom.ClassLibrary.Runtime
 			return itersectingFields;
 		}
 
+		public static void CopyFields(object source, object dest)
+		{
+			// Get type of the destination object.
+			Type destType = dest.GetType();
+			// Copy fields.
+			FieldInfo[] sourceItersectingFields = GetItersectingFields(source, dest);
+			foreach (FieldInfo sfi in sourceItersectingFields)
+			{
+				if (IsKnownType(sfi.FieldType))
+				{
+					FieldInfo dfi = destType.GetField(sfi.Name, DefaultBindingFlags);
+					dfi.SetValue(dest, sfi.GetValue(source));
+				}
+			}
+		}
+
+		#region CopyProperties
+
+		static object PropertiesReadLock = new object();
+		static Dictionary<Type, PropertyInfo[]> PropertiesReadList = new Dictionary<Type, PropertyInfo[]>();
+		static object PropertiesWriteLock = new object();
+		static Dictionary<Type, PropertyInfo[]> PropertiesWriteList = new Dictionary<Type, PropertyInfo[]>();
+
 		/// <summary>
 		/// Get properties which exists on both objects.
 		/// </summary>
 		private static PropertyInfo[] GetItersectingProperties(object source, object dest)
 		{
-			string[] dPropertyNames = dest.GetType().GetProperties(DefaultBindingFlags).Select(x => x.Name).ToArray();
-			PropertyInfo[] itersectingProperties = source
-				.GetType()
-				.GetProperties(DefaultBindingFlags)
+			// Properties to read.
+			PropertyInfo[] sProperties;
+			lock (PropertiesReadLock)
+			{
+				var sType = source.GetType();
+				if (PropertiesReadList.ContainsKey(sType))
+				{
+					sProperties = PropertiesReadList[sType];
+				}
+				else
+				{
+					sProperties = sType.GetProperties(DefaultBindingFlags)
+						.Where(p => Attribute.IsDefined(p, typeof(DataMemberAttribute)) && p.CanRead)
+						.ToArray();
+					PropertiesReadList.Add(sType, sProperties);
+				}
+			}
+			// Properties to write.
+			PropertyInfo[] dProperties;
+			lock (PropertiesWriteLock)
+			{
+				var dType = dest.GetType();
+				if (PropertiesWriteList.ContainsKey(dType))
+				{
+					dProperties = PropertiesWriteList[dType];
+				}
+				else
+				{
+					dProperties = dType.GetProperties(DefaultBindingFlags)
+						.Where(p => Attribute.IsDefined(p, typeof(DataMemberAttribute)) && p.CanWrite)
+						.ToArray();
+					PropertiesWriteList.Add(dType, dProperties);
+				}
+			}
+			var dPropertyNames = dProperties.Select(x => x.Name).ToArray();
+			var itersectingProperties = sProperties
 				.Where(x => dPropertyNames.Contains(x.Name))
 				.ToArray();
 			return itersectingProperties;
@@ -64,27 +141,120 @@ namespace JocysCom.ClassLibrary.Runtime
 		{
 			// Get type of the destination object.
 			Type destType = dest.GetType();
-			FieldInfo[] sourceItersectingFields = GetItersectingFields(source, dest);
-			// Copy fields.
-			foreach (FieldInfo sfi in sourceItersectingFields)
-			{
-				if (IsKnownType(sfi.FieldType))
-				{
-					FieldInfo dfi = destType.GetField(sfi.Name, DefaultBindingFlags);
-					dfi.SetValue(dest, sfi.GetValue(source));
-				}
-			}
-			PropertyInfo[] sourceItersectingProperties = GetItersectingProperties(source, dest);
 			// Copy properties.
+			PropertyInfo[] sourceItersectingProperties = GetItersectingProperties(source, dest);
 			foreach (PropertyInfo spi in sourceItersectingProperties)
 			{
 				if (IsKnownType(spi.PropertyType) && spi.CanWrite)
 				{
-					PropertyInfo dpi = destType.GetProperty(spi.Name, DefaultBindingFlags);
-					if (dpi.CanWrite) dpi.SetValue(dest, spi.GetValue(source, null), null);
+					var dpi = destType.GetProperty(spi.Name, DefaultBindingFlags);
+					if (dpi.CanWrite)
+					{
+						var sValue = spi.GetValue(source, null);
+						var update = true;
+						if (dpi.CanRead)
+						{
+							var dValue = spi.GetValue(dest, null);
+							// Update only if values are different.
+							update = !Equals(sValue, dValue);
+						}
+						if (update)
+							dpi.SetValue(dest, sValue, null);
+					}
 				}
 			}
 		}
+
+		#endregion
+
+		#region CopyDataMembers
+
+		static object DataMembersLock = new object();
+		static Dictionary<Type, PropertyInfo[]> DataMembers = new Dictionary<Type, PropertyInfo[]>();
+		static Dictionary<Type, PropertyInfo[]> DataMembersNoKey = new Dictionary<Type, PropertyInfo[]>();
+
+		static PropertyInfo[] GetDataMemberProperties<T>(T item, bool skipKey = false)
+		{
+			PropertyInfo[] ps;
+			Type t = item == null ? typeof(T) : item.GetType();
+			lock (DataMembersLock)
+			{
+				var cache = skipKey ? DataMembersNoKey : DataMembers;
+				if (cache.ContainsKey(t))
+				{
+					ps = cache[t];
+				}
+				else
+				{
+					var items = t.GetProperties(DefaultBindingFlags | BindingFlags.DeclaredOnly)
+						.Where(p => p.CanRead && p.CanWrite)
+						.Where(p => Attribute.IsDefined(p, typeof(DataMemberAttribute)));
+					if (skipKey)
+					{
+						var keys = items
+							.Where(p => Attribute.IsDefined(p, typeof(EdmScalarPropertyAttribute)))
+							.Where(p => ((EdmScalarPropertyAttribute)Attribute.GetCustomAttribute(p, typeof(EdmScalarPropertyAttribute))).EntityKeyProperty);
+						items = items.Except(keys);
+					}
+					ps = items
+						// Order properties by name so list will change less with the code changed (important for checksums)
+						.OrderBy(x => x.Name)
+						.ToArray();
+					cache.Add(t, ps);
+				}
+			}
+			return ps;
+		}
+
+		/// <summary>
+		/// Copy properties with [DataMemberAttribute].
+		/// Only members declared at the level of the supplied type's hierarchy should be copied.
+		/// Inherited members are not copied.
+		/// </summary>
+		public static void CopyDataMembers<T>(T source, T dest, bool skipKey = false)
+		{
+			Type t = source == null ? typeof(T) : source.GetType();
+			PropertyInfo[] ps = GetDataMemberProperties(source, skipKey);
+			foreach (PropertyInfo p in ps)
+			{
+				var sValue = p.GetValue(source, null);
+				var dValue = p.GetValue(dest, null);
+				// If values are different then...
+				if (!Equals(sValue, dValue))
+					p.SetValue(dest, sValue, null);
+			}
+		}
+
+		/// <summary>
+		/// Get string representation of [DataMemberAttribute].
+		/// Inherited members are not included.
+		/// </summary>
+		public static string GetDataMembersString<T>(T item, bool skipKey = true, bool skipTime = true)
+		{
+			Type t = item == null ? typeof(T) : item.GetType();
+			PropertyInfo[] ps = GetDataMemberProperties(item, skipKey);
+			StringBuilder sb = new StringBuilder();
+			foreach (PropertyInfo p in ps)
+			{
+				var value = p.GetValue(item, null);
+				if (value == null)
+					continue;
+				var defaultValue = p.PropertyType.IsValueType ? Activator.CreateInstance(p.PropertyType) : null;
+				if (Equals(defaultValue, value))
+					continue;
+				if (skipTime && p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?))
+					continue;
+				if (p.PropertyType == typeof(string) && string.IsNullOrWhiteSpace((string)value))
+					continue;
+				if (p.Name.ToLower().Contains("checksum"))
+					continue;
+				sb.AppendFormat("{0}={1}", p.Name, value);
+				sb.AppendLine();
+			}
+			return sb.ToString();
+		}
+
+		#endregion
 
 		public static object CloneObject(object o)
 		{

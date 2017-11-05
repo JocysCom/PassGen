@@ -26,7 +26,7 @@
 			this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
 			this.MainStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.LeftToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-			this.NotifyIconContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.TrayNotifyIconContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.OpenGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.OptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,7 +40,7 @@
 			this.Preset3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+			this.TrayNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.ClickControlTimer = new System.Windows.Forms.Timer(this.components);
 			this.NotifyIconTimer = new System.Windows.Forms.Timer(this.components);
 			this.ImageList48 = new System.Windows.Forms.ImageList(this.components);
@@ -56,7 +56,7 @@
 			this.TopPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.HeaderPictureBox)).BeginInit();
-			this.NotifyIconContextMenuStrip.SuspendLayout();
+			this.TrayNotifyIconContextMenuStrip.SuspendLayout();
 			this.MainTabControl.SuspendLayout();
 			this.GeneratorTabPage.SuspendLayout();
 			this.ScriptTabPage.SuspendLayout();
@@ -148,9 +148,9 @@
 			this.LeftToolStripStatusLabel.Size = new System.Drawing.Size(22, 17);
 			this.LeftToolStripStatusLabel.Text = "     ";
 			// 
-			// NotifyIconContextMenuStrip
+			// TrayNotifyIconContextMenuStrip
 			// 
-			this.NotifyIconContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.TrayNotifyIconContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenGeneratorToolStripMenuItem,
             this.toolStripSeparator3,
             this.OptionsToolStripMenuItem,
@@ -161,8 +161,8 @@
             this.Preset3ToolStripMenuItem,
             this.toolStripSeparator2,
             this.ExitToolStripMenuItem});
-			this.NotifyIconContextMenuStrip.Name = "NotifyIconContextMenuStrip";
-			this.NotifyIconContextMenuStrip.Size = new System.Drawing.Size(166, 176);
+			this.TrayNotifyIconContextMenuStrip.Name = "NotifyIconContextMenuStrip";
+			this.TrayNotifyIconContextMenuStrip.Size = new System.Drawing.Size(166, 176);
 			// 
 			// OpenGeneratorToolStripMenuItem
 			// 
@@ -171,7 +171,7 @@
 			this.OpenGeneratorToolStripMenuItem.Name = "OpenGeneratorToolStripMenuItem";
 			this.OpenGeneratorToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.OpenGeneratorToolStripMenuItem.Text = "Open Generator";
-			this.OpenGeneratorToolStripMenuItem.Click += new System.EventHandler(this.OpenGeneratorToolStripMenuItem_Click);
+			this.OpenGeneratorToolStripMenuItem.Click += new System.EventHandler(this.OpenApplicationToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -202,7 +202,6 @@
 			this.MinimizeToTrayToolStripMenuItem.Name = "MinimizeToTrayToolStripMenuItem";
 			this.MinimizeToTrayToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
 			this.MinimizeToTrayToolStripMenuItem.Text = "Minimize to Tray";
-			this.MinimizeToTrayToolStripMenuItem.Click += new System.EventHandler(this.MinimizeToTrayToolStripMenuItem_Click);
 			// 
 			// StartWithWindowsToolStripMenuItem
 			// 
@@ -257,11 +256,11 @@
 			this.ExitToolStripMenuItem.Text = "Exit";
 			this.ExitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
 			// 
-			// NotifyIcon
+			// TrayNotifyIcon
 			// 
-			this.NotifyIcon.ContextMenuStrip = this.NotifyIconContextMenuStrip;
-			this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon.Icon")));
-			this.NotifyIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDown);
+			this.TrayNotifyIcon.ContextMenuStrip = this.TrayNotifyIconContextMenuStrip;
+			this.TrayNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("TrayNotifyIcon.Icon")));
+			this.TrayNotifyIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDown);
 			// 
 			// ClickControlTimer
 			// 
@@ -326,7 +325,7 @@
 			this.ScriptTabPage.Location = new System.Drawing.Point(4, 23);
 			this.ScriptTabPage.Name = "ScriptTabPage";
 			this.ScriptTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.ScriptTabPage.Size = new System.Drawing.Size(836, 567);
+			this.ScriptTabPage.Size = new System.Drawing.Size(674, 563);
 			this.ScriptTabPage.TabIndex = 3;
 			this.ScriptTabPage.Text = "Script";
 			// 
@@ -335,7 +334,7 @@
 			this.ScriptPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ScriptPanel.Location = new System.Drawing.Point(3, 3);
 			this.ScriptPanel.Name = "ScriptPanel";
-			this.ScriptPanel.Size = new System.Drawing.Size(830, 561);
+			this.ScriptPanel.Size = new System.Drawing.Size(668, 557);
 			this.ScriptPanel.TabIndex = 0;
 			// 
 			// OptionsTabPage
@@ -346,7 +345,7 @@
 			this.OptionsTabPage.Location = new System.Drawing.Point(4, 23);
 			this.OptionsTabPage.Name = "OptionsTabPage";
 			this.OptionsTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.OptionsTabPage.Size = new System.Drawing.Size(836, 567);
+			this.OptionsTabPage.Size = new System.Drawing.Size(674, 563);
 			this.OptionsTabPage.TabIndex = 1;
 			this.OptionsTabPage.Text = "Options";
 			// 
@@ -355,7 +354,7 @@
 			this.OptionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.OptionsPanel.Location = new System.Drawing.Point(3, 3);
 			this.OptionsPanel.Name = "OptionsPanel";
-			this.OptionsPanel.Size = new System.Drawing.Size(830, 561);
+			this.OptionsPanel.Size = new System.Drawing.Size(668, 557);
 			this.OptionsPanel.TabIndex = 0;
 			// 
 			// AboutTabPage
@@ -365,7 +364,7 @@
 			this.AboutTabPage.ImageKey = "about_16x16.png";
 			this.AboutTabPage.Location = new System.Drawing.Point(4, 23);
 			this.AboutTabPage.Name = "AboutTabPage";
-			this.AboutTabPage.Size = new System.Drawing.Size(836, 567);
+			this.AboutTabPage.Size = new System.Drawing.Size(674, 563);
 			this.AboutTabPage.TabIndex = 2;
 			this.AboutTabPage.Text = "About";
 			// 
@@ -374,7 +373,7 @@
 			this.AboutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.AboutPanel.Location = new System.Drawing.Point(0, 0);
 			this.AboutPanel.Name = "AboutPanel";
-			this.AboutPanel.Size = new System.Drawing.Size(836, 567);
+			this.AboutPanel.Size = new System.Drawing.Size(674, 563);
 			this.AboutPanel.TabIndex = 0;
 			// 
 			// MainForm
@@ -393,7 +392,7 @@
 			this.TopPanel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.PictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.HeaderPictureBox)).EndInit();
-			this.NotifyIconContextMenuStrip.ResumeLayout(false);
+			this.TrayNotifyIconContextMenuStrip.ResumeLayout(false);
 			this.MainTabControl.ResumeLayout(false);
 			this.GeneratorTabPage.ResumeLayout(false);
 			this.ScriptTabPage.ResumeLayout(false);
@@ -418,10 +417,10 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
-		public System.Windows.Forms.ContextMenuStrip NotifyIconContextMenuStrip;
+		public System.Windows.Forms.ContextMenuStrip TrayNotifyIconContextMenuStrip;
 		public System.Windows.Forms.ToolStripMenuItem AlwaysOnTopToolStripMenuItem;
 		public System.Windows.Forms.ToolStripMenuItem MinimizeToTrayToolStripMenuItem;
-		public System.Windows.Forms.NotifyIcon NotifyIcon;
+		public System.Windows.Forms.NotifyIcon TrayNotifyIcon;
 		public System.Windows.Forms.ToolStripMenuItem StartWithWindowsToolStripMenuItem;
 		private System.Windows.Forms.Timer ClickControlTimer;
 		private System.Windows.Forms.Timer NotifyIconTimer;

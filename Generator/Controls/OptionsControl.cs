@@ -96,11 +96,6 @@ namespace JocysCom.Password.Generator.Controls
 			mainForm.SetAlwaysOnTop(!Settings.Default.AlwaysOnTop);
 		}
 
-		private void MinimizeToTrayCheckBox_CheckedChanged(object sender, EventArgs e)
-		{
-			mainForm.SetMinimizeToTray(!Settings.Default.MinimizeToTray);
-		}
-
 		private void StartWithWindowsCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
 			mainForm.SetStartWithWindows(!Settings.Default.StartWithWindows);

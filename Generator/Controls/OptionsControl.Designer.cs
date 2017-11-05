@@ -219,6 +219,7 @@
 			// 
 			this.OpenPasswordListFileAfterSaveCheckBox.AutoSize = true;
 			this.OpenPasswordListFileAfterSaveCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.OpenPasswordListFileAfterSave;
+			this.OpenPasswordListFileAfterSaveCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.OpenPasswordListFileAfterSaveCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "OpenPasswordListFileAfterSave", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.OpenPasswordListFileAfterSaveCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.OpenPasswordListFileAfterSaveCheckBox.Location = new System.Drawing.Point(6, 43);
@@ -299,7 +300,6 @@
 			this.MinimizeOnCloseCheckBox.TabIndex = 92;
 			this.MinimizeOnCloseCheckBox.Text = "Minimize on Close";
 			this.MinimizeOnCloseCheckBox.Visible = false;
-			this.MinimizeOnCloseCheckBox.CheckedChanged += new System.EventHandler(this.MinimizeToTrayCheckBox_CheckedChanged);
 			// 
 			// AllowOnlyOneCopyCheckBox
 			// 
@@ -318,16 +318,14 @@
 			// MinimizeToTrayCheckBox
 			// 
 			this.MinimizeToTrayCheckBox.AutoSize = true;
-			this.MinimizeToTrayCheckBox.Checked = global::JocysCom.Password.Generator.Properties.Settings.Default.MinimizeToTray;
+			this.MinimizeToTrayCheckBox.Checked = true;
 			this.MinimizeToTrayCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.MinimizeToTrayCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::JocysCom.Password.Generator.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.MinimizeToTrayCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.MinimizeToTrayCheckBox.Location = new System.Drawing.Point(6, 94);
 			this.MinimizeToTrayCheckBox.Name = "MinimizeToTrayCheckBox";
 			this.MinimizeToTrayCheckBox.Size = new System.Drawing.Size(108, 18);
 			this.MinimizeToTrayCheckBox.TabIndex = 92;
 			this.MinimizeToTrayCheckBox.Text = "Minimize to Tray";
-			this.MinimizeToTrayCheckBox.CheckedChanged += new System.EventHandler(this.MinimizeToTrayCheckBox_CheckedChanged);
 			// 
 			// StartWithWindowsCheckBox
 			// 

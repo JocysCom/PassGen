@@ -119,7 +119,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		public bool Load(PresetName name)
 		{
 			string path = string.Format(@"Security\Password\Templates\Presets\{0}.js", name.ToString());
-			string contents = Helper.FindResource<string>(GetType().Assembly, path);
+			string contents = JocysCom.ClassLibrary.Helper.FindResource<string>(GetType().Assembly, path);
 			try { loadContents(contents); }
 			catch (Exception ex)
 			{

@@ -65,7 +65,7 @@
 			this.ConnectionsDataGridView.AllowUserToResizeRows = false;
 			this.ConnectionsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.ConnectionsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+			this.ConnectionsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
 			this.ConnectionsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.ConnectionsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.TypeColumn,

@@ -71,7 +71,7 @@ namespace JocysCom.Password.Generator
 			// If we found our message then show currently running instance.
 			if (m.Msg == MessageId)
 			{
-				if (m.WParam.ToInt32() == wp_Maximize) RestoreFromTray();
+				if (m.WParam.ToInt32() == wp_Maximize) RestoreFromTray(true);
 				if (m.WParam.ToInt32() == wp_Close) Close();
 			}
 			// If session is ending then allow to close the form.
@@ -106,7 +106,7 @@ namespace JocysCom.Password.Generator
 				// The window must only be minimized in tray
 				e.Cancel = true;
 				// Hide the form...
-				MinimizeToTray(false);
+				MinimizeToTray(false, Properties.Settings.Default.MinimizeToTray);
 			}
 			else
 			{

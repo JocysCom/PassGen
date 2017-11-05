@@ -15,25 +15,25 @@ namespace JocysCom.ClassLibrary.Text
 
 		static object providerLock = new object();
 
-		static Regex tagRx = new Regex("{(?<class>[0-9A-Z]+)[.](?<property>[0-9A-Z]+)(:(?<format>[^{}]+))?}", RegexOptions.IgnoreCase);
+		static Regex tagRx = new Regex("{((?<prefix>[0-9A-Z]+)[.])?(?<property>[0-9A-Z]+)(:(?<format>[^{}]+))?}", RegexOptions.IgnoreCase);
 
 		/// <summary>
-		/// Replace {type.property} to its value.
+		/// Replace {type.property}/{customPrefix.property} to its value.
 		/// </summary>
-		public static string Replace<T>(string s, T o, bool usePrefix = true)
+		public static string Replace<T>(string s, T o, bool usePrefix = true, string customPrefix = null)
 		{
 			if (string.IsNullOrEmpty(s)) return s;
 			if (o == null) return s;
 			var t = typeof(T);
 			var properties = t.GetProperties();
-			var prefix = t.Name;
+			var prefix = string.IsNullOrEmpty(customPrefix) ? t.Name : customPrefix;
 			var matches = tagRx.Matches(s);
 			foreach (var p in properties)
 			{
 				foreach (Match m in matches)
 				{
-					if (prefix != m.Groups["class"].Value) continue;
-					if (p.Name != m.Groups["property"].Value) continue;
+					if (usePrefix && string.Compare(prefix, m.Groups["prefix"].Value, true) != 0) continue;
+					if (string.Compare(p.Name, m.Groups["property"].Value, true) != 0) continue;
 					var format = m.Groups["format"].Value;
 					var value = p.GetValue(o, null);
 					var text = string.IsNullOrEmpty(format)
@@ -63,6 +63,40 @@ namespace JocysCom.ClassLibrary.Text
 			}
 			sb.Append(s.Substring(previousIndex));
 			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Reports the zero-based index of the first occurrence of the specified value
+		/// in input. The search starts at a specified byte position.
+		/// </summary>
+		/// <param name="input">input bytes.</param>
+		/// <param name="value">The bytes to seek.</param>
+		/// <param name="startIndex">The search starting position.</param>
+		/// <returns>
+		/// The zero-based index position of value if that byte value is found, or -1 if it is not.
+		/// </returns>
+		public static int IndexOf(byte[] input, byte[] value, int startIndex = 0)
+		{
+			for (int i = startIndex; i < input.Length; i++)
+			{
+				// If remaining searchable data is smaller than value then...
+				if (value.Length > (input.Length - i))
+				{
+					return -1;
+				}
+				for (int v = 0; v < value.Length; v++)
+				{
+					if (input[i + v] != value[v])
+					{
+						break;
+					}
+					else if (v + 1 == value.Length)
+					{
+						return i;
+					}
+				}
+			}
+			return -1;
 		}
 
 		/// <summary>
@@ -249,21 +283,23 @@ namespace JocysCom.ClassLibrary.Text
 			return BytesToStringBlock(bytes, addIndex, addHex, addText);
 		}
 
-		public static string BytesToStringBlock(byte[] bytes, bool addIndex, bool addHex, bool addText)
+		public static string BytesToStringBlock(byte[] bytes, bool addIndex, bool addHex, bool addText, int offset = 0, int size = -1, int? maxDisplayLines = null)
 		{
 			var builder = new StringBuilder();
 			var hx = new StringBuilder();
 			var ch = new StringBuilder();
 			var lineIndex = 0;
-			for (int i = 1; i <= bytes.Length; i++)
+			List<string> lines = new List<string>();
+			var length = size == -1 ? bytes.Length : size;
+			for (int i = 1; i <= length; i++)
 			{
 				var modulus = i % 16;
-				hx.Append(bytes[i - 1].ToString("X2")).Append(" ");
-				var c = (char)bytes[i - 1];
+				hx.Append(bytes[i - 1 + offset].ToString("X2")).Append(" ");
+				var c = (char)bytes[i - 1 + offset];
 				if (System.Char.IsControl(c)) ch.Append(".");
 				else ch.Append(c);
 				// If line ended.
-				if ((modulus == 0 && i > 1) || (i == bytes.Length))
+				if ((modulus == 0 && i > 1) || (i == length))
 				{
 					if (addIndex)
 					{
@@ -276,14 +312,39 @@ namespace JocysCom.ClassLibrary.Text
 						builder.Append(hx.ToString());
 						if (addText) builder.Append(" | ");
 					}
-					if (addText) builder.Append(ch.ToString());
-					if (i < bytes.Length) builder.AppendLine();
+					if (addText)
+					{
+						builder.Append(ch.ToString());
+						if (!maxDisplayLines.HasValue || lines.Count < maxDisplayLines.Value)
+						{
+							lines.Add(builder.ToString());
+						}
+						builder.Clear();
+					}
 					hx.Clear();
 					ch.Clear();
 					lineIndex++;
 				}
 			}
-			return builder.ToString();
+			if (lineIndex > lines.Count)
+			{
+				lines[lines.Count - 1] = string.Format("... {0} more lines.", lineIndex - lines.Count + 1);
+			}
+			return string.Join(Environment.NewLine, lines);
+		}
+
+		public static string CropLines(string s, int maxLines = 8)
+		{
+			if (string.IsNullOrEmpty(s)) return s;
+			var lines = s.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+			if (lines.Length <= maxLines) return s;
+			var sb = new StringBuilder();
+			for (int i = 0; i < maxLines - 1; i++)
+			{
+				sb.AppendLine(lines[i]);
+			}
+			sb.AppendFormat("... {0} more lines.", lines.Length - maxLines + 1);
+			return sb.ToString();
 		}
 
 		static KeyValue[] SplitAndKeep(string s, string[] separators)

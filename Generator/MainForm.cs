@@ -20,6 +20,7 @@ namespace JocysCom.Password.Generator
 		public MainForm()
 		{
 			InitializeComponent();
+			InitMinimize();
 		}
 
 		public Label ControlHelpBodyLabel { get { return HelpBodyLabel; } }
@@ -100,7 +101,6 @@ namespace JocysCom.Password.Generator
 			GeneratorPanel.Initialize();
 			AboutPanel.Initialize();
 			SetAlwaysOnTop(Settings.Default.AlwaysOnTop);
-			SetMinimizeToTray(Settings.Default.MinimizeToTray);
 			SetStartWithWindows(Settings.Default.StartWithWindows);
 			SetStartWithWindowsState(Settings.Default.StartWithWindowsState);
 			UpdateWindowsStartRegistry(Settings.Default.StartWithWindows, Settings.Default.StartWithWindowsState);
@@ -142,67 +142,6 @@ namespace JocysCom.Password.Generator
 		void AlwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetAlwaysOnTop(!Settings.Default.AlwaysOnTop);
-		}
-
-
-		public bool MinimizeToTrayChanging;
-		public void SetMinimizeToTray(bool value)
-		{
-			if (MinimizeToTrayChanging) return;
-			MinimizeToTrayChanging = true;
-			if (MinimizeToTrayToolStripMenuItem.Checked != value)
-			{
-				MinimizeToTrayToolStripMenuItem.Checked = value;
-			}
-			if (OptionsPanel.MinimizeToTrayCheckBox.Checked != value)
-			{
-				OptionsPanel.MinimizeToTrayCheckBox.Checked = value;
-			}
-			if (Settings.Default.MinimizeToTray != value)
-			{
-				Settings.Default.MinimizeToTray = value;
-			}
-			UpdateStatusBar(WindowState);
-			MinimizeToTrayChanging = false;
-		}
-
-		/// <summary>
-		/// Method to Minimize the window and Hide the window item in the TaskBar. 
-		/// </summary>
-		public void MinimizeToTray(bool showBalloonTip)
-		{
-			// Show only first time.
-			if (showBalloonTip)
-			{
-				NotifyIcon.BalloonTipText = "Password Generator...";
-				// Show balloon tip for 2 seconds.
-				NotifyIcon.ShowBalloonTip(2);
-			}
-			// hold - program.
-			// NOTE: also it would be possible to track which direction mouse will move in or move out on TrayIcon.
-			// For example: open program if mouse moves in from left and moves out from top.
-			NotifyIcon.Text = "Click: double - program, left - generate, right - menu.";
-			if (WindowState != FormWindowState.Minimized) WindowState = FormWindowState.Minimized;
-		}
-
-		/// <summary>
-		/// Restores the window.
-		/// </summary>
-		public void RestoreFromTray()
-		{
-			ignoreMinimizeToTray = true;
-			// Show in task bar before restoring windows state in order to prevent flickering.
-			ShowInTaskbar = true;
-			if (WindowState != FormWindowState.Normal)
-			{
-				WindowState = FormWindowState.Normal;
-			}
-			BringToFront();
-		}
-
-		void MinimizeToTrayToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SetMinimizeToTray(!Settings.Default.MinimizeToTray);
 		}
 
 		public bool StartWithWindowsChanging;
@@ -274,55 +213,6 @@ namespace JocysCom.Password.Generator
 
 		#endregion
 
-		private void OpenGeneratorToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			MainTabControl.SelectedTab = GeneratorTabPage;
-			RestoreFromTray();
-		}
-
-
-		FormWindowState? oldWindowState;
-		object lastStateLock = new object();
-
-		/// <summary>Will be used to prevent form flickering when restoring from tray.</summary>
-		bool ignoreMinimizeToTray;
-
-		private void MainForm_Resize(object sender, EventArgs e)
-		{
-			// Track window state changes.
-			lock (lastStateLock)
-			{
-				var newWindowState = WindowState;
-				if (!oldWindowState.HasValue || oldWindowState.Value != newWindowState)
-				{
-					oldWindowState = newWindowState;
-					UpdateStatusBar(newWindowState);
-				}
-			}
-		}
-
-		void UpdateStatusBar(FormWindowState state)
-		{
-			if (state == FormWindowState.Minimized)
-			{
-				if (!ignoreMinimizeToTray)
-				{
-					if (ShowInTaskbar == Settings.Default.MinimizeToTray)
-					{
-						ShowInTaskbar = !Settings.Default.MinimizeToTray;
-					}
-				}
-			}
-			else
-			{
-				ignoreMinimizeToTray = false;
-				if (ShowInTaskbar == false)
-				{
-					ShowInTaskbar = true;
-				}
-			}
-		}
-
 		#region Single Double Click
 
 		private bool isFirstClick = true;
@@ -370,7 +260,7 @@ namespace JocysCom.Password.Generator
 				if (isDoubleClick)
 				{
 					// Perform double click action.
-					RestoreFromTray();
+					RestoreFromTray(true);
 				}
 				else
 				{
@@ -379,7 +269,10 @@ namespace JocysCom.Password.Generator
 					//IsActionLongEnabled = true;
 					ShowTrayIcon();
 					Word password = GeneratorPanel.PassGen.NewPassword();
-					if (password.Text.Length > 0) Clipboard.SetText(password.Text);
+					if (password.Text.Length > 0)
+					{
+						Kolibri.Clippy.PushStringToClipboard(password.Text);
+					}
 				}
 				// Allow the MouseDown event handler to process clicks again.
 				isFirstClick = true;
@@ -394,7 +287,7 @@ namespace JocysCom.Password.Generator
 
 		public void ShowTrayIcon()
 		{
-			NotifyIcon.Icon = GetTrayIcon();
+			TrayNotifyIcon.Icon = GetTrayIcon();
 			NotifyIconTimer.Interval = 300;
 			NotifyIconTimer.Start();
 		}
@@ -405,7 +298,7 @@ namespace JocysCom.Password.Generator
 			NotifyIconTimer.Stop();
 			IsActionEnabled = false;
 			IsActionLongEnabled = false;
-			NotifyIcon.Icon = GetTrayIcon();
+			TrayNotifyIcon.Icon = GetTrayIcon();
 		}
 
 
@@ -416,7 +309,7 @@ namespace JocysCom.Password.Generator
 			lock (trayIconLock)
 			{
 				assembly = System.Reflection.Assembly.GetExecutingAssembly();
-				string path = assembly.GetName().Name + ".Sources.Images.TrayIcon-" + iconType + ".ico";
+				var path = assembly.GetManifestResourceNames().FirstOrDefault(x => x.EndsWith(".Sources.Images.TrayIcon-" + iconType + ".ico"));
 				System.IO.Stream stream = assembly.GetManifestResourceStream(path);
 				return new System.Drawing.Icon(stream);
 			}
@@ -486,7 +379,7 @@ namespace JocysCom.Password.Generator
 		private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			MainTabControl.SelectedTab = OptionsTabPage;
-			RestoreFromTray();
+			RestoreFromTray(true);
 		}
 
 	}

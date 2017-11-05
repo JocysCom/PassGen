@@ -39,9 +39,9 @@ namespace JocysCom.ClassLibrary.Processes
 		{
 
 			public const int WM_SYSCOMMAND = 0x0112; //command from the Window menu
-			//WPARAM wParam
-			//	LPARAM lParam
-			//If the wParam is SC_KEYMENU, lParam contains the character code of the key that is used with the ALT key to display the popup menu. For example, pressing ALT+F to display the File popup will cause a WM_SYSCOMMAND with wParam equal to SC_KEYMENU and lParam equal to 'f'.
+													 //WPARAM wParam
+													 //	LPARAM lParam
+													 //If the wParam is SC_KEYMENU, lParam contains the character code of the key that is used with the ALT key to display the popup menu. For example, pressing ALT+F to display the File popup will cause a WM_SYSCOMMAND with wParam equal to SC_KEYMENU and lParam equal to 'f'.
 
 			//public const int SC_MAXIMIZE = 0xF030; 
 			//public const int SC_CLOSE = 0xF060; 
@@ -117,9 +117,15 @@ namespace JocysCom.ClassLibrary.Processes
 			[DllImport("user32.dll")]
 			public static extern void mouse_event(MouseFlags dwFlags, int dx, int dy, int dwData, UIntPtr dwExtraInfo);
 
+			static uint keybd_event(byte bVk, byte bScan, int dwFlags, uint dwExtraInfo)
+			{
+				var dwExtraInfoPtr = new UIntPtr(dwExtraInfo);
+				return keybd_event(bVk, bScan, dwFlags, dwExtraInfoPtr);
+			}
+
 			[DllImport("user32.dll")]
-			public static extern uint keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
-			
+			public static extern uint keybd_event(byte bVk, byte bScan, int dwFlags, UIntPtr dwExtraInfo);
+
 			public static void KeyDown(System.Windows.Forms.Keys key)
 			{
 				keybd_event((byte)key, 0, 0, 0);
@@ -157,8 +163,18 @@ namespace JocysCom.ClassLibrary.Processes
 			/// <param name="lParam">Specifies additional message-specific information.</param>
 			/// <returns>The return value specifies the result of the message processing and depends on the message sent.</returns>
 			[DllImport("user32.dll", CharSet = CharSet.Auto)]
-			public static extern int SendMessage(IntPtr hWnd, UIntPtr Msg, IntPtr wParam, IntPtr lParam);
-			
+			static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+			public static int SendMessage(int hWnd, uint Msg, int wParam, int lParam)
+			{
+				return SendMessage(new IntPtr(hWnd), Msg, new IntPtr(wParam), new IntPtr(lParam)).ToInt32();
+			}
+
+			public static int SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam)
+			{
+				return SendMessage(hWnd, Msg, new IntPtr(wParam), new IntPtr(lParam)).ToInt32();
+			}
+
 			//WindowFromPoint: API is used to get the window handle by giving the
 			// location
 			//    Parameters
@@ -186,16 +202,6 @@ namespace JocysCom.ClassLibrary.Processes
 			// Zero indicates failure. To get extended error information, call GetLastError. 
 			[DllImport("user32.dll")]
 			public static extern int GetClassName(ref int hWnd, string lpClassName, ref int nMaxCount);
-
-			#region alias for compatibility with old code
-
-			[DllImport("user32.dll", CharSet = CharSet.Auto)]
-			public static extern int SendMessage(int hWnd, int Msg, int wParam, int lParam);
-
-			[DllImport("user32.dll", CharSet = CharSet.Auto)]
-			public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-			#endregion
 
 		}
 

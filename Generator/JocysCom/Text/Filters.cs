@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace JocysCom.ClassLibrary.Text
 {
-	public class Filters
+	public partial class Filters
 	{
 
 		// Used for author full name.
@@ -24,7 +24,11 @@ namespace JocysCom.ClassLibrary.Text
 		Regex rU3 = new Regex("\\s+([A-Z])$");
 		Regex rAnd = new Regex("\\s*&\\s*");
 		public static readonly Regex RxAllExceptNumbers = new Regex("[^0-9]", RegexOptions.IgnoreCase);
+		public static readonly Regex RxAllExceptDecimal = new Regex("[^0-9.]", RegexOptions.IgnoreCase);
 		public static readonly Regex RxAllExceptLetters = new Regex("[^A-Z]", RegexOptions.IgnoreCase);
+		public static readonly Regex RxAllExceptLettersAndSpaces = new Regex("[^A-Z ]", RegexOptions.IgnoreCase);
+		public static readonly Regex RxAllExceptNumbersAndLetters = new Regex("/^[a-zA-Z0-9]", RegexOptions.IgnoreCase);
+		public static readonly Regex RxAllExceptNumbersLettersAndSpaces = new Regex("/^[a-zA-Z0-9 \r\n]", RegexOptions.IgnoreCase);
 		public static readonly Regex RxNumbersOnly = new Regex("[0-9]", RegexOptions.IgnoreCase);
 		public static readonly Regex RxLettersOnly = new Regex("[A-Z]", RegexOptions.IgnoreCase);
 		public static readonly Regex RxBreaks = new Regex("[\r\n]", RegexOptions.Multiline);
@@ -46,12 +50,11 @@ namespace JocysCom.ClassLibrary.Text
 			"({|\\()?[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}(}|\\))?|" +
 			"({)?[0xa-f0-9]{3,10}(, {0,1}[0xa-f0-9]{3,6}){2}, {0,1}({)([0xa-f0-9]{3,4}, {0,1}){7}[0xa-f0-9]{3,4}(}})", RegexOptions.IgnoreCase);
 
-		public static readonly Regex RxHtmlTag = new Regex(@"<(.|\n)*?>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+		// This expression will: find and replace all tags with nothing and avoid problematic edge cases.
+		// <(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>
+		public static readonly Regex RxHtmlTag = new Regex(@"<(?:[^>=]|='[^']*'|=""[^""]*""|=[^'""][^\s>]*)*>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-		public static string StripHtml(string s)
-		{
-			return StripHtml(s, false);
-		}
+		//public static readonly Regex RxHtmlTag = new Regex(@"<(.|\n)*?>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
 		public const int CropTextDefauldMaxLength = 128;
 
@@ -85,9 +88,7 @@ namespace JocysCom.ClassLibrary.Text
 			if (maxLength == 0)
 				return s;
 			if (maxLength == 0) maxLength = CropTextDefauldMaxLength;
-
 			if (stripHtml) s = StripHtml(s);
-
 			if (s.Length > maxLength)
 			{
 				s = s.Substring(0, maxLength - 3);
@@ -110,6 +111,25 @@ namespace JocysCom.ClassLibrary.Text
 			return s.Trim();
 		}
 
+		public static string StripHtml(string s)
+		{
+			return StripHtml(s, false);
+		}
+		public static string StripUnsafeHtml(string s)
+		{
+			return StripUnsafeHtml(s, null);
+		}
+
+		public static string StripUnsafeHtml(string s, string[] whiteList)
+		{
+			string acceptable = whiteList == null
+				? "i|em|b|strong|u|sup|sub|ol|ul|li|br|h2|h3|h4|h5|span|div|p|a|img|blockquote"
+				: string.Join("|", whiteList);
+			string stringPattern = @"<\/?(?(?=" + acceptable + @")notag|[a-z0-9]+:?[a-z0-9]+?)(?:\s[a-z0-9\-]+=?(?:(["",']?).*?\1?)?)*\s*\/?>";
+			return Regex.Replace(s, stringPattern, "", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+		}
+
+
 		List<string> Honors;
 		List<string> Prefixes;
 		List<string> Prefixes2;
@@ -118,15 +138,16 @@ namespace JocysCom.ClassLibrary.Text
 		public Filters()
 		{
 			//http://www.luciehaskins.com/resources/recnamen.pdf
-			Honors = FillList(new string[]{ "Dr", "PhD" });
-			Prefixes = FillList(new string[]{ "De", "Du", "van", "der", "von", 
-			"den", "op", "ter", "ten", "van't", "van", "den", "und", "zu"  });
+			Honors = FillList("Dr", "PhD");
+			Prefixes = FillList("De", "Du", "van", "der", "von",
+			"den", "op", "ter", "ten", "van't", "van", "den", "und", "zu");
 			// Prefixes which requires two words in name.
-			Prefixes2 = FillList(new string[]{ "Al" });
-			Sufixes = FillList(new string[]{});
+			Prefixes2 = FillList("Al");
+			Sufixes = FillList(new string[] { });
 		}
 
-		List<string> FillList(string[] values){
+		List<string> FillList(params string[] values)
+		{
 			List<string> list = new List<string>();
 			for (int i = 0; i < values.Length; i++)
 			{

@@ -320,7 +320,7 @@ namespace JocysCom.Password.Generator.Controls
 		Call GetCurrentCall()
 		{
 			var row = CallNamesDataGridView.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
-			return row == null ? null : (Call)row.DataBoundItem;
+			return row == null ? null : row.DataBoundItem as Call;
 		}
 
 		private void CallsDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -602,7 +602,7 @@ namespace JocysCom.Password.Generator.Controls
 			TextBox passTextBox = (TextBox)Controls.Find(tid, true)[0];
 			if (!string.IsNullOrEmpty(passTextBox.Text))
 			{
-				Clipboard.SetText(passTextBox.Text);
+				Kolibri.Clippy.PushStringToClipboard(passTextBox.Text);
 			}
 			TextBox textBox;
 			// Reset all to black.
