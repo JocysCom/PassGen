@@ -3,7 +3,7 @@ SET wra="%ProgramFiles%\WinRAR\winrar.exe"
 if NOT EXIST %wra% SET wra="%ProgramFiles(x86)%\WinRAR\winrar.exe"
 if NOT EXIST %wra% SET wra="%ProgramW6432%\WinRAR\winrar.exe"
 SET zip=%wra% a -ep
-SET nam=passgen
+SET nam=PassGen
 :: ---------------------------------------------------------------------------
 echo --- Delete files
 IF NOT EXIST Files\nul MKDIR Files
