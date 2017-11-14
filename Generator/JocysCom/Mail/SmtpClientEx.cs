@@ -105,6 +105,23 @@ namespace JocysCom.ClassLibrary.Mail
 		public string SmtpFrom;
 		public string SmtpSendCopyTo;
 		public string ErrorRecipients;
+
+		public const string ErrorCode = "ErrorCode";
+
+		public static void SetErrorCode(Exception ex, int errorCode)
+		{
+			if (errorCode == 0)
+				return;
+			if (ex.Data.Keys.OfType<string>().Contains(ErrorCode))
+			{
+				ex.Data[ErrorCode] = errorCode;
+			}
+			else
+			{
+				ex.Data.Add(ErrorCode, errorCode);
+			}
+		}
+
 		public string ErrorCodeSuspended;
 		public bool ErrorNotifications;
 		public SmtpDeliveryMethod SmtpDeliveryMethod;
@@ -145,8 +162,9 @@ namespace JocysCom.ClassLibrary.Mail
 				{
 					Upsert(ex, "ErrorType", errorType);
 					Upsert(ex, "ErrorCount", count);
-					Upsert(ex, "Config.ErrorLimitMax", ErrorLimitMax);
-					Upsert(ex, "Config.ErrorLimitAge", ErrorLimitAge);
+					Upsert(ex, "Config: ErrorLimitMax", ErrorLimitMax);
+					Upsert(ex, "Config: ErrorLimitAge", ErrorLimitAge);
+					Upsert(ex, "Config: ErrorUseNewStackTrace", LogHelper.ErrorUseNewStackTrace);
 				}
 				return true;
 			}
