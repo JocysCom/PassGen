@@ -334,7 +334,7 @@ namespace JocysCom.ClassLibrary.Text
 		/// </summary>
 		/// <param name="s"></param>
 		/// <returns></returns>
-		public string RemoveDiacriticMarks(string s)
+		public static string RemoveDiacriticMarks(string s)
 		{
 			string stFormD = s.Normalize(NormalizationForm.FormD);
 			StringBuilder sb = new StringBuilder();
@@ -436,18 +436,24 @@ namespace JocysCom.ClassLibrary.Text
 			return s;
 		}
 
+		public static string ToTitleCase(string input)
+		{
+			return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input);
+		}
+
 		public static string GetKey(string input, bool capitalize)
 		{
-			Filters filters = new Filters();
 			// Filter accents: Hélan => Helan
-			string s = filters.RemoveDiacriticMarks(input);
+			string s = RemoveDiacriticMarks(input);
 			// Convert to upper-case and keep only allowed chars.
 			s = Filters.RxAllowedInKey.Replace(s, " ");
 			// Replace multiple spaces.
 			s = Filters.RxMultiSpace.Replace(s, " ").Trim();
 			if (capitalize)
 			{
-				s = filters.Culture.ToTitleCase(filters.GetKeyPrepare(s).ToLower());
+				var filters = new Filters();
+				s = filters.GetKeyPrepare(s).ToLower();
+				s = filters.Culture.ToTitleCase(s);
 			}
 			s = s.Replace(' ', '_');
 			return s;
