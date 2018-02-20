@@ -446,9 +446,9 @@ namespace JocysCom.ClassLibrary.Text
 			// Filter accents: Hélan => Helan
 			string s = RemoveDiacriticMarks(input);
 			// Convert to upper-case and keep only allowed chars.
-			s = Filters.RxAllowedInKey.Replace(s, " ");
+			s = RxAllowedInKey.Replace(s, " ");
 			// Replace multiple spaces.
-			s = Filters.RxMultiSpace.Replace(s, " ").Trim();
+			s = RxMultiSpace.Replace(s, " ").Trim();
 			if (capitalize)
 			{
 				var filters = new Filters();
