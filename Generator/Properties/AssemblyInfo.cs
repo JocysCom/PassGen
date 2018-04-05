@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Jocys.com Password Generator")]
-[assembly: AssemblyDescription("This program can generate easy to remember passwords which look like real words but they are not. It is much easier for brain to remember them as whole words and not as separate sequence of random chars. You also can use \"Calls\" feature and convert any password or text into international NATO phonetic alphabet (Alpha, Bravo, Charlie, Delta...) so it will be easy to pass them correctly thru phone or radio conversation.")]
+[assembly: AssemblyDescription("Generate easy to remember passwords which look like real words but they are not. It is much easier for brain to remember them as whole words and not as separate sequence of random chars. Convert any password or text into international NATO phonetic alphabet (Alpha, Bravo, Charlie, Delta...) so it will be easy to pass them correctly thru phone or radio conversation.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jocys.com")]
 [assembly: AssemblyProduct("Password Generator")]
-[assembly: AssemblyCopyright("Copyright © Jocys.com 2017")]
+[assembly: AssemblyCopyright("Copyright © Jocys.com 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.6.0")]
-[assembly: AssemblyFileVersion("2.1.6.0")]
+[assembly: AssemblyVersion("2.1.7.0")]
+[assembly: AssemblyFileVersion("2.1.7.0")]
