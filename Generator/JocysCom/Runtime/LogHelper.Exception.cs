@@ -4,12 +4,90 @@ using System.Reflection;
 using System.Configuration;
 using System.Diagnostics;
 using System.Security;
+using System.ComponentModel;
 
 namespace JocysCom.ClassLibrary.Runtime
 {
+
+	public class LogHelperEventArgs : CancelEventArgs
+	{
+		public Exception Exception { get; set; }
+	}
+
 	public partial class LogHelper
 	{
+		#region Handling
+
+		public void InitExceptionHandlers(string logFolder = "Logs")
+		{
+			_LogFolder = logFolder;
+			if (LogThreadExceptions)
+				System.Windows.Forms.Application.ThreadException += Application_ThreadException;
+			if (LogUnhandledExceptions)
+				AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+			if (LogFirstChanceExceptions)
+				AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+		}
+
+		public void UnInitExceptionHandlers()
+		{
+			if (LogThreadExceptions)
+				System.Windows.Forms.Application.ThreadException -= Application_ThreadException;
+			if (LogUnhandledExceptions)
+				AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
+			if (LogFirstChanceExceptions)
+				AppDomain.CurrentDomain.FirstChanceException -= CurrentDomain_FirstChanceException;
+		}
+
+		string _LogFolder;
+
+		public event EventHandler<LogHelperEventArgs> WritingException;
+
+		public void WriteException(Exception ex)
+		{
+			var writeAsHtml = ErrorUseNewStackTrace;
+			WriteException(ex, 10, _LogFolder, writeAsHtml);
+		}
+
+		public void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+		{
+			WriteException(e.Exception);
+		}
+
+		public void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			WriteException((Exception)e.ExceptionObject);
+		}
+
+		/// <summary>
+		/// This is a "first chance exception", which means the debugger is simply notifying you
+		/// that an exception was thrown, rather than that one was not handled.
+		/// </summary>
+		public void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+		{
+			if (e.Exception != null)
+				WriteException(e.Exception);
+		}
+
+		#endregion
+
 		#region Exception
+
+		/// <summary>Get native error code.</summary>
+		public static int GetNativeErrorCode(Exception ex)
+		{
+			int code = 0;
+			Win32Exception w32Ex;
+			do
+			{
+				if ((w32Ex = ex as Win32Exception) != null)
+					code = w32Ex.NativeErrorCode;
+				ex = ex.InnerException;
+			}
+			// Do another check if inner exception is available.
+			while (ex != null && code == 0);
+			return code;
+		}
 
 		private static string GetClassName(Exception ex)
 		{
@@ -22,24 +100,53 @@ namespace JocysCom.ClassLibrary.Runtime
 			return (isHtml) ? System.Web.HttpUtility.HtmlEncode(text) : text;
 		}
 
-		//System.Environment.OSVersion.Version.Major  < 6;
+		#region Application Settings
+
 		public static bool ErrorUseNewStackTrace
 		{
 			get
 			{
 				if (!_ErrorUseNewStackTrace.HasValue)
-				{
-					var value = ConfigurationManager.AppSettings["ErrorUseNewStackTrace"];
-					bool vaue;
-					_ErrorUseNewStackTrace = bool.TryParse(value, out vaue)
-						? vaue
-						: false;
-				}
+					_ErrorUseNewStackTrace = ParseBool("LogHelper_UseNewStackTrace", true);
 				return _ErrorUseNewStackTrace.Value;
 			}
-
 		}
 		static bool? _ErrorUseNewStackTrace;
+
+		public static bool LogThreadExceptions
+		{
+			get
+			{
+				if (!_LogThreadExceptions.HasValue)
+					_LogThreadExceptions = ParseBool("LogHelper_LogThreadExceptions", true);
+				return _LogThreadExceptions.Value;
+			}
+		}
+		static bool? _LogThreadExceptions;
+
+		public static bool LogUnhandledExceptions
+		{
+			get
+			{
+				if (!_LogUnhandledExceptions.HasValue)
+					_LogUnhandledExceptions = ParseBool("LogHelper_LogUnhandledExceptions", true);
+				return _LogUnhandledExceptions.Value;
+			}
+		}
+		static bool? _LogUnhandledExceptions;
+
+		public static bool LogFirstChanceExceptions
+		{
+			get
+			{
+				if (!_LogFirstChanceExceptions.HasValue)
+					_LogFirstChanceExceptions = ParseBool("LogHelper_LogFirstChanceExceptions", true);
+				return _LogFirstChanceExceptions.Value;
+			}
+		}
+		static bool? _LogFirstChanceExceptions;
+
+		#endregion
 
 		public static string ExceptionToString(Exception ex, bool needFileLineInfo, TraceFormat tf)
 		{
@@ -334,7 +441,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			var m = "";
 			if (ex1 != null)
 			{
-				m += string.Format("Filename: {0}\r\n", ex1.Filename);
+				m += string.Format("FileName: {0}\r\n", ex1.Filename);
 				m += string.Format("Line: {0}\r\n", ex1.Line);
 			}
 			else if (ex2 != null)

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using JocysCom.Password.Generator.Properties;
 using System.Configuration.Install;
 using System.Configuration;
@@ -16,6 +13,8 @@ namespace JocysCom.Password.Generator
 	{
 
 		public static MainForm mainForm;
+
+		public const string arg_WindowState = "WindowState";
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -47,17 +46,16 @@ namespace JocysCom.Password.Generator
 			if (notRunning)
 			{
 				mainForm.TrayNotifyIcon.Visible = true;
-				if (ic.Parameters.ContainsKey("WindowState"))
+				if (ic.Parameters.ContainsKey(arg_WindowState))
 				{
-					switch (ic.Parameters["WindowState"])
+					switch (ic.Parameters[arg_WindowState])
 					{
 						case "Maximized":
+							mainForm.RestoreFromTray();
 							mainForm.WindowState = FormWindowState.Maximized;
 							break;
 						case "Minimized":
-							mainForm.Hide();
-							if (Settings.Default.MinimizeToTray) mainForm.ShowInTaskbar = false;
-							mainForm.WindowState = FormWindowState.Minimized;
+							mainForm.MinimizeToTray(false, Properties.Settings.Default.MinimizeToTray);
 							break;
 					}
 				}

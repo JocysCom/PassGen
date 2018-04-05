@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using JocysCom.ClassLibrary.Controls.DynamicCompile;
 using JocysCom.Password.Generator.Properties;
 using JocysCom.ClassLibrary.Security.Password;
-using System.Web.Security;
 using Microsoft.Win32;
 using JocysCom.ClassLibrary.Configuration;
 
@@ -193,7 +188,7 @@ namespace JocysCom.Password.Generator
 			if (enabled)
 			{
 				// Add the value in the registry so that the application runs at start-up
-				string command = string.Format("\"{0}\" /WindowState={1}", Application.ExecutablePath, startState.ToString());
+				string command = string.Format("\"{0}\" /{1}={2}", Application.ExecutablePath, Program.arg_WindowState, startState.ToString());
 				var value = (string)runKey.GetValue(Application.ProductName);
 				if (value != command)
 				{
