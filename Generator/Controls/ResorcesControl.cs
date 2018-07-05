@@ -30,10 +30,10 @@ namespace JocysCom.Password.Generator.Controls
 		{
 			// Load frequency;
 			LoadFrequency(FrequencyTextBox.Text, ref Frequency, LoadFrequencyTextBox);
-			LoadWords(AdjectivesTextBox.Text, ref Adjectives, LoadAdjectiveTextBox);
-			LoadWords(NounsTextBox.Text, ref Nouns, LoadNounsTextBox);
-			LoadWords(VerbsTextBox.Text, ref Verbs, LoadVerbsTextBox);
-			LoadWords(AdverbsTextBox.Text, ref Adverbs, LoadAdverbsTextBox);
+			LoadWords(AdjectivesTextBox.Text, ref Adjectives, LoadAdjectiveTextBox, null);
+			LoadWords(NounsTextBox.Text, ref Nouns, LoadNounsTextBox, null);
+			LoadWords(VerbsTextBox.Text, ref Verbs, LoadVerbsTextBox, Nouns);
+			LoadWords(AdverbsTextBox.Text, ref Adverbs, LoadAdverbsTextBox, Nouns);
 			//bool allow = true;
 			//List<Task> TaskList = new List<Task>();
 			//foreach (var counter in _Counters)
@@ -73,7 +73,7 @@ namespace JocysCom.Password.Generator.Controls
 			result.Text = string.Format("{0}", list.Count);
 		}
 
-		void LoadWords(string source, ref Dictionary<string, int> list, TextBox result)
+		void LoadWords(string source, ref Dictionary<string, int> list, TextBox result, Dictionary<string, int> exclude)
 		{
 			list = new Dictionary<string, int>();
 			var rx = new Regex("^(?<word>[a-z]+)\\s+");
@@ -86,6 +86,8 @@ namespace JocysCom.Password.Generator.Controls
 					continue;
 				var word = match.Groups["word"].Value;
 				if (!Frequency.ContainsKey(word))
+					continue;
+				if (exclude != null && exclude.ContainsKey(word))
 					continue;
 				var freq = Frequency[word];
 				count++;
