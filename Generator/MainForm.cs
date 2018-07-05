@@ -73,7 +73,7 @@ namespace JocysCom.Password.Generator
 		{
 			if (IsDesignMode)
 				return;
-			MainTabControl.TabPages.Remove(ResourcesTabPage);
+			//MainTabControl.TabPages.Remove(ResourcesTabPage);
 			MainStripStatusLabel.Text = string.Empty;
 			//MainTreeView.Nodes[1].Remove();
 			ConfigureMenuItems();
