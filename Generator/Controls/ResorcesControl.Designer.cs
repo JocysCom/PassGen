@@ -31,32 +31,32 @@
 			this.AdjectivesTextBox = new System.Windows.Forms.TextBox();
 			this.AdjectivesLabel = new System.Windows.Forms.Label();
 			this.DataSourceGroupBox = new System.Windows.Forms.GroupBox();
-			this.NounsLabel = new System.Windows.Forms.Label();
-			this.NounsTextBox = new System.Windows.Forms.TextBox();
-			this.VerbsLabel = new System.Windows.Forms.Label();
-			this.VerbsTextBox = new System.Windows.Forms.TextBox();
-			this.AdverbsLabel = new System.Windows.Forms.Label();
-			this.AdverbsTextBox = new System.Windows.Forms.TextBox();
-			this.FrequencyLabel = new System.Windows.Forms.Label();
 			this.FrequencyTextBox = new System.Windows.Forms.TextBox();
+			this.FrequencyLabel = new System.Windows.Forms.Label();
+			this.AdverbsTextBox = new System.Windows.Forms.TextBox();
+			this.AdverbsLabel = new System.Windows.Forms.Label();
+			this.VerbsTextBox = new System.Windows.Forms.TextBox();
+			this.VerbsLabel = new System.Windows.Forms.Label();
+			this.NounsTextBox = new System.Windows.Forms.TextBox();
+			this.NounsLabel = new System.Windows.Forms.Label();
 			this.LoadDataButton = new System.Windows.Forms.Button();
 			this.LoadDataGroupBox = new System.Windows.Forms.GroupBox();
+			this.LimitToTopNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.LoadFrequencyTextBox = new System.Windows.Forms.TextBox();
+			this.SaveFolderTextBox = new System.Windows.Forms.TextBox();
+			this.LoadFrequencyLabel = new System.Windows.Forms.Label();
+			this.SaveDataButton = new System.Windows.Forms.Button();
+			this.LoadAdverbsLabel = new System.Windows.Forms.Label();
 			this.LoadAdjectiveTextBox = new System.Windows.Forms.TextBox();
+			this.SaveResultTextBox = new System.Windows.Forms.TextBox();
+			this.LoadAdverbsTextBox = new System.Windows.Forms.TextBox();
+			this.LoadVerbsLabel = new System.Windows.Forms.Label();
 			this.LoadNounsTextBox = new System.Windows.Forms.TextBox();
 			this.LoadVerbsTextBox = new System.Windows.Forms.TextBox();
-			this.LoadAdverbsTextBox = new System.Windows.Forms.TextBox();
-			this.LoadFrequencyTextBox = new System.Windows.Forms.TextBox();
-			this.LoadAdjectivesLabel = new System.Windows.Forms.Label();
 			this.LoadNounsLabel = new System.Windows.Forms.Label();
-			this.LoadVerbsLabel = new System.Windows.Forms.Label();
-			this.LoadAdverbsLabel = new System.Windows.Forms.Label();
-			this.LoadFrequencyLabel = new System.Windows.Forms.Label();
-			this.LimitToTopNumericUpDown = new System.Windows.Forms.NumericUpDown();
-			this.LimitToTopLabel = new System.Windows.Forms.Label();
-			this.SaveDataButton = new System.Windows.Forms.Button();
-			this.SaveFolderTextBox = new System.Windows.Forms.TextBox();
 			this.SaveDataFolderLabel = new System.Windows.Forms.Label();
-			this.SaveResultTextBox = new System.Windows.Forms.TextBox();
+			this.LimitToTopLabel = new System.Windows.Forms.Label();
+			this.LoadAdjectivesLabel = new System.Windows.Forms.Label();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.PasswordTextBox = new System.Windows.Forms.TextBox();
 			this.GenerateButton = new System.Windows.Forms.Button();
@@ -106,52 +106,24 @@
 			this.DataSourceGroupBox.TabStop = false;
 			this.DataSourceGroupBox.Text = "Step 1: Set Data Source";
 			// 
-			// NounsLabel
+			// FrequencyTextBox
 			// 
-			this.NounsLabel.AutoSize = true;
-			this.NounsLabel.Location = new System.Drawing.Point(6, 74);
-			this.NounsLabel.Name = "NounsLabel";
-			this.NounsLabel.Size = new System.Drawing.Size(41, 13);
-			this.NounsLabel.TabIndex = 1;
-			this.NounsLabel.Text = "Nouns:";
-			// 
-			// NounsTextBox
-			// 
-			this.NounsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.FrequencyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.NounsTextBox.Location = new System.Drawing.Point(71, 71);
-			this.NounsTextBox.Name = "NounsTextBox";
-			this.NounsTextBox.Size = new System.Drawing.Size(518, 20);
-			this.NounsTextBox.TabIndex = 0;
-			this.NounsTextBox.Text = "..\\..\\Resources\\WordNet\\Data\\index.noun";
+			this.FrequencyTextBox.Location = new System.Drawing.Point(71, 19);
+			this.FrequencyTextBox.Name = "FrequencyTextBox";
+			this.FrequencyTextBox.Size = new System.Drawing.Size(518, 20);
+			this.FrequencyTextBox.TabIndex = 0;
+			this.FrequencyTextBox.Text = "..\\..\\Resources\\FrequencyWords\\en_full.txt";
 			// 
-			// VerbsLabel
+			// FrequencyLabel
 			// 
-			this.VerbsLabel.AutoSize = true;
-			this.VerbsLabel.Location = new System.Drawing.Point(6, 100);
-			this.VerbsLabel.Name = "VerbsLabel";
-			this.VerbsLabel.Size = new System.Drawing.Size(37, 13);
-			this.VerbsLabel.TabIndex = 1;
-			this.VerbsLabel.Text = "Verbs:";
-			// 
-			// VerbsTextBox
-			// 
-			this.VerbsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.VerbsTextBox.Location = new System.Drawing.Point(71, 97);
-			this.VerbsTextBox.Name = "VerbsTextBox";
-			this.VerbsTextBox.Size = new System.Drawing.Size(518, 20);
-			this.VerbsTextBox.TabIndex = 0;
-			this.VerbsTextBox.Text = "..\\..\\Resources\\WordNet\\Data\\index.verb";
-			// 
-			// AdverbsLabel
-			// 
-			this.AdverbsLabel.AutoSize = true;
-			this.AdverbsLabel.Location = new System.Drawing.Point(6, 126);
-			this.AdverbsLabel.Name = "AdverbsLabel";
-			this.AdverbsLabel.Size = new System.Drawing.Size(49, 13);
-			this.AdverbsLabel.TabIndex = 1;
-			this.AdverbsLabel.Text = "Adverbs:";
+			this.FrequencyLabel.AutoSize = true;
+			this.FrequencyLabel.Location = new System.Drawing.Point(6, 22);
+			this.FrequencyLabel.Name = "FrequencyLabel";
+			this.FrequencyLabel.Size = new System.Drawing.Size(60, 13);
+			this.FrequencyLabel.TabIndex = 1;
+			this.FrequencyLabel.Text = "Frequency:";
 			// 
 			// AdverbsTextBox
 			// 
@@ -163,24 +135,52 @@
 			this.AdverbsTextBox.TabIndex = 0;
 			this.AdverbsTextBox.Text = "..\\..\\Resources\\WordNet\\Data\\index.adv";
 			// 
-			// FrequencyLabel
+			// AdverbsLabel
 			// 
-			this.FrequencyLabel.AutoSize = true;
-			this.FrequencyLabel.Location = new System.Drawing.Point(6, 22);
-			this.FrequencyLabel.Name = "FrequencyLabel";
-			this.FrequencyLabel.Size = new System.Drawing.Size(60, 13);
-			this.FrequencyLabel.TabIndex = 1;
-			this.FrequencyLabel.Text = "Frequency:";
+			this.AdverbsLabel.AutoSize = true;
+			this.AdverbsLabel.Location = new System.Drawing.Point(6, 126);
+			this.AdverbsLabel.Name = "AdverbsLabel";
+			this.AdverbsLabel.Size = new System.Drawing.Size(49, 13);
+			this.AdverbsLabel.TabIndex = 1;
+			this.AdverbsLabel.Text = "Adverbs:";
 			// 
-			// FrequencyTextBox
+			// VerbsTextBox
 			// 
-			this.FrequencyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.VerbsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.FrequencyTextBox.Location = new System.Drawing.Point(71, 19);
-			this.FrequencyTextBox.Name = "FrequencyTextBox";
-			this.FrequencyTextBox.Size = new System.Drawing.Size(518, 20);
-			this.FrequencyTextBox.TabIndex = 0;
-			this.FrequencyTextBox.Text = "..\\..\\Resources\\FrequencyWords\\en_full.txt";
+			this.VerbsTextBox.Location = new System.Drawing.Point(71, 97);
+			this.VerbsTextBox.Name = "VerbsTextBox";
+			this.VerbsTextBox.Size = new System.Drawing.Size(518, 20);
+			this.VerbsTextBox.TabIndex = 0;
+			this.VerbsTextBox.Text = "..\\..\\Resources\\WordNet\\Data\\index.verb";
+			// 
+			// VerbsLabel
+			// 
+			this.VerbsLabel.AutoSize = true;
+			this.VerbsLabel.Location = new System.Drawing.Point(6, 100);
+			this.VerbsLabel.Name = "VerbsLabel";
+			this.VerbsLabel.Size = new System.Drawing.Size(37, 13);
+			this.VerbsLabel.TabIndex = 1;
+			this.VerbsLabel.Text = "Verbs:";
+			// 
+			// NounsTextBox
+			// 
+			this.NounsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.NounsTextBox.Location = new System.Drawing.Point(71, 71);
+			this.NounsTextBox.Name = "NounsTextBox";
+			this.NounsTextBox.Size = new System.Drawing.Size(518, 20);
+			this.NounsTextBox.TabIndex = 0;
+			this.NounsTextBox.Text = "..\\..\\Resources\\WordNet\\Data\\index.noun";
+			// 
+			// NounsLabel
+			// 
+			this.NounsLabel.AutoSize = true;
+			this.NounsLabel.Location = new System.Drawing.Point(6, 74);
+			this.NounsLabel.Name = "NounsLabel";
+			this.NounsLabel.Size = new System.Drawing.Size(41, 13);
+			this.NounsLabel.TabIndex = 1;
+			this.NounsLabel.Text = "Nouns:";
 			// 
 			// LoadDataButton
 			// 
@@ -220,6 +220,72 @@
 			this.LoadDataGroupBox.TabStop = false;
 			this.LoadDataGroupBox.Text = "Step 2: Load Data";
 			// 
+			// LimitToTopNumericUpDown
+			// 
+			this.LimitToTopNumericUpDown.Location = new System.Drawing.Point(6, 38);
+			this.LimitToTopNumericUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+			this.LimitToTopNumericUpDown.Name = "LimitToTopNumericUpDown";
+			this.LimitToTopNumericUpDown.Size = new System.Drawing.Size(88, 20);
+			this.LimitToTopNumericUpDown.TabIndex = 4;
+			this.LimitToTopNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.LimitToTopNumericUpDown.Value = new decimal(new int[] {
+            30000,
+            0,
+            0,
+            0});
+			// 
+			// LoadFrequencyTextBox
+			// 
+			this.LoadFrequencyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.LoadFrequencyTextBox.Location = new System.Drawing.Point(489, 19);
+			this.LoadFrequencyTextBox.Name = "LoadFrequencyTextBox";
+			this.LoadFrequencyTextBox.ReadOnly = true;
+			this.LoadFrequencyTextBox.Size = new System.Drawing.Size(100, 20);
+			this.LoadFrequencyTextBox.TabIndex = 0;
+			this.LoadFrequencyTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// SaveFolderTextBox
+			// 
+			this.SaveFolderTextBox.Location = new System.Drawing.Point(6, 77);
+			this.SaveFolderTextBox.Name = "SaveFolderTextBox";
+			this.SaveFolderTextBox.Size = new System.Drawing.Size(169, 20);
+			this.SaveFolderTextBox.TabIndex = 0;
+			this.SaveFolderTextBox.Text = "..\\..\\Resources";
+			// 
+			// LoadFrequencyLabel
+			// 
+			this.LoadFrequencyLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.LoadFrequencyLabel.AutoSize = true;
+			this.LoadFrequencyLabel.Location = new System.Drawing.Point(424, 22);
+			this.LoadFrequencyLabel.Name = "LoadFrequencyLabel";
+			this.LoadFrequencyLabel.Size = new System.Drawing.Size(60, 13);
+			this.LoadFrequencyLabel.TabIndex = 1;
+			this.LoadFrequencyLabel.Text = "Frequency:";
+			// 
+			// SaveDataButton
+			// 
+			this.SaveDataButton.Location = new System.Drawing.Point(181, 75);
+			this.SaveDataButton.Name = "SaveDataButton";
+			this.SaveDataButton.Size = new System.Drawing.Size(75, 23);
+			this.SaveDataButton.TabIndex = 3;
+			this.SaveDataButton.Text = "Save Data";
+			this.SaveDataButton.UseVisualStyleBackColor = true;
+			this.SaveDataButton.Click += new System.EventHandler(this.SaveDataButton_Click);
+			// 
+			// LoadAdverbsLabel
+			// 
+			this.LoadAdverbsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.LoadAdverbsLabel.AutoSize = true;
+			this.LoadAdverbsLabel.Location = new System.Drawing.Point(424, 126);
+			this.LoadAdverbsLabel.Name = "LoadAdverbsLabel";
+			this.LoadAdverbsLabel.Size = new System.Drawing.Size(49, 13);
+			this.LoadAdverbsLabel.TabIndex = 1;
+			this.LoadAdverbsLabel.Text = "Adverbs:";
+			// 
 			// LoadAdjectiveTextBox
 			// 
 			this.LoadAdjectiveTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -229,6 +295,36 @@
 			this.LoadAdjectiveTextBox.Size = new System.Drawing.Size(100, 20);
 			this.LoadAdjectiveTextBox.TabIndex = 0;
 			this.LoadAdjectiveTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// SaveResultTextBox
+			// 
+			this.SaveResultTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.SaveResultTextBox.Location = new System.Drawing.Point(6, 103);
+			this.SaveResultTextBox.Name = "SaveResultTextBox";
+			this.SaveResultTextBox.ReadOnly = true;
+			this.SaveResultTextBox.Size = new System.Drawing.Size(169, 20);
+			this.SaveResultTextBox.TabIndex = 0;
+			this.SaveResultTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// LoadAdverbsTextBox
+			// 
+			this.LoadAdverbsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.LoadAdverbsTextBox.Location = new System.Drawing.Point(489, 123);
+			this.LoadAdverbsTextBox.Name = "LoadAdverbsTextBox";
+			this.LoadAdverbsTextBox.ReadOnly = true;
+			this.LoadAdverbsTextBox.Size = new System.Drawing.Size(100, 20);
+			this.LoadAdverbsTextBox.TabIndex = 0;
+			this.LoadAdverbsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// LoadVerbsLabel
+			// 
+			this.LoadVerbsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.LoadVerbsLabel.AutoSize = true;
+			this.LoadVerbsLabel.Location = new System.Drawing.Point(424, 100);
+			this.LoadVerbsLabel.Name = "LoadVerbsLabel";
+			this.LoadVerbsLabel.Size = new System.Drawing.Size(37, 13);
+			this.LoadVerbsLabel.TabIndex = 1;
+			this.LoadVerbsLabel.Text = "Verbs:";
 			// 
 			// LoadNounsTextBox
 			// 
@@ -250,36 +346,6 @@
 			this.LoadVerbsTextBox.TabIndex = 0;
 			this.LoadVerbsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
-			// LoadAdverbsTextBox
-			// 
-			this.LoadAdverbsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.LoadAdverbsTextBox.Location = new System.Drawing.Point(489, 123);
-			this.LoadAdverbsTextBox.Name = "LoadAdverbsTextBox";
-			this.LoadAdverbsTextBox.ReadOnly = true;
-			this.LoadAdverbsTextBox.Size = new System.Drawing.Size(100, 20);
-			this.LoadAdverbsTextBox.TabIndex = 0;
-			this.LoadAdverbsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// LoadFrequencyTextBox
-			// 
-			this.LoadFrequencyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.LoadFrequencyTextBox.Location = new System.Drawing.Point(489, 19);
-			this.LoadFrequencyTextBox.Name = "LoadFrequencyTextBox";
-			this.LoadFrequencyTextBox.ReadOnly = true;
-			this.LoadFrequencyTextBox.Size = new System.Drawing.Size(100, 20);
-			this.LoadFrequencyTextBox.TabIndex = 0;
-			this.LoadFrequencyTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// LoadAdjectivesLabel
-			// 
-			this.LoadAdjectivesLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.LoadAdjectivesLabel.AutoSize = true;
-			this.LoadAdjectivesLabel.Location = new System.Drawing.Point(424, 48);
-			this.LoadAdjectivesLabel.Name = "LoadAdjectivesLabel";
-			this.LoadAdjectivesLabel.Size = new System.Drawing.Size(59, 13);
-			this.LoadAdjectivesLabel.TabIndex = 1;
-			this.LoadAdjectivesLabel.Text = "Adjectives:";
-			// 
 			// LoadNounsLabel
 			// 
 			this.LoadNounsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -289,82 +355,6 @@
 			this.LoadNounsLabel.Size = new System.Drawing.Size(41, 13);
 			this.LoadNounsLabel.TabIndex = 1;
 			this.LoadNounsLabel.Text = "Nouns:";
-			// 
-			// LoadVerbsLabel
-			// 
-			this.LoadVerbsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.LoadVerbsLabel.AutoSize = true;
-			this.LoadVerbsLabel.Location = new System.Drawing.Point(424, 100);
-			this.LoadVerbsLabel.Name = "LoadVerbsLabel";
-			this.LoadVerbsLabel.Size = new System.Drawing.Size(37, 13);
-			this.LoadVerbsLabel.TabIndex = 1;
-			this.LoadVerbsLabel.Text = "Verbs:";
-			// 
-			// LoadAdverbsLabel
-			// 
-			this.LoadAdverbsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.LoadAdverbsLabel.AutoSize = true;
-			this.LoadAdverbsLabel.Location = new System.Drawing.Point(424, 126);
-			this.LoadAdverbsLabel.Name = "LoadAdverbsLabel";
-			this.LoadAdverbsLabel.Size = new System.Drawing.Size(49, 13);
-			this.LoadAdverbsLabel.TabIndex = 1;
-			this.LoadAdverbsLabel.Text = "Adverbs:";
-			// 
-			// LoadFrequencyLabel
-			// 
-			this.LoadFrequencyLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.LoadFrequencyLabel.AutoSize = true;
-			this.LoadFrequencyLabel.Location = new System.Drawing.Point(424, 22);
-			this.LoadFrequencyLabel.Name = "LoadFrequencyLabel";
-			this.LoadFrequencyLabel.Size = new System.Drawing.Size(60, 13);
-			this.LoadFrequencyLabel.TabIndex = 1;
-			this.LoadFrequencyLabel.Text = "Frequency:";
-			// 
-			// LimitToTopNumericUpDown
-			// 
-			this.LimitToTopNumericUpDown.Location = new System.Drawing.Point(6, 38);
-			this.LimitToTopNumericUpDown.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-			this.LimitToTopNumericUpDown.Name = "LimitToTopNumericUpDown";
-			this.LimitToTopNumericUpDown.Size = new System.Drawing.Size(88, 20);
-			this.LimitToTopNumericUpDown.TabIndex = 4;
-			this.LimitToTopNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.LimitToTopNumericUpDown.Value = new decimal(new int[] {
-            50000,
-            0,
-            0,
-            0});
-			// 
-			// LimitToTopLabel
-			// 
-			this.LimitToTopLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.LimitToTopLabel.AutoSize = true;
-			this.LimitToTopLabel.Location = new System.Drawing.Point(6, 22);
-			this.LimitToTopLabel.Name = "LimitToTopLabel";
-			this.LimitToTopLabel.Size = new System.Drawing.Size(69, 13);
-			this.LimitToTopLabel.TabIndex = 1;
-			this.LimitToTopLabel.Text = "Limit To Top:";
-			// 
-			// SaveDataButton
-			// 
-			this.SaveDataButton.Location = new System.Drawing.Point(181, 75);
-			this.SaveDataButton.Name = "SaveDataButton";
-			this.SaveDataButton.Size = new System.Drawing.Size(75, 23);
-			this.SaveDataButton.TabIndex = 3;
-			this.SaveDataButton.Text = "Save Data";
-			this.SaveDataButton.UseVisualStyleBackColor = true;
-			this.SaveDataButton.Click += new System.EventHandler(this.SaveDataButton_Click);
-			// 
-			// SaveFolderTextBox
-			// 
-			this.SaveFolderTextBox.Location = new System.Drawing.Point(6, 77);
-			this.SaveFolderTextBox.Name = "SaveFolderTextBox";
-			this.SaveFolderTextBox.Size = new System.Drawing.Size(169, 20);
-			this.SaveFolderTextBox.TabIndex = 0;
-			this.SaveFolderTextBox.Text = "..\\..\\Resources";
 			// 
 			// SaveDataFolderLabel
 			// 
@@ -376,15 +366,25 @@
 			this.SaveDataFolderLabel.TabIndex = 1;
 			this.SaveDataFolderLabel.Text = "Limit To Top:";
 			// 
-			// SaveResultTextBox
+			// LimitToTopLabel
 			// 
-			this.SaveResultTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.SaveResultTextBox.Location = new System.Drawing.Point(6, 103);
-			this.SaveResultTextBox.Name = "SaveResultTextBox";
-			this.SaveResultTextBox.ReadOnly = true;
-			this.SaveResultTextBox.Size = new System.Drawing.Size(169, 20);
-			this.SaveResultTextBox.TabIndex = 0;
-			this.SaveResultTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.LimitToTopLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.LimitToTopLabel.AutoSize = true;
+			this.LimitToTopLabel.Location = new System.Drawing.Point(6, 22);
+			this.LimitToTopLabel.Name = "LimitToTopLabel";
+			this.LimitToTopLabel.Size = new System.Drawing.Size(69, 13);
+			this.LimitToTopLabel.TabIndex = 1;
+			this.LimitToTopLabel.Text = "Limit To Top:";
+			// 
+			// LoadAdjectivesLabel
+			// 
+			this.LoadAdjectivesLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.LoadAdjectivesLabel.AutoSize = true;
+			this.LoadAdjectivesLabel.Location = new System.Drawing.Point(424, 48);
+			this.LoadAdjectivesLabel.Name = "LoadAdjectivesLabel";
+			this.LoadAdjectivesLabel.Size = new System.Drawing.Size(59, 13);
+			this.LoadAdjectivesLabel.TabIndex = 1;
+			this.LoadAdjectivesLabel.Text = "Adjectives:";
 			// 
 			// groupBox1
 			// 
