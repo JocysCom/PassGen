@@ -46,13 +46,15 @@
 			this.ImageList48 = new System.Windows.Forms.ImageList(this.components);
 			this.MainTabControl = new System.Windows.Forms.TabControl();
 			this.GeneratorTabPage = new System.Windows.Forms.TabPage();
-			this.GeneratorPanel = new JocysCom.Password.Generator.Controls.GeneratorControl();
 			this.ScriptTabPage = new System.Windows.Forms.TabPage();
-			this.ScriptPanel = new JocysCom.ClassLibrary.Controls.DynamicCompile.DcControl();
 			this.OptionsTabPage = new System.Windows.Forms.TabPage();
-			this.OptionsPanel = new JocysCom.Password.Generator.Controls.OptionsControl();
 			this.AboutTabPage = new System.Windows.Forms.TabPage();
+			this.ResourcesTabPage = new System.Windows.Forms.TabPage();
+			this.GeneratorPanel = new JocysCom.Password.Generator.Controls.GeneratorControl();
+			this.ScriptPanel = new JocysCom.ClassLibrary.Controls.DynamicCompile.DcControl();
+			this.OptionsPanel = new JocysCom.Password.Generator.Controls.OptionsControl();
 			this.AboutPanel = new JocysCom.Password.Generator.Controls.AboutControl();
+			this.resorcesControl1 = new JocysCom.Password.Generator.Controls.ResorcesControl();
 			this.TopPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.HeaderPictureBox)).BeginInit();
@@ -62,6 +64,7 @@
 			this.ScriptTabPage.SuspendLayout();
 			this.OptionsTabPage.SuspendLayout();
 			this.AboutTabPage.SuspendLayout();
+			this.ResourcesTabPage.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// ImageList16
@@ -289,6 +292,7 @@
 			this.MainTabControl.Controls.Add(this.ScriptTabPage);
 			this.MainTabControl.Controls.Add(this.OptionsTabPage);
 			this.MainTabControl.Controls.Add(this.AboutTabPage);
+			this.MainTabControl.Controls.Add(this.ResourcesTabPage);
 			this.MainTabControl.ImageList = this.ImageList16;
 			this.MainTabControl.Location = new System.Drawing.Point(6, 70);
 			this.MainTabControl.Name = "MainTabControl";
@@ -308,15 +312,6 @@
 			this.GeneratorTabPage.TabIndex = 0;
 			this.GeneratorTabPage.Text = "Generator";
 			// 
-			// GeneratorPanel
-			// 
-			this.GeneratorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.GeneratorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.GeneratorPanel.Location = new System.Drawing.Point(3, 3);
-			this.GeneratorPanel.Name = "GeneratorPanel";
-			this.GeneratorPanel.Size = new System.Drawing.Size(668, 557);
-			this.GeneratorPanel.TabIndex = 0;
-			// 
 			// ScriptTabPage
 			// 
 			this.ScriptTabPage.BackColor = System.Drawing.SystemColors.Control;
@@ -328,14 +323,6 @@
 			this.ScriptTabPage.Size = new System.Drawing.Size(674, 563);
 			this.ScriptTabPage.TabIndex = 3;
 			this.ScriptTabPage.Text = "Script";
-			// 
-			// ScriptPanel
-			// 
-			this.ScriptPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ScriptPanel.Location = new System.Drawing.Point(3, 3);
-			this.ScriptPanel.Name = "ScriptPanel";
-			this.ScriptPanel.Size = new System.Drawing.Size(668, 557);
-			this.ScriptPanel.TabIndex = 0;
 			// 
 			// OptionsTabPage
 			// 
@@ -349,14 +336,6 @@
 			this.OptionsTabPage.TabIndex = 1;
 			this.OptionsTabPage.Text = "Options";
 			// 
-			// OptionsPanel
-			// 
-			this.OptionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.OptionsPanel.Location = new System.Drawing.Point(3, 3);
-			this.OptionsPanel.Name = "OptionsPanel";
-			this.OptionsPanel.Size = new System.Drawing.Size(668, 557);
-			this.OptionsPanel.TabIndex = 0;
-			// 
 			// AboutTabPage
 			// 
 			this.AboutTabPage.BackColor = System.Drawing.SystemColors.Control;
@@ -368,6 +347,41 @@
 			this.AboutTabPage.TabIndex = 2;
 			this.AboutTabPage.Text = "About";
 			// 
+			// ResourcesTabPage
+			// 
+			this.ResourcesTabPage.BackColor = System.Drawing.SystemColors.Control;
+			this.ResourcesTabPage.Controls.Add(this.resorcesControl1);
+			this.ResourcesTabPage.Location = new System.Drawing.Point(4, 23);
+			this.ResourcesTabPage.Name = "ResourcesTabPage";
+			this.ResourcesTabPage.Size = new System.Drawing.Size(674, 563);
+			this.ResourcesTabPage.TabIndex = 4;
+			this.ResourcesTabPage.Text = "Resources";
+			// 
+			// GeneratorPanel
+			// 
+			this.GeneratorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.GeneratorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.GeneratorPanel.Location = new System.Drawing.Point(3, 3);
+			this.GeneratorPanel.Name = "GeneratorPanel";
+			this.GeneratorPanel.Size = new System.Drawing.Size(668, 557);
+			this.GeneratorPanel.TabIndex = 0;
+			// 
+			// ScriptPanel
+			// 
+			this.ScriptPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ScriptPanel.Location = new System.Drawing.Point(3, 3);
+			this.ScriptPanel.Name = "ScriptPanel";
+			this.ScriptPanel.Size = new System.Drawing.Size(668, 557);
+			this.ScriptPanel.TabIndex = 0;
+			// 
+			// OptionsPanel
+			// 
+			this.OptionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.OptionsPanel.Location = new System.Drawing.Point(3, 3);
+			this.OptionsPanel.Name = "OptionsPanel";
+			this.OptionsPanel.Size = new System.Drawing.Size(668, 557);
+			this.OptionsPanel.TabIndex = 0;
+			// 
 			// AboutPanel
 			// 
 			this.AboutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -375,6 +389,14 @@
 			this.AboutPanel.Name = "AboutPanel";
 			this.AboutPanel.Size = new System.Drawing.Size(674, 563);
 			this.AboutPanel.TabIndex = 0;
+			// 
+			// resorcesControl1
+			// 
+			this.resorcesControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.resorcesControl1.Location = new System.Drawing.Point(0, 0);
+			this.resorcesControl1.Name = "resorcesControl1";
+			this.resorcesControl1.Size = new System.Drawing.Size(674, 563);
+			this.resorcesControl1.TabIndex = 0;
 			// 
 			// MainForm
 			// 
@@ -398,6 +420,7 @@
 			this.ScriptTabPage.ResumeLayout(false);
 			this.OptionsTabPage.ResumeLayout(false);
 			this.AboutTabPage.ResumeLayout(false);
+			this.ResourcesTabPage.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -440,6 +463,8 @@
 		public System.Windows.Forms.ToolStripMenuItem Preset1ToolStripMenuItem;
 		public System.Windows.Forms.ToolStripMenuItem Preset2ToolStripMenuItem;
 		public System.Windows.Forms.ToolStripMenuItem Preset3ToolStripMenuItem;
+		private System.Windows.Forms.TabPage ResourcesTabPage;
+		private Controls.ResorcesControl resorcesControl1;
 	}
 }
 
