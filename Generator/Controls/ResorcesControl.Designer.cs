@@ -233,7 +233,7 @@
 			this.LimitToTopNumericUpDown.TabIndex = 4;
 			this.LimitToTopNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.LimitToTopNumericUpDown.Value = new decimal(new int[] {
-            30000,
+            20000,
             0,
             0,
             0});
