@@ -39,5 +39,6 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		WEPWEPHEX64bit,
 		ScriptHMACMD5,
 		ScriptSimple,
+		ScriptWords,
 	}
 }

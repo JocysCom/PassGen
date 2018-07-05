@@ -5,12 +5,15 @@ using System.Text;
 using System.Reflection;
 using JocysCom.ClassLibrary.Runtime;
 using System.Windows.Forms;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace JocysCom.Password.Generator
 {
 	public class PassGenHelper
 	{
-		
+
 		// IsMultiValue (values are stored in objects list.
 		// Updated = non light blue background (if column was changed)
 		// SameValue
@@ -85,6 +88,102 @@ namespace JocysCom.Password.Generator
 				control.SelectedIndex = -1;
 			}
 		}
+
+		#region Resources
+
+		public const string AdjectiveResource = "Adjectives.csv";
+		public const string NounsResource = "Nouns.csv";
+		public const string VerbsResource = "Verbs.csv";
+		public const string AdverbsResource = "Adverbs.csv";
+
+		public static Dictionary<string, int> Adjectives
+		{
+			get
+			{
+				if (_Adjectives == null)
+					_Adjectives = GetList(AdjectiveResource + ".gz");
+				return _Adjectives;
+			}
+		}
+		static Dictionary<string, int> _Adjectives;
+
+		public static Dictionary<string, int> Nouns
+		{
+			get
+			{
+				if (_Nouns == null)
+					_Nouns = GetList(NounsResource + ".gz");
+				return _Nouns;
+			}
+		}
+		static Dictionary<string, int> _Nouns;
+
+		public static Dictionary<string, int> Verbs
+		{
+			get
+			{
+				if (_Verbs == null)
+					_Verbs = GetList(VerbsResource + ".gz");
+				return _Verbs;
+			}
+		}
+		static Dictionary<string, int> _Verbs;
+
+		public static Dictionary<string, int> Adverbs
+		{
+			get
+			{
+				if (_Adverbs == null)
+					_Adverbs = GetList(AdverbsResource + ".gz");
+				return _Adverbs;
+			}
+		}
+		static Dictionary<string, int> _Adverbs;
+
+		static Random rnd = new Random();
+		static public TextInfo Culture = new CultureInfo("en-US", false).TextInfo;
+
+		static Dictionary<string, int> GetList(string name)
+		{
+
+			var list = new Dictionary<string, int>();
+			var compressedBytes = JocysCom.ClassLibrary.Helper.FindResource<byte[]>(name);
+			var bytes = JocysCom.ClassLibrary.Configuration.SettingsHelper.Decompress(compressedBytes);
+			var content = System.Text.Encoding.UTF8.GetString(bytes);
+			var rx = new Regex("^(?<word>[a-z]+),(?<freq>[0-9]+)");
+			using (var sr = new StringReader(content))
+			{
+				string line;
+				while ((line = sr.ReadLine()) != null)
+				{
+					var match = rx.Match(line);
+					if (!match.Success)
+						continue;
+					var word = match.Groups["word"].Value;
+					var freq = int.Parse(match.Groups["freq"].Value);
+					list.Add(word, freq);
+				}
+			}
+			return list;
+		}
+
+		public static string GetRandom(Dictionary<string, int> list)
+		{
+			// Get random char.
+			var index = rnd.Next(list.Count);
+			var key = list.ElementAt(index).Key;
+			key = Culture.ToTitleCase(key);
+			//key = key.Replace("O", "0");
+			//key = key.Replace("o", "0");
+			//key = key.Replace("S", "5");
+			//key = key.Replace("s", "5");
+			//key = key.Replace("E", "3");
+			//key = key.Replace("e", "3");
+			return key;
+		}
+
+		#endregion
+
 
 	}
 }

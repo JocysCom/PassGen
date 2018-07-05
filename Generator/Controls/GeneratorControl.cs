@@ -258,6 +258,8 @@ namespace JocysCom.Password.Generator.Controls
 			{
 				// Move selection on calls grip up or down.
 				var selectedRows = CallsDataGridView.SelectedRows.Cast<DataGridViewRow>().OrderBy(x => x.Index).ToArray();
+				if (selectedRows.Count() == 0)
+					return;
 				var step = e.KeyCode == Keys.Up ? -1 : 1;
 				var selectedRow = e.KeyCode == Keys.Up ? selectedRows.First() : selectedRows.Last();
 				var nextRow = GetNextPrev(CallsDataGridView.Rows.Cast<DataGridViewRow>().ToList(), selectedRow, step);

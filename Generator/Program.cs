@@ -29,8 +29,8 @@ namespace JocysCom.Password.Generator
 			// Call these before everything.
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			mainForm = new MainForm();
 			CheckSettings();
+			mainForm = new MainForm();
 			// Requires System.Configuration.Installl reference.
 			InstallContext ic = new InstallContext(null, args);
 			//Settings.Default.Upgrade();

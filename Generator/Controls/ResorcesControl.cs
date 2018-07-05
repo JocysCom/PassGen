@@ -97,10 +97,10 @@ namespace JocysCom.Password.Generator.Controls
 		private void SaveDataButton_Click(object sender, EventArgs e)
 		{
 			SaveResultTextBox.Text = "";
-			SaveWords(Adjectives, "Adjectives.csv");
-			SaveWords(Nouns, "Nouns.csv");
-			SaveWords(Verbs, "Verbs.csv");
-			SaveWords(Adverbs, "Adverbs.csv");
+			SaveWords(Adjectives, PassGenHelper.AdjectiveResource);
+			SaveWords(Nouns, PassGenHelper.NounsResource);
+			SaveWords(Verbs, PassGenHelper.VerbsResource);
+			SaveWords(Adverbs, PassGenHelper.AdverbsResource);
 			SaveResultTextBox.Text = "Done";
 		}
 
@@ -117,31 +117,12 @@ namespace JocysCom.Password.Generator.Controls
 
 		private void GenerateButton_Click(object sender, EventArgs e)
 		{
-			var adjective = GetRandom(Adjectives);
-			var noun = GetRandom(Nouns);
-			var verb = GetRandom(Verbs);
-			var adverb = GetRandom(Adverbs);
+			var adjective = PassGenHelper.GetRandom(Adjectives);
+			var noun = PassGenHelper.GetRandom(Nouns);
+			var verb = PassGenHelper.GetRandom(Verbs);
+			var adverb = PassGenHelper.GetRandom(Adverbs);
 			PasswordTextBox.Text = string.Format("{0}{1}{2}{3}", adjective, noun, verb, adverb);
 		}
-
-		Random rnd = new Random();
-		public TextInfo Culture = new CultureInfo("en-US", false).TextInfo;
-
-		string GetRandom(Dictionary<string, int> list)
-		{
-			// Get random char.
-			var index = rnd.Next(list.Count);
-			var key = list.ElementAt(index).Key;
-			key = Culture.ToTitleCase(key);
-			//key = key.Replace("O", "0");
-			//key = key.Replace("o", "0");
-			//key = key.Replace("S", "5");
-			//key = key.Replace("s", "5");
-			//key = key.Replace("E", "3");
-			//key = key.Replace("e", "3");
-			return key;
-		}
-
 
 	}
 }
