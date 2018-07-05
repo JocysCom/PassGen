@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+using JocysCom.ClassLibrary.Security.Password;
 
 namespace JocysCom.Password.Generator
 {
@@ -167,23 +168,22 @@ namespace JocysCom.Password.Generator
 			return list;
 		}
 
-		public static string GetRandom(Dictionary<string, int> list)
+		public static string GetRandom(Dictionary<string, int> list, JocysCom.ClassLibrary.Security.Password.Generator generator = null)
 		{
 			// Get random char.
 			var index = rnd.Next(list.Count);
 			var key = list.ElementAt(index).Key;
 			key = Culture.ToTitleCase(key);
-			//key = key.Replace("O", "0");
-			//key = key.Replace("o", "0");
-			//key = key.Replace("S", "5");
-			//key = key.Replace("s", "5");
-			//key = key.Replace("E", "3");
-			//key = key.Replace("e", "3");
 			return key;
 		}
 
+		public static string Replace(string key, int times, string input, string replacement)
+		{
+			var regex = new Regex(input);
+			var newText = regex.Replace(key, replacement, times);
+			return newText;
+		}
 		#endregion
-
 
 	}
 }
