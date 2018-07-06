@@ -48,7 +48,7 @@
       <Value Profile="(Default)">Default: Easy To Remember</Value>
     </Setting>
     <Setting Name="FavPreset2ComboBox" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Default: Good</Value>
+      <Value Profile="(Default)">Default: Crazy</Value>
     </Setting>
     <Setting Name="FavPreset3ComboBox" Type="System.String" Scope="User">
       <Value Profile="(Default)">Script: Words</Value>

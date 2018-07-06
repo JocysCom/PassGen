@@ -36,18 +36,18 @@ GOTO:EOF
 :: List   symbolic links: dir /A:L
 :: Remote symbolic links: rmdir Skype
 SET upr=c:\Projects\Jocys.com\Class Library
-IF EXIST "D:\Projects\Jocys.com\Class Library" SET SET upr=D:\Projects\Jocys.com\Class Library
+IF NOT EXIST "%upr%" SET upr=D:\Projects\Jocys.com\Class Library
 CALL:MKJ ClassTools
+CALL:MKJ Collections
+CALL:MKJ Common
 CALL:MKJ Configuration
 CALL:MKJ Controls
-CALL:MKJ Common
-CALL:MKJ Text
-CALL:MKJ Security
-CALL:MKJ Runtime
-CALL:MKJ Processes
 CALL:MKJ Mail
+CALL:MKJ Processes
+CALL:MKJ Runtime
+CALL:MKJ Security
+CALL:MKJ Text
 CALL:MKJ Win32
-CALL:MKJ Collections
 pause
 GOTO:EOF
 
@@ -72,7 +72,7 @@ IF NOT EXIST "%~pd1" mkdir "%~pd1"
 IF EXIST "%~1" (
   echo Already exists: %~1
 ) ELSE (
-  echo Map: %~1
+  echo Map: %~1 - %upr%\%~1
   mklink /J "%~1" "%upr%\%~1" > nul
 )
 GOTO:EOF

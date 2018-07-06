@@ -205,7 +205,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default: Good")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default: Crazy")]
         public string FavPreset2ComboBox {
             get {
                 return ((string)(this["FavPreset2ComboBox"]));

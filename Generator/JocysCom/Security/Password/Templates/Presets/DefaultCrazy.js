@@ -1,7 +1,7 @@
 ﻿{
 	"PresetName": "Default: Crazy",
-	"RatioNumbers": 3,
-	"RatioLowercase": 3,
+	"RatioNumbers": 2,
+	"RatioLowercase": 4,
 	"RatioUppercase": 3,
 	"RatioSymbols": 1,
 	"UseNumbers": true,
