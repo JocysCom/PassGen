@@ -10,12 +10,14 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 	{
 		public Preset()
 		{
+			PresetTemplate = Templates.PresetName.Default;
 			Load(Templates.PresetName.Default);
 			SetDefaultChars();
 		}
 
 		public Preset(PresetName name)
 		{
+			PresetTemplate = name;
 			Load(Templates.PresetName.Default);
 			SetDefaultChars();
 			Load(name);
@@ -23,6 +25,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 
 		public Preset(string name)
 		{
+			Enum.TryParse(name, out PresetTemplate);
 			Load(Templates.PresetName.Default);
 			SetDefaultChars();
 			Load(name);
@@ -57,6 +60,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		}
 		private char[] _Chars;
 
+		public PresetName PresetTemplate;
 		public string PresetName;
 		public string PresetDescription;
 		public string PresetRemarks;

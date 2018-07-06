@@ -1,12 +1,10 @@
 ﻿using JocysCom.ClassLibrary.Security.Password.Templates;
-using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using JocysCom.Password.Generator.Properties;
-using System.Configuration;
 
 namespace JocysCom.Password.Generator.Controls
 {

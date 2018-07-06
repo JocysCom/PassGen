@@ -1,5 +1,6 @@
 ﻿v2.2.14.0 (2018-07-06)
 - Fix: Minimize to tray issues.
+- Fix: Password generation from tray.
 - New: Script: Words preset, generate passwords from english words.
 - Update: Simplify configuration.
 - Update: Shared classed updated.

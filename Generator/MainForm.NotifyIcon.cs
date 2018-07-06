@@ -75,16 +75,27 @@ namespace JocysCom.Password.Generator
 			bool isNumber = int.TryParse(item.Text, out count);
 			if (isNumber && count > 0)
 			{
-				var passGen = new JocysCom.ClassLibrary.Security.Password.Generator();
 				ToolStripItem owner = item.OwnerItem;
-				while (!owner.Name.StartsWith("Preset")) owner = owner.OwnerItem;
-				switch (owner.Text)
+				while (!owner.Name.StartsWith("Preset"))
+					owner = owner.OwnerItem;
+				string favPresetName = null;
+				if (owner.Text == Properties.Settings.Default.FavPreset1TextBox)
 				{
-					case "Easy": passGen.Preset = new Preset(PresetName.DefaultEasyToRemember); break;
-					case "Hard": passGen.Preset = new Preset(PresetName.DefaultGood); break;
-					case "Guid": passGen.Preset = new Preset(PresetName.GuidDefault); break;
-					default: passGen.Preset = new Preset(PresetName.DefaultEasyToRemember); break;
+					favPresetName = Properties.Settings.Default.FavPreset1ComboBox;
 				}
+				else if (owner.Text == Properties.Settings.Default.FavPreset2TextBox)
+				{
+					favPresetName = Properties.Settings.Default.FavPreset2ComboBox;
+				}
+				else if (owner.Text == Properties.Settings.Default.FavPreset3TextBox)
+				{
+					favPresetName = Properties.Settings.Default.FavPreset3ComboBox;
+				}
+				var preset = GeneratorPanel.Presets.FirstOrDefault(x => x.PresetName == favPresetName);
+				var passGen = new JocysCom.ClassLibrary.Security.Password.Generator();
+				passGen.Preset = (preset == null)
+					? new Preset(PresetName.DefaultEasyToRemember)
+					: new Preset(preset.PresetTemplate);
 				string separator = Regex.Unescape(GeneratorPanel.ListSeparatorComboBox.Text);
 				string list = passGen.NewPasswordList(count, separator);
 				if (list.Length > 0)
