@@ -1,5 +1,6 @@
 @ECHO OFF
 CALL:SIG "..\bin\Debug\passgen.exe"
+CALL:SIG "..\bin\Release\passgen.exe"
 pause
 
 GOTO:EOF
