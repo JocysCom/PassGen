@@ -1,2 +1,8 @@
-﻿v2.0.6.0 (2015-10-07)
+﻿v2.2.14.0 (2018-07-06)
+- Fix: Minimize to tray issues.
+- New: Script: Words preset, generate passwords from english words.
+- Update: Simplify configuration.
+- Update: Shared classed updated.
+
+v2.0.6.0 (2015-10-07)
 - New: Open source release.
