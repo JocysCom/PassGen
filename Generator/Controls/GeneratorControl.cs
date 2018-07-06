@@ -671,7 +671,7 @@ namespace JocysCom.Password.Generator.Controls
 			mainForm.LeftToolStripStatusLabel.Text = string.Format("Get List: {0} passwords generated. List copied to clipboard.", count);
 			if (Settings.Default.OpenPasswordListFileAfterSave)
 			{
-				string tempPath = System.IO.Path.Combine(Application.LocalUserAppDataPath, "Temp");
+				string tempPath = System.IO.Path.Combine(PassGenHelper.AppDataPath, "Temp");
 				DirectoryInfo di = new DirectoryInfo(tempPath);
 				if (!di.Exists) di.Create();
 				tempPath = System.IO.Path.Combine(tempPath, "list.txt");
@@ -762,8 +762,7 @@ namespace JocysCom.Password.Generator.Controls
 
 		public string GetPresetFileName(Preset preset)
 		{
-			string path = Application.CommonAppDataPath;
-			path = Path.Combine(path, "Presets");
+			var path = Path.Combine(PassGenHelper.AppDataPath, "Presets");
 			DirectoryInfo di = new DirectoryInfo(path);
 			return Path.Combine(path, preset.GetFileName());
 		}

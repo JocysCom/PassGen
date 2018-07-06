@@ -12,7 +12,7 @@ namespace JocysCom.Password.Generator.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -217,7 +217,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Hex: GUID - Default")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Script: Words")]
         public string FavPreset3ComboBox {
             get {
                 return ((string)(this["FavPreset3ComboBox"]));
@@ -253,7 +253,7 @@ namespace JocysCom.Password.Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Guid")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Words")]
         public string FavPreset3TextBox {
             get {
                 return ((string)(this["FavPreset3TextBox"]));

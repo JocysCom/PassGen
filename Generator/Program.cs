@@ -12,6 +12,18 @@ namespace JocysCom.Password.Generator
 	static class Program
 	{
 
+		public static bool IsDebug
+		{
+			get
+			{
+#if DEBUG
+				return true;
+#else
+				return false;
+#endif
+			}
+		}
+
 		public static MainForm mainForm;
 
 		public const string arg_WindowState = "WindowState";

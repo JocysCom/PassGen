@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Globalization;
 
 namespace JocysCom.Password.Generator.Controls
 {
@@ -30,26 +24,10 @@ namespace JocysCom.Password.Generator.Controls
 		{
 			// Load frequency;
 			LoadFrequency(FrequencyTextBox.Text, ref Frequency, LoadFrequencyTextBox);
-			LoadWords(AdjectivesTextBox.Text, ref Adjectives, LoadAdjectiveTextBox, null);
-			LoadWords(NounsTextBox.Text, ref Nouns, LoadNounsTextBox, null);
-			LoadWords(VerbsTextBox.Text, ref Verbs, LoadVerbsTextBox, Nouns);
-			LoadWords(AdverbsTextBox.Text, ref Adverbs, LoadAdverbsTextBox, Nouns);
-			//bool allow = true;
-			//List<Task> TaskList = new List<Task>();
-			//foreach (var counter in _Counters)
-			//{
-			//	if (!counter.Enabled)
-			//	{
-			//		continue;
-			//	}
-			//	var LastTask = new Task(delegate ()
-			//	{
-			//		counter.Check(true);
-			//	});
-			//	LastTask.Start();
-			//	TaskList.Add(LastTask);
-			//}
-			//Task.WaitAll(TaskList.ToArray());
+			LoadWords(NounsTextBox.Text, ref Nouns, LoadNounsTextBox);
+			LoadWords(AdjectivesTextBox.Text, ref Adjectives, LoadAdjectiveTextBox, Nouns);
+			LoadWords(VerbsTextBox.Text, ref Verbs, LoadVerbsTextBox, Nouns, Adjectives);
+			LoadWords(AdverbsTextBox.Text, ref Adverbs, LoadAdverbsTextBox, Nouns, Adjectives, Verbs);
 		}
 
 		void LoadFrequency(string source, ref Dictionary<string, int> list, TextBox result)
@@ -65,6 +43,12 @@ namespace JocysCom.Password.Generator.Controls
 					continue;
 				var word = match.Groups["word"].Value;
 				var freq = int.Parse(match.Groups["freq"].Value);
+				// Do not add if word is too small.
+				if (word.Length < WordSizeMinNumericUpDown.Value)
+					continue;
+				// Do not add if word is too large.
+				if (word.Length > WordSizeMaxNumericUpDown.Value)
+					continue;
 				count++;
 				list.Add(word, freq);
 				if (count >= LimitToTopNumericUpDown.Value)
@@ -73,7 +57,7 @@ namespace JocysCom.Password.Generator.Controls
 			result.Text = string.Format("{0}", list.Count);
 		}
 
-		void LoadWords(string source, ref Dictionary<string, int> list, TextBox result, Dictionary<string, int> exclude)
+		void LoadWords(string source, ref Dictionary<string, int> list, TextBox result, params Dictionary<string, int>[] excludes)
 		{
 			list = new Dictionary<string, int>();
 			var rx = new Regex("^(?<word>[a-z]+)\\s+");
@@ -87,7 +71,7 @@ namespace JocysCom.Password.Generator.Controls
 				var word = match.Groups["word"].Value;
 				if (!Frequency.ContainsKey(word))
 					continue;
-				if (exclude != null && exclude.ContainsKey(word))
+				if (excludes.Any(x => x.ContainsKey(word)))
 					continue;
 				var freq = Frequency[word];
 				count++;

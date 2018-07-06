@@ -8,12 +8,74 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
-using JocysCom.ClassLibrary.Security.Password;
 
 namespace JocysCom.Password.Generator
 {
 	public class PassGenHelper
 	{
+
+		public static string AppDataPath
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(_AppDataPath))
+				{
+					// Apply default path. Parent - exclude version.
+					_AppDataPath = new DirectoryInfo(Application.LocalUserAppDataPath).Parent.FullName;
+					var pdi = new DirectoryInfo("PassGen");
+					// If local configuration folder found then use it.
+					if (pdi.Exists)
+					{
+						_AppDataPath = pdi.FullName;
+					}
+					else
+					{
+						var args = Environment.GetCommandLineArgs();
+						// Requires System.Configuration.Installl reference.
+						var ic = new System.Configuration.Install.InstallContext(null, args);
+						if (ic.Parameters.ContainsKey("Profile"))
+						{
+							var name = ic.Parameters["Profile"].Trim(' ', '"', '\'');
+							if (string.IsNullOrEmpty(name))
+							{
+								// Name is invalid.
+							}
+							else
+							{
+								var path = Environment.ExpandEnvironmentVariables(name);
+								// Get invalid path and file name chars.
+								var ipc = Path.GetInvalidPathChars();
+								var ifc = Path.GetInvalidFileNameChars();
+								// If path is valid file name then...
+								if (!name.ToCharArray().Any(x => ifc.Contains(x)))
+								{
+									// Use Profiles sub-folder.
+									_AppDataPath += "\\Profiles\\" + name;
+								}
+								// If name is valid path then...
+								else if (!name.ToCharArray().Any(x => ipc.Contains(x)))
+								{
+									var di = new DirectoryInfo(path);
+									path = di.FullName;
+									var winFolder = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+									// If path is not inside windows folder then...
+									if (!path.StartsWith(winFolder, StringComparison.OrdinalIgnoreCase))
+									{
+										_AppDataPath = path;
+									}
+								}
+							}
+						}
+					}
+				}
+				return _AppDataPath;
+			}
+			set
+			{
+				_AppDataPath = value;
+			}
+		}
+		static string _AppDataPath;
 
 		// IsMultiValue (values are stored in objects list.
 		// Updated = non light blue background (if column was changed)

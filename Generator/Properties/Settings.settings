@@ -51,7 +51,7 @@
       <Value Profile="(Default)">Default: Good</Value>
     </Setting>
     <Setting Name="FavPreset3ComboBox" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Hex: GUID - Default</Value>
+      <Value Profile="(Default)">Script: Words</Value>
     </Setting>
     <Setting Name="FavPreset1TextBox" Type="System.String" Scope="User">
       <Value Profile="(Default)">Easy</Value>
@@ -60,7 +60,7 @@
       <Value Profile="(Default)">Hard</Value>
     </Setting>
     <Setting Name="FavPreset3TextBox" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Guid</Value>
+      <Value Profile="(Default)">Words</Value>
     </Setting>
     <Setting Name="CopyPasswordWhenStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

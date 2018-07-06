@@ -20,22 +20,7 @@ namespace JocysCom.Password.Generator.Controls
 
 		public void Initialize()
 		{
-			LocalUserFolderTextBox.Text = new DirectoryInfo(Application.LocalUserAppDataPath).Parent.FullName;
-			//Configuration config =
-			//ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-			//Console.WriteLine("Local user config path: {0}", config.FilePath); 
-			//%APPDATA%\<AppName>\<AppName><AppConfigName_GUID>\<AssemblyVersion>\user.config
-			// user.config will reside in the location specified by the Application.LocalUserAppDataPath
-			//http://msdn.microsoft.com/en-us/library/8eyb2ct1.aspx
-			//CurrentUserFolderTextBox.Text = config.FilePath;
-			//http://www.blayd.co.uk/article.aspx?pageid=1013
-			// http://www.app-fact.de/uploads/media/System_Configuration_en.pdf
-			AllUsersFolderTextBox.Text = new DirectoryInfo(Application.CommonAppDataPath).Parent.FullName;
-			RoamingUserFolderTextBox.Text = new DirectoryInfo(Application.UserAppDataPath).Parent.FullName;
-			var localSettings = new FileInfo(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
-			LocalUserSettingsTextBox.Text = localSettings.Directory.FullName;
-			var roamingSettings = new FileInfo(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoaming).FilePath);
-			RoamingUserSettingsTextBox.Text = roamingSettings.Directory.FullName;
+			LocalUserFolderTextBox.Text = PassGenHelper.AppDataPath;
 			string[] names = mainForm.GeneratorPanel.Presets.Select(x => x.PresetName).ToArray();
 			PassGenHelper.LoadPresets(FavPreset1ComboBox, names, Settings.Default.FavPreset1ComboBox);
 			PassGenHelper.LoadPresets(FavPreset2ComboBox, names, Settings.Default.FavPreset2ComboBox);
@@ -114,29 +99,9 @@ namespace JocysCom.Password.Generator.Controls
 		{
 		}
 
-		private void AllUsersFolderOpenButton_Click(object sender, EventArgs e)
-		{
-			OpenPath(AllUsersFolderTextBox.Text);
-		}
-
-		private void RoamingUserFolderOpenButton_Click(object sender, EventArgs e)
-		{
-			OpenPath(RoamingUserFolderTextBox.Text);
-		}
-
 		private void LocalUserFolderOpenButton_Click(object sender, EventArgs e)
 		{
 			OpenPath(LocalUserFolderTextBox.Text);
-		}
-
-		private void LocalUserSettingsButton_Click(object sender, EventArgs e)
-		{
-			OpenPath(LocalUserSettingsTextBox.Text);
-		}
-
-		private void RoamingUserSettingsButton_Click(object sender, EventArgs e)
-		{
-			OpenPath(RoamingUserSettingsTextBox.Text);
 		}
 
 		void OpenPath(string path)

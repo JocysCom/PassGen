@@ -60,10 +60,16 @@
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.PasswordTextBox = new System.Windows.Forms.TextBox();
 			this.GenerateButton = new System.Windows.Forms.Button();
+			this.WordSizeMaxLabel = new System.Windows.Forms.Label();
+			this.WordSizeMaxNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.WordSizeMinLabel = new System.Windows.Forms.Label();
+			this.WordSizeMinNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.DataSourceGroupBox.SuspendLayout();
 			this.LoadDataGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.LimitToTopNumericUpDown)).BeginInit();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.WordSizeMaxNumericUpDown)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.WordSizeMinNumericUpDown)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// AdjectivesTextBox
@@ -184,7 +190,7 @@
 			// 
 			// LoadDataButton
 			// 
-			this.LoadDataButton.Location = new System.Drawing.Point(100, 37);
+			this.LoadDataButton.Location = new System.Drawing.Point(181, 69);
 			this.LoadDataButton.Name = "LoadDataButton";
 			this.LoadDataButton.Size = new System.Drawing.Size(75, 23);
 			this.LoadDataButton.TabIndex = 3;
@@ -196,6 +202,8 @@
 			// 
 			this.LoadDataGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.LoadDataGroupBox.Controls.Add(this.WordSizeMinNumericUpDown);
+			this.LoadDataGroupBox.Controls.Add(this.WordSizeMaxNumericUpDown);
 			this.LoadDataGroupBox.Controls.Add(this.LimitToTopNumericUpDown);
 			this.LoadDataGroupBox.Controls.Add(this.LoadFrequencyTextBox);
 			this.LoadDataGroupBox.Controls.Add(this.SaveFolderTextBox);
@@ -209,7 +217,9 @@
 			this.LoadDataGroupBox.Controls.Add(this.LoadVerbsLabel);
 			this.LoadDataGroupBox.Controls.Add(this.LoadNounsTextBox);
 			this.LoadDataGroupBox.Controls.Add(this.LoadVerbsTextBox);
+			this.LoadDataGroupBox.Controls.Add(this.WordSizeMinLabel);
 			this.LoadDataGroupBox.Controls.Add(this.LoadNounsLabel);
+			this.LoadDataGroupBox.Controls.Add(this.WordSizeMaxLabel);
 			this.LoadDataGroupBox.Controls.Add(this.SaveDataFolderLabel);
 			this.LoadDataGroupBox.Controls.Add(this.LimitToTopLabel);
 			this.LoadDataGroupBox.Controls.Add(this.LoadAdjectivesLabel);
@@ -222,7 +232,7 @@
 			// 
 			// LimitToTopNumericUpDown
 			// 
-			this.LimitToTopNumericUpDown.Location = new System.Drawing.Point(6, 38);
+			this.LimitToTopNumericUpDown.Location = new System.Drawing.Point(87, 70);
 			this.LimitToTopNumericUpDown.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -250,7 +260,7 @@
 			// 
 			// SaveFolderTextBox
 			// 
-			this.SaveFolderTextBox.Location = new System.Drawing.Point(6, 77);
+			this.SaveFolderTextBox.Location = new System.Drawing.Point(87, 96);
 			this.SaveFolderTextBox.Name = "SaveFolderTextBox";
 			this.SaveFolderTextBox.Size = new System.Drawing.Size(169, 20);
 			this.SaveFolderTextBox.TabIndex = 0;
@@ -268,7 +278,7 @@
 			// 
 			// SaveDataButton
 			// 
-			this.SaveDataButton.Location = new System.Drawing.Point(181, 75);
+			this.SaveDataButton.Location = new System.Drawing.Point(181, 121);
 			this.SaveDataButton.Name = "SaveDataButton";
 			this.SaveDataButton.Size = new System.Drawing.Size(75, 23);
 			this.SaveDataButton.TabIndex = 3;
@@ -298,8 +308,7 @@
 			// 
 			// SaveResultTextBox
 			// 
-			this.SaveResultTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.SaveResultTextBox.Location = new System.Drawing.Point(6, 103);
+			this.SaveResultTextBox.Location = new System.Drawing.Point(6, 122);
 			this.SaveResultTextBox.Name = "SaveResultTextBox";
 			this.SaveResultTextBox.ReadOnly = true;
 			this.SaveResultTextBox.Size = new System.Drawing.Size(169, 20);
@@ -358,19 +367,17 @@
 			// 
 			// SaveDataFolderLabel
 			// 
-			this.SaveDataFolderLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.SaveDataFolderLabel.AutoSize = true;
-			this.SaveDataFolderLabel.Location = new System.Drawing.Point(6, 61);
+			this.SaveDataFolderLabel.Location = new System.Drawing.Point(6, 99);
 			this.SaveDataFolderLabel.Name = "SaveDataFolderLabel";
-			this.SaveDataFolderLabel.Size = new System.Drawing.Size(69, 13);
+			this.SaveDataFolderLabel.Size = new System.Drawing.Size(67, 13);
 			this.SaveDataFolderLabel.TabIndex = 1;
-			this.SaveDataFolderLabel.Text = "Limit To Top:";
+			this.SaveDataFolderLabel.Text = "Save Folder:";
 			// 
 			// LimitToTopLabel
 			// 
-			this.LimitToTopLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.LimitToTopLabel.AutoSize = true;
-			this.LimitToTopLabel.Location = new System.Drawing.Point(6, 22);
+			this.LimitToTopLabel.Location = new System.Drawing.Point(6, 72);
 			this.LimitToTopLabel.Name = "LimitToTopLabel";
 			this.LimitToTopLabel.Size = new System.Drawing.Size(69, 13);
 			this.LimitToTopLabel.TabIndex = 1;
@@ -402,7 +409,7 @@
 			this.PasswordTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.PasswordTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.PasswordTextBox.Location = new System.Drawing.Point(87, 21);
+			this.PasswordTextBox.Location = new System.Drawing.Point(87, 19);
 			this.PasswordTextBox.Name = "PasswordTextBox";
 			this.PasswordTextBox.ReadOnly = true;
 			this.PasswordTextBox.Size = new System.Drawing.Size(502, 29);
@@ -418,6 +425,60 @@
 			this.GenerateButton.Text = "Generate";
 			this.GenerateButton.UseVisualStyleBackColor = true;
 			this.GenerateButton.Click += new System.EventHandler(this.GenerateButton_Click);
+			// 
+			// WordSizeMaxLabel
+			// 
+			this.WordSizeMaxLabel.AutoSize = true;
+			this.WordSizeMaxLabel.Location = new System.Drawing.Point(6, 48);
+			this.WordSizeMaxLabel.Name = "WordSizeMaxLabel";
+			this.WordSizeMaxLabel.Size = new System.Drawing.Size(82, 13);
+			this.WordSizeMaxLabel.TabIndex = 1;
+			this.WordSizeMaxLabel.Text = "Word Size Max:";
+			// 
+			// WordSizeMaxNumericUpDown
+			// 
+			this.WordSizeMaxNumericUpDown.Location = new System.Drawing.Point(127, 45);
+			this.WordSizeMaxNumericUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+			this.WordSizeMaxNumericUpDown.Name = "WordSizeMaxNumericUpDown";
+			this.WordSizeMaxNumericUpDown.Size = new System.Drawing.Size(48, 20);
+			this.WordSizeMaxNumericUpDown.TabIndex = 4;
+			this.WordSizeMaxNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.WordSizeMaxNumericUpDown.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+			// 
+			// WordSizeMinLabel
+			// 
+			this.WordSizeMinLabel.AutoSize = true;
+			this.WordSizeMinLabel.Location = new System.Drawing.Point(6, 22);
+			this.WordSizeMinLabel.Name = "WordSizeMinLabel";
+			this.WordSizeMinLabel.Size = new System.Drawing.Size(79, 13);
+			this.WordSizeMinLabel.TabIndex = 1;
+			this.WordSizeMinLabel.Text = "Word Size Min:";
+			// 
+			// WordSizeMinNumericUpDown
+			// 
+			this.WordSizeMinNumericUpDown.Location = new System.Drawing.Point(127, 19);
+			this.WordSizeMinNumericUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+			this.WordSizeMinNumericUpDown.Name = "WordSizeMinNumericUpDown";
+			this.WordSizeMinNumericUpDown.Size = new System.Drawing.Size(48, 20);
+			this.WordSizeMinNumericUpDown.TabIndex = 4;
+			this.WordSizeMinNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.WordSizeMinNumericUpDown.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
 			// 
 			// ResorcesControl
 			// 
@@ -435,6 +496,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.LimitToTopNumericUpDown)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.WordSizeMaxNumericUpDown)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.WordSizeMinNumericUpDown)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -473,5 +536,9 @@
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.TextBox PasswordTextBox;
 		private System.Windows.Forms.Button GenerateButton;
+		private System.Windows.Forms.NumericUpDown WordSizeMinNumericUpDown;
+		private System.Windows.Forms.NumericUpDown WordSizeMaxNumericUpDown;
+		private System.Windows.Forms.Label WordSizeMinLabel;
+		private System.Windows.Forms.Label WordSizeMaxLabel;
 	}
 }
