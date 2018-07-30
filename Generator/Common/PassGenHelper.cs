@@ -20,8 +20,11 @@ namespace JocysCom.Password.Generator
 			{
 				if (string.IsNullOrEmpty(_AppDataPath))
 				{
-					// Apply default path. Parent - exclude version.
-					_AppDataPath = new DirectoryInfo(Application.LocalUserAppDataPath).Parent.FullName;
+					// C:\\Users\\<user>\\AppData\\Local\\<company>\\<product>
+					_AppDataPath = string.Format("{0}\\{1}\\{2}",
+					Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+					Application.CompanyName,
+					Application.ProductName);
 					var pdi = new DirectoryInfo("PassGen");
 					// If local configuration folder found then use it.
 					if (pdi.Exists)
