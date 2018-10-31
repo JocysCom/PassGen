@@ -300,7 +300,7 @@ namespace JocysCom.ClassLibrary.Text
 			return s;
 		}
 
-		public string GetTitleKey(string s, bool stripThe, bool stripA)
+		public string GetTitleKey(string s, bool stripThe = false, bool stripA = false)
 		{
 			string result = GetKeyPrepare(s);
 			// Replace '&' with 'AND'
