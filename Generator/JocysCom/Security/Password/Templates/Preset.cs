@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using JocysCom.ClassLibrary.Runtime;
 
 namespace JocysCom.ClassLibrary.Security.Password.Templates
 {
@@ -314,7 +315,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		public Preset Copy()
 		{
 			Preset preset = new Preset();
-			JocysCom.ClassLibrary.Runtime.Helper.CopyProperties(this, preset);
+			RuntimeHelper.CopyProperties(this, preset);
 			return preset;
 		}
 

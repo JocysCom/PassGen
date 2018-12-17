@@ -89,7 +89,7 @@ namespace JocysCom.Password.Generator
 		public static Dictionary<string, bool> GetDefaults(Type type)
 		{
 			Dictionary<string, bool> results = new Dictionary<string, bool>();
-			BindingFlags bf = JocysCom.ClassLibrary.Runtime.Helper.DefaultBindingFlags;
+			BindingFlags bf = JocysCom.ClassLibrary.Runtime.RuntimeHelper.DefaultBindingFlags;
 			// Add property names.
 			PropertyInfo[] properties = type.GetProperties(bf);
 			string[] propertyNames = type.GetProperties(bf).Select(x => x.Name).ToArray();

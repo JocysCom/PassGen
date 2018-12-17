@@ -162,6 +162,8 @@ namespace JocysCom.ClassLibrary.Runtime
 			}
 			catch (Exception ex)
 			{
+				if (!ex.Data.Contains("Mail.DeliveryMethod")) ex.Data.Add("Mail.DeliveryMethod", DeliveryMethod);
+				if (!ex.Data.Contains("Mail.From")) ex.Data.Add("Mail.From", @from);
 				if (!string.IsNullOrEmpty(@to) && !ex.Data.Contains("Mail.To")) ex.Data.Add("Mail.To", @to);
 				if (!string.IsNullOrEmpty(cc) && !ex.Data.Contains("Mail.Cc")) ex.Data.Add("Mail.Cc", cc);
 				if (!string.IsNullOrEmpty(bcc) && !ex.Data.Contains("Mail.Bcc")) ex.Data.Add("Mail.Bcc", bcc);
@@ -220,7 +222,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			var codes = Smtp.ErrorCodeSuspended;
 			if (string.IsNullOrEmpty(codes))
 				return false;
-			var codeStrings = codes.Split(new[] {' ', ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+			var codeStrings = codes.Split(new[] { ' ', ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 			foreach (var codeString in codeStrings)
 			{
 				int code;
@@ -233,23 +235,35 @@ namespace JocysCom.ClassLibrary.Runtime
 			return false;
 		}
 
+		public ProcessExceptionDelegate ProcessExceptionMailFailed;
+
 		/// <summary>
 		/// Send email to developers and show the exception box
 		/// </summary>
 		public string ProcessException(Exception ex, string subject = null, bool processExtraAction = true)
 		{
 			var body = ExceptionInfo(ex, "");
+			// Show exception first, because email can fail.
+			var extra = ProcessExceptionExtra;
+			// If set then execute extra exception actions
+			if (processExtraAction && extra != null)
+				extra(ex);
 			// Email exception.
 			var allowToReport = AllowReportExceptionToMail(ex);
 			if (allowToReport && Smtp.ErrorNotifications && !SuspendError(ex))
 			{
-				Smtp.SendErrorEmail(ex, subject, body);
-			}
-			// Execute extra exception actions.
-			var extra = ProcessExceptionExtra;
-			if (processExtraAction && extra != null)
-			{
-				extra(ex);
+				// If processing exception fails then it should not be re-thrown or it will go into the loop.
+				try
+				{
+					Smtp.SendErrorEmail(ex, subject, body);
+				}
+				catch (Exception ex2)
+				{
+					// Run method if email fails.
+					var mailFailed = ProcessExceptionMailFailed;
+					if (mailFailed != null)
+						mailFailed(ex2);
+				}
 			}
 			return body;
 		}
