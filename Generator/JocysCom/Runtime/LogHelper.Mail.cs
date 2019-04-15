@@ -1,127 +1,44 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Diagnostics;
+﻿using JocysCom.ClassLibrary.Mail;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Mail;
-using JocysCom.ClassLibrary.Mail;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace JocysCom.ClassLibrary.Runtime
 {
 	public partial class LogHelper
 	{
-		public SmtpClientEx Smtp
-		{
-			get { return SmtpClientEx.Current; }
-		}
-
-		public System.Net.Mail.MailMessage GetMailPreview(MailMessage message)
-		{
-			MailMessage mail = new MailMessage();
-			mail.IsBodyHtml = true;
-			SmtpClientEx.ApplyRecipients(mail, message.From, Smtp.ErrorRecipients);
-			var subject = message.Subject;
-			ApplyRunModeSuffix(ref subject);
-			mail.Subject = subject;
-			string testBody = "";
-			testBody += "In LIVE mode this email would be sent:<br />\r\n";
-			foreach (var item in message.To)
-			{
-				testBody += "To:&nbsp;" + System.Web.HttpUtility.HtmlEncode(item.ToString()) + "<br />\r\n";
-			}
-			foreach (var item in message.CC)
-			{
-				testBody += "Cc:&nbsp;" + System.Web.HttpUtility.HtmlEncode(item.ToString()) + "<br />\r\n";
-			}
-			foreach (var item in message.Bcc)
-			{
-				testBody += "Bcc:&nbsp;" + System.Web.HttpUtility.HtmlEncode(item.ToString()) + "<br />\r\n";
-			}
-
-			testBody += "<hr />\r\n";
-			var attachments = message.Attachments;
-			if (attachments != null && attachments.Count() > 0)
-			{
-				testBody += "These files would be attached:<br />\r\n";
-				if (attachments != null && attachments.Count() > 0)
-				{
-					for (int ctr = 0; ctr <= attachments.Count() - 1; ctr++)
-					{
-						string fileName = attachments[ctr].Name;
-						if (fileName.Length > 3 && fileName.ToLower().Substring(fileName.Length - 4) == ".ics")
-						{
-							mail.Attachments.Add(attachments[ctr]);
-						}
-						testBody += "&nbsp;&nbsp;&nbsp;&nbsp;" + System.Web.HttpUtility.HtmlEncode(fileName);
-						testBody += "<br />\r\n";
-					}
-				}
-			}
-			if (message.IsBodyHtml)
-			{
-				testBody += message.Body;
-			}
-			else
-			{
-				testBody += "<pre>";
-				testBody += System.Web.HttpUtility.HtmlEncode(message.Body);
-				testBody += "</pre>";
-			}
-			mail.Body = testBody;
-			return mail;
-		}
-
-
-		public static string GetSubjectPrefix(Exception ex, string suffix = "Error")
-		{
-			Assembly asm = Assembly.GetEntryAssembly();
-			string a = "Unknown Entry Assembly";
-			if (asm == null)
-			{
-				if (ex != null)
-				{
-					StackFrame[] frames = new StackTrace(ex).GetFrames();
-					if (frames != null && frames.Length > 0)
-					{
-						asm = frames[0].GetMethod().DeclaringType.Assembly;
-					}
-				}
-			}
-			if (asm == null)
-			{
-				asm = Assembly.GetCallingAssembly();
-			}
-			if (asm != null)
-			{
-				var last2Nodes = asm.GetName().Name.Split('.').Reverse().Take(2).Reverse();
-				a = string.Join(".", last2Nodes);
-			}
-			string s = string.Format("{0} {1}", a, suffix);
-			ApplyRunModeSuffix(ref s);
-			s += ": ";
-			return s;
-		}
 
 		#region Send Mail
 
-		public void SendWarningMail(string subject, string body, bool isBodyHtml = false)
+		static readonly Regex RxBreaks = new Regex("[\r\n]", RegexOptions.Multiline);
+		static readonly Regex RxMultiSpace = new Regex("[ \u00A0]+");
+
+		/// <summary>
+		/// This is the main function. All other methods in this class must call it and all emails must be sent trough it.
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="client"></param>
+		public virtual void SendMail(MailMessage message, SmtpClientEx client = null, bool forcePreview = false)
 		{
-			Smtp.SendErrorEmail(null, subject, body);
+			var smtp = client ?? SmtpClientEx.Current;
+			// If not LIVE environment then send preview message to developers instead.
+			if (!IsLive || forcePreview)
+				message = GetMailPreview(message, smtp);
+			string fileName;
+			smtp.SendMessage(message, out fileName);
+			// Dispose preview message.
+			if (!IsLive || forcePreview)
+				message.Dispose();
 		}
 
-		public Exception SendMailFrom(string @from, string @to, string cc, string bcc, string subject, string body, bool isBodyHtml = false, bool preview = false, bool rethrow = false, string[] attachments = null, SmtpDeliveryMethod DeliveryMethod = SmtpDeliveryMethod.Network)
+		public Exception SendMail(string to, string subject, string body, bool isBodyHtml = false)
 		{
-			Exception ex = null;
-			var att = GetAttachments(attachments);
-			ex = SendMailFrom(@from, @to, cc, bcc, subject, body, isBodyHtml, preview, rethrow, att, DeliveryMethod);
-			if (att != null)
-			{
-				foreach (var item in att)
-				{
-					item.Dispose();
-				}
-			}
-			return ex;
+			return SendMailFrom(SmtpClientEx.Current.SmtpFrom, @to, null, null, subject, body, isBodyHtml);
 		}
 
 		/// <summary>
@@ -137,32 +54,27 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <param name="preview">Force preview on LIVE system.</param>
 		/// <param name="rethrow">Throw exception if sending fails. Must be set to false when sending exceptions.</param>
 		/// <param name="attachments"></param>
-		public Exception SendMailFrom(string @from, string @to, string cc, string bcc, string subject, string body, bool isBodyHtml, bool preview, bool rethrow, Attachment[] attachments, SmtpDeliveryMethod DeliveryMethod = SmtpDeliveryMethod.Network)
+		public Exception SendMailFrom(string @from, string @to, string cc, string bcc, string subject, string body, bool isBodyHtml, bool rethrow = false, string[] attachments = null, SmtpDeliveryMethod? overrideDeliveryMethod = null, bool forcePreview = false)
 		{
+			Exception error = null;
 			// Re-throw - throw the error again to catch by a caller
+			var message = new MailMessage();
+			var smtp = new SmtpClientEx();
 			try
 			{
-				var mail = new MailMessage();
-				SmtpClientEx.ApplyRecipients(mail, @from, @to, cc, bcc);
-				SmtpClientEx.ApplyAttachments(mail, attachments);
-				mail.IsBodyHtml = isBodyHtml;
-				mail.Subject = subject;
-				mail.Body = body;
-				if (!IsLive || preview)
-				{
-					mail = GetMailPreview(mail);
-				}
-				if (DeliveryMethod == SmtpDeliveryMethod.SpecifiedPickupDirectory)
-				{
-					Smtp.SmtpDeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-					Smtp.SmtpPickupFolder = SmtpClientEx.Current.SmtpPickupFolder;
-				}
-				Smtp.SendMessage(mail);
-				return null;
+				MailHelper.ApplyRecipients(message, @from, @to, cc, bcc);
+				MailHelper.ApplyAttachments(message, attachments);
+				message.IsBodyHtml = isBodyHtml;
+				message.Subject = subject;
+				message.Body = body;
+				// Override delivery method.
+				if (overrideDeliveryMethod.HasValue)
+					smtp.DeliveryMethod = overrideDeliveryMethod.Value;
+				SendMail(message, smtp, forcePreview);
 			}
 			catch (Exception ex)
 			{
-				if (!ex.Data.Contains("Mail.DeliveryMethod")) ex.Data.Add("Mail.DeliveryMethod", DeliveryMethod);
+				if (!ex.Data.Contains("Mail.DeliveryMethod")) ex.Data.Add("Mail.DeliveryMethod", overrideDeliveryMethod);
 				if (!ex.Data.Contains("Mail.From")) ex.Data.Add("Mail.From", @from);
 				if (!string.IsNullOrEmpty(@to) && !ex.Data.Contains("Mail.To")) ex.Data.Add("Mail.To", @to);
 				if (!string.IsNullOrEmpty(cc) && !ex.Data.Contains("Mail.Cc")) ex.Data.Add("Mail.Cc", cc);
@@ -175,70 +87,73 @@ namespace JocysCom.ClassLibrary.Runtime
 				}
 				else
 				{
-					ProcessException(ex);
+					Current.ProcessException(ex);
 				}
-				return ex;
+				error = ex;
 			}
-		}
-
-		public static Attachment[] GetAttachments(string[] files)
-		{
-			if (files == null) return null;
-			var attachments = new List<Attachment>();
-			for (int i = 0; i < files.Count(); i++)
+			finally
 			{
-				string file = files[i];
-				if (string.IsNullOrEmpty(file)) continue;
-				if (System.IO.File.Exists(file))
-				{
-					// Specify as "application/octet-stream" so attachment will never will be embedded in body of email.
-					var att = new System.Net.Mail.Attachment(file, "application/octet-stream");
-					attachments.Add(att);
-				}
+				// Attachments and message will be disposed.
+				message.Dispose();
+				smtp.Dispose();
 			}
-			return attachments.ToArray();
+			return error;
 		}
 
 		/// <summary>
-		/// Mail will be sent to error recipient if not LIVE.
+		/// Send exception details as HTML e-mail.
 		/// </summary>
-		/// <param name="message"></param>
-		public void SendEmailWithCopyToErrorRecipients(MailMessage message)
+		/// <param name="ex">Exception to generate email from.</param>
+		/// <param name="subject">Use custom subject instead of generated from exception</param>
+		public void SendMail(Exception ex, string subject = null, string body = null)
 		{
-			var mail = IsLive ? message : GetMailPreview(message);
-			Smtp.SendMessage(mail);
-		}
-
-		/// <summary>
-		/// Suspend error if error code (int) value is found inside ex.Data["ErrorCode"].
-		/// </summary>
-		public bool SuspendError(Exception ex)
-		{
-			if (!ex.Data.Keys.Cast<object>().Contains(SmtpClientEx.ErrorCode))
-				return false;
-			var errorCode = ex.Data[SmtpClientEx.ErrorCode] as int?;
-			if (!errorCode.HasValue)
-				return false;
-			var codes = Smtp.ErrorCodeSuspended;
-			if (string.IsNullOrEmpty(codes))
-				return false;
-			var codeStrings = codes.Split(new[] { ' ', ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-			foreach (var codeString in codeStrings)
+			var smtp = SmtpClientEx.Current;
+			var message = new MailMessage();
+			MailHelper.ApplyRecipients(message, smtp.SmtpFrom, smtp.ErrorRecipients);
+			//------------------------------------------------------
+			// Subject
+			//------------------------------------------------------
+			// If exception found then...
+			if (ex != null)
 			{
-				int code;
-				if (int.TryParse(codeString, out code))
+				if (ex.Data != null)
 				{
-					if (code == errorCode.Value)
-						return true;
+					var key = ex.Data.Keys.Cast<object>().FirstOrDefault(x => object.ReferenceEquals(x, "StackTrace"));
+					if (key != null && ex.Data[key] is StackTrace)
+						ex.Data.Remove(key);
 				}
+				// If subject was not specified
+				if (string.IsNullOrEmpty(subject))
+					subject = GetSubjectPrefix(ex, TraceEventType.Error) + ex.Message;
 			}
-			return false;
+			if (string.IsNullOrEmpty(subject))
+				subject = "null";
+			subject = RxBreaks.Replace(subject, " ");
+			subject = RxMultiSpace.Replace(subject, " ");
+			message.Body = body;
+			try
+			{
+				// Cut subject because some mail servers refuse to deliver messages when subject is too large.
+				var maxLength = 255;
+				message.Subject = (subject.Length > maxLength)
+					? subject.Substring(0, maxLength - 3) + "..."
+					: subject;
+			}
+			catch (Exception)
+			{
+				message.Subject = "Bad subject";
+				message.Body += "<div>Subject:" + subject + "</div>\r\n";
+			}
+			message.IsBodyHtml = true;
+			//------------------------------------------------------
+			SendMail(message);
+			message.Dispose();
 		}
 
 		public ProcessExceptionDelegate ProcessExceptionMailFailed;
 
 		/// <summary>
-		/// Send email to developers and show the exception box
+		/// Send email to developers and show the exception box (optional)
 		/// </summary>
 		public string ProcessException(Exception ex, string subject = null, bool processExtraAction = true)
 		{
@@ -250,12 +165,12 @@ namespace JocysCom.ClassLibrary.Runtime
 				extra(ex);
 			// Email exception.
 			var allowToReport = AllowReportExceptionToMail(ex);
-			if (allowToReport && Smtp.ErrorNotifications && !SuspendError(ex))
+			if (allowToReport && SmtpClientEx.Current.ErrorNotifications && !SuspendError(ex))
 			{
 				// If processing exception fails then it should not be re-thrown or it will go into the loop.
 				try
 				{
-					Smtp.SendErrorEmail(ex, subject, body);
+					SendMail(ex, subject, body);
 				}
 				catch (Exception ex2)
 				{
@@ -266,6 +181,128 @@ namespace JocysCom.ClassLibrary.Runtime
 				}
 			}
 			return body;
+		}
+
+		#endregion
+
+		#region Mail Format and Preview
+
+		public static string GetMailHeader(MailMessage message)
+		{
+			var sb = new StringBuilder();
+			sb.AppendFormat("From: {0}\r\n", message.From);
+			foreach (var item in message.To)
+				sb.AppendFormat("To:   {0}\r\n", item);
+			foreach (var item in message.CC)
+				sb.AppendFormat("CC:   {0}\r\n", item);
+			foreach (var item in message.Bcc)
+				sb.AppendFormat("Bcc:   {0}\r\n", item);
+			var files = message.Attachments;
+			if (files != null && files.Count > 0)
+			{
+				var maxNumbers = files.Count.ToString().Length;
+				var maxContent = files.Max(x => x.ContentStream.Length.ToString().Length);
+				for (int i = 0; i < files.Count; i++)
+					sb.AppendFormat("File: {0," + maxNumbers + "}. {1," + maxContent + "} bytes - {2}\r\n", i, files[i].ContentStream.Length, files[i].Name);
+			}
+			sb.AppendFormat("Subject: {0}\r\n", message.Subject);
+			sb.AppendFormat("Body Size: {0} bytes\r\n", string.Format("{0}", message.Body).Length);
+			var headers = message.Headers;
+			if (headers != null && headers.Count > 0)
+			{
+				sb.AppendLine("Headers:");
+				for (int i = 0; i < headers.Count; i++)
+				{
+					var maxContent = headers.AllKeys.Max(x => string.Format("{0}", x).Length.ToString().Length);
+					foreach (var key in headers.AllKeys)
+						sb.AppendFormat("  {0,-" + maxContent + "}: {1}\r\n", key, headers[key]);
+				}
+			}
+			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Create preview email message from original email message.
+		/// </summary>
+		/// <param name="message">original email message.</param>
+		/// <returns>Preview Message.</returns>
+		public static MailMessage GetMailPreview(MailMessage message, SmtpClientEx client = null)
+		{
+			var smtp = SmtpClientEx.Current;
+			var mail = new MailMessage();
+			mail.IsBodyHtml = true;
+			Mail.MailHelper.ApplyRecipients(mail, smtp.SmtpFrom, smtp.ErrorRecipients);
+			var subject = message.Subject;
+			ApplyRunModeSuffix(ref subject);
+			mail.Subject = subject;
+			string testBody = "";
+			testBody += "In LIVE mode this email would be sent:<br /><br />\r\n";
+			testBody += "<pre>";
+			testBody += System.Net.WebUtility.HtmlEncode(GetMailHeader(message));
+			if (client != null)
+			{
+				if (client.DeliveryMethod == SmtpDeliveryMethod.SpecifiedPickupDirectory)
+				{
+					testBody += string.Format("Delivery Method: {0}\r\n", client.DeliveryMethod);
+					testBody += string.Format("Delivery Folder: {0}\r\n", client.PickupDirectoryLocation);
+				}
+			}
+			testBody += "</pre>";
+			testBody += "<hr />\r\n";
+			if (message.IsBodyHtml)
+			{
+				testBody += message.Body;
+			}
+			else
+			{
+				testBody += "<pre>";
+				testBody += System.Net.WebUtility.HtmlEncode(message.Body);
+				testBody += "</pre>";
+			}
+			mail.Body = testBody;
+			// Readd attachments.
+			var files = message.Attachments;
+			if (files != null)
+			{
+				for (int i = 0; i < files.Count; i++)
+				{
+					var name = files[i].Name;
+					// Re-attach calendar item.
+					if (name.EndsWith(".ics", StringComparison.OrdinalIgnoreCase))
+					{
+						mail.Attachments.Add(files[i]);
+					}
+				}
+			}
+			return mail;
+		}
+
+		public static string GetSubjectPrefix(Exception ex = null, TraceEventType? type = null)
+		{
+			var asm = Assembly.GetEntryAssembly();
+			string s = "Unknown Entry Assembly";
+			if (asm == null && ex != null)
+			{
+				var frames = new StackTrace(ex).GetFrames();
+				if (frames != null && frames.Length > 0)
+				{
+					asm = frames[0].GetMethod().DeclaringType.Assembly;
+				}
+			}
+			if (asm == null)
+			{
+				asm = Assembly.GetCallingAssembly();
+			}
+			if (asm != null)
+			{
+				var last2Nodes = asm.GetName().Name.Split('.').Reverse().Take(2).Reverse();
+				s = string.Join(".", last2Nodes);
+			}
+			if (type.HasValue)
+				s += string.Format(" {0}", type);
+			ApplyRunModeSuffix(ref s);
+			s += ": ";
+			return s;
 		}
 
 		#endregion
@@ -285,6 +322,33 @@ namespace JocysCom.ClassLibrary.Runtime
 				ErrorMailLimitAge = ParseSpan("ErrorMailLimitAge", new TimeSpan(0, 5, 0));
 			return AllowToReportException(error, ErrorMailList, ErrorMailLimitMax.Value, ErrorMailLimitAge.Value);
 		}
+
+		/// <summary>
+		/// Suspend error if error code (int) value is found inside ex.Data["ErrorCode"].
+		/// </summary>
+		public bool SuspendError(Exception ex)
+		{
+			if (!ex.Data.Keys.Cast<object>().Contains(Mail.SmtpClientEx.ErrorCode))
+				return false;
+			var errorCode = ex.Data[Mail.SmtpClientEx.ErrorCode] as int?;
+			if (!errorCode.HasValue)
+				return false;
+			var codes = SmtpClientEx.Current.ErrorCodeSuspended;
+			if (string.IsNullOrEmpty(codes))
+				return false;
+			var codeStrings = codes.Split(new[] { ' ', ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+			foreach (var codeString in codeStrings)
+			{
+				int code;
+				if (int.TryParse(codeString, out code))
+				{
+					if (code == errorCode.Value)
+						return true;
+				}
+			}
+			return false;
+		}
+
 
 		#endregion
 

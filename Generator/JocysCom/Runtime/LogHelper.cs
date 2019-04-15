@@ -13,14 +13,18 @@ using System.Collections.Generic;
 
 namespace JocysCom.ClassLibrary.Runtime
 {
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-	public partial class LogHelper
+	public partial class LogHelper : IDisposable
 	{
 
 		public LogHelper()
 		{
+			// This class can be inherited therefore make sure that prefix is different.
+			// Get type will return derived class or this class if not derived.
+			_configPrefix = GetType().Name;
 			_FileWriter = new IO.LogFileWriter(_configPrefix);
 		}
+
+		static string _configPrefix;
 
 		private static LogHelper _Current;
 		private static object currentLock = new object();
@@ -30,12 +34,21 @@ namespace JocysCom.ClassLibrary.Runtime
 			{
 				lock (currentLock)
 				{
-					return _Current = _Current ?? new LogHelper();
+					if (_Current == null)
+					{
+						_Current = new LogHelper();
+						// Won't trigger application is closing by using the close button.
+						AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
+					}
+					return _Current;
 				}
 			}
 		}
 
-		static string _configPrefix = "LogHelper_";
+		private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
+		{
+			_Current.Dispose();
+		}
 
 		#region Process Exceptions
 
@@ -131,7 +144,7 @@ namespace JocysCom.ClassLibrary.Runtime
 							v = string.Format("<pre>{0}</pre>", pv);
 							if (v.Contains("<?xml"))
 							{
-								v = "<pre>" + System.Web.HttpUtility.HtmlEncode(v) + "</pre>";
+								v = "<pre>" + System.Net.WebUtility.HtmlEncode(v) + "</pre>";
 							}
 						}
 						catch (Exception ex2)
@@ -148,29 +161,82 @@ namespace JocysCom.ClassLibrary.Runtime
 		{
 			s += "<style type=\"text/css\">\r\n";
 			s += "table tr td { font-family: Tahoma; font-size: 10pt; white-space:nowrap; }\r\n";
+			s += "table tr th { font-family: Tahoma; font-size: 10pt; white-space:nowrap; }\r\n";
+			s += ".Table { border: solid 1px #DDDDDD; border-collapse: collapse; empty-cells: show; }\r\n";
+			s += ".Table tr td { border: solid 1px #DDDDDD; padding: 2px 4px 2px 4px; }\r\n";
+			s += ".Table tr th { border: solid 1px #DDDDDD; padding: 2px 4px 2px 4px; }\r\n";
 			s += ".Head { font-weight: bold; }\r\n";
+			s += ".Body {  }\r\n";
 			s += ".Name { padding-left: 16px; }\r\n";
 			s += ".Value { widht: 100%; }\r\n";
 			s += ".Ex { font-family: Courier New; font-size: 10pt; }\r\n";
 			s += "</style>\r\n";
 		}
 
+		/// <summary>Add empty row.</summary>
 		public static void AddRow(ref string s)
 		{
 			s += string.Format("<tr><td colspan=\"2\"> </td></tr>");
 		}
 
+		/// <summary>Add header row.</summary>
 		public static void AddRow(ref string s, string name)
 		{
-			s += string.Format("<tr><td colspan=\"2\" class=\"Head\">{0}</td></tr>", name);
+			s += string.Format("<tr><td colspan=\"2\" class=\"Head\">{0}</td></tr>",  name);
 		}
 
-		public static void AddRow(ref string s, string name, string value)
+		#region Table
+
+		public static void AddStyle(StringBuilder sb)
+		{
+			var s = "";
+			AddStyle(ref s);
+			sb.Append(s);
+		}
+
+		public static void AddTable(StringBuilder sb)
+		{
+			sb.Append("<table class=\"Table\">");
+		}
+
+		public static void EndTable(StringBuilder sb)
+		{
+			sb.Append("</table>");
+		}
+
+		/// <summary>Add head rows.</summary>
+		public static void AddHeadRows(StringBuilder sb, params object[] args)
+		{
+			sb.Append("<tr>");
+			foreach (var arg in args)
+			{
+				var v = System.Net.WebUtility.HtmlEncode(string.Format("{0}", arg));
+				sb.AppendFormat("<th class=\"Head\">{0}</th>", v);
+			}
+			sb.Append("</tr>");
+		}
+
+		/// <summary>Add body rows.</summary>
+		public static void AddBodyRows(StringBuilder sb, params object[] args)
+		{
+			sb.Append("<tr>");
+			foreach (var arg in args)
+			{
+				var v = System.Net.WebUtility.HtmlEncode(string.Format("{0}", arg));
+				sb.AppendFormat("<td class=\"Body\">{0}</td>", v);
+			}
+			sb.Append("</tr>");
+		}
+
+		#endregion
+
+		/// <summary>Add row with key and value cells.</summary>
+		public static void AddRow(ref string s, string key, string value)
 		{
 			string sep = "";
-			if (!string.IsNullOrEmpty(name))
+			if (!string.IsNullOrEmpty(key))
 				sep = ":";
-			s += string.Format("<tr><td class=\"Name\" valign=\"top\">{0}{1}</td><td>{2}</td></tr>", name, sep, value);
+			s += string.Format("<tr><td class=\"Name\" valign=\"top\">{0}{1}</td><td>{2}</td></tr>", key, sep, value);
 		}
 
 		protected static void AddException(ref string s, Exception ex)
@@ -187,7 +253,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			var useHtml = ParseBool(_configPrefix + "ErrorHtmlException", true);
 			if (useHtml)
 			{
-				AddException(ref s, ExceptionToString(ex, true, JocysCom.ClassLibrary.TraceFormat.Html));
+				AddException(ref s, ExceptionToString(ex, true, TraceFormat.Html));
 			}
 			else
 			{
@@ -247,16 +313,16 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <summary>
 		/// User can override these methods. Default methods are assigned.
 		/// </summary>
-		public static WriteLogDelegate WriteLogCustom;
-		public static WriteLogDelegate WriteLogConsole = new WriteLogDelegate(_WriteConsole);
-		public static WriteLogDelegate WriteLogEvent = new WriteLogDelegate(_WriteEvent);
-		public static WriteLogDelegate WriteLogFile = new WriteLogDelegate(_WriteFile);
+		public WriteLogDelegate WriteLogCustom;
+		public WriteLogDelegate WriteLogConsole = new WriteLogDelegate(_WriteConsole);
+		public WriteLogDelegate WriteLogEvent = new WriteLogDelegate(_WriteEvent);
+		public WriteLogDelegate WriteLogFile = new WriteLogDelegate(_WriteFile);
 
 		internal static void _WriteConsole(string message, EventLogEntryType type)
 		{
 			// If user can see interface (console) then write to the console.
 			if (Environment.UserInteractive)
-				Console.Write(message);
+				Console.WriteLine(message);
 		}
 
 		// Requires 'EventLogInstaller' requires reference to System.Configuration.Install.dll
@@ -288,12 +354,13 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <summary>
 		/// Writes log message to various destination types (console window, file, event and custom)
 		/// </summary>
-		public static void WriteLog(string message, EventLogEntryType type)
+		/// <remarks>Appends line break.</remarks>
+		public void WriteLog(string message, EventLogEntryType type)
 		{
 			// If console logging available then...
 			if (WriteLogConsole != null)
 				WriteLogConsole(message, type);
-			// If console logging available then...
+			// If file logging available then...
 			if (WriteLogFile != null)
 				WriteLogFile(message, type);
 			// If custom logging is enabled then write custom log (can be used to send emails).
@@ -304,14 +371,19 @@ namespace JocysCom.ClassLibrary.Runtime
 				WriteLogEvent(message, type);
 		}
 
+		public static void WriteError(Exception ex)
+		{
+			Current.WriteLog(ex.ToString(), EventLogEntryType.Error);
+		}
+
 		public static void WriteWarning(string format, params object[] args)
 		{
-			WriteLog(args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Warning);
+			Current.WriteLog(args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Warning);
 		}
 
 		public static void WriteInfo(string format, params object[] args)
 		{
-			WriteLog(args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Information);
+			Current.WriteLog(args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Information);
 		}
 
 		#endregion
@@ -430,7 +502,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			AddRow(ref s, "Product");
 			if (asm != null)
 			{
-				var ai = new JocysCom.ClassLibrary.Configuration.AssemblyInfo(asm);
+				var ai = new Configuration.AssemblyInfo(asm);
 				var name = ai.Company + " " + ai.Product + " " + ai.Version.ToString(4);
 				ApplyRunModeSuffix(ref name);
 				AddRow(ref s, "Name", name);
@@ -645,6 +717,31 @@ namespace JocysCom.ClassLibrary.Runtime
 			else
 			{
 				ex.Data.Add(key, value);
+			}
+		}
+
+		#endregion
+
+		#region IDisposable
+
+		// Dispose() calls Dispose(true)
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		bool IsDisposing;
+
+		void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				if (IsDisposing)
+					return;
+				IsDisposing = true;
+				if (_FileWriter != null)
+					_FileWriter.Dispose();
 			}
 		}
 
