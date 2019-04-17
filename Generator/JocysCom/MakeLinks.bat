@@ -37,7 +37,6 @@ GOTO:EOF
 :: Remote symbolic links: rmdir Skype
 SET upr=c:\Projects\Jocys.com\Class Library
 IF NOT EXIST "%upr%" SET upr=D:\Projects\Jocys.com\Class Library
-CALL:MKJ ClassTools
 CALL:MKJ Collections
 CALL:MKJ Common
 CALL:MKJ Configuration
