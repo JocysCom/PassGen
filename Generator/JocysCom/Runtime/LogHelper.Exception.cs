@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Text;
-using System.Reflection;
+using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.Reflection;
 using System.Security;
-using System.ComponentModel;
+using System.Text;
 
 namespace JocysCom.ClassLibrary.Runtime
 {
@@ -23,6 +23,7 @@ namespace JocysCom.ClassLibrary.Runtime
 	/// </summary>
 	public partial class LogHelper
 	{
+
 		#region Handling
 
 		public void InitExceptionHandlers(string logFolder = "Logs")
@@ -49,11 +50,6 @@ namespace JocysCom.ClassLibrary.Runtime
 		string _LogFolder;
 
 		public event EventHandler<LogHelperEventArgs> WritingException;
-
-		public void WriteException(Exception ex)
-		{
-			WriteException(ex, 10, _LogFolder, WriteAsHtml);
-		}
 
 		public void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
@@ -106,89 +102,20 @@ namespace JocysCom.ClassLibrary.Runtime
 			return (isHtml) ? System.Net.WebUtility.HtmlEncode(text) : text;
 		}
 
-		#region Application Settings
-
-		/// <summary>
-		/// If used then, can loose information about original line of exception, therefore option is 'false' by default.
-		/// </summary>
-		public static bool ErrorUseNewStackTrace
-		{
-			get
-			{
-				if (!_ErrorUseNewStackTrace.HasValue)
-					_ErrorUseNewStackTrace = ParseBool(_configPrefix + "UseNewStackTrace", false);
-				return _ErrorUseNewStackTrace.Value;
-			}
-		}
-		static bool? _ErrorUseNewStackTrace;
-
-
-		public static bool WriteAsHtml
-		{
-			get
-			{
-				if (!_WriteAsHtml.HasValue)
-					_WriteAsHtml = ParseBool(_configPrefix + "WriteAsHtml", true);
-				return _WriteAsHtml.Value;
-			}
-		}
-		static bool? _WriteAsHtml;
-
-		public static bool LogThreadExceptions
-		{
-			get
-			{
-				if (!_LogThreadExceptions.HasValue)
-					_LogThreadExceptions = ParseBool(_configPrefix + "LogThreadExceptions", true);
-				return _LogThreadExceptions.Value;
-			}
-		}
-		static bool? _LogThreadExceptions;
-
-		public static bool LogUnhandledExceptions
-		{
-			get
-			{
-				if (!_LogUnhandledExceptions.HasValue)
-					_LogUnhandledExceptions = ParseBool(_configPrefix + "LogUnhandledExceptions", true);
-				return _LogUnhandledExceptions.Value;
-			}
-		}
-		static bool? _LogUnhandledExceptions;
-
-		public static bool LogFirstChanceExceptions
-		{
-			get
-			{
-				if (!_LogFirstChanceExceptions.HasValue)
-					_LogFirstChanceExceptions = ParseBool(_configPrefix + "LogFirstChanceExceptions", true);
-				return _LogFirstChanceExceptions.Value;
-			}
-		}
-		static bool? _LogFirstChanceExceptions;
-
-		#endregion
-
-		public static string ExceptionToString(Exception ex, bool needFileLineInfo, TraceFormat tf)
+		string ExceptionToString(Exception ex, bool needFileLineInfo, TraceFormat tf)
 		{
 			bool isHtml = (tf == TraceFormat.Html);
 			string newLine = isHtml ? "<br />" + Environment.NewLine : Environment.NewLine;
 			var builder = new StringBuilder(0xff);
-			if (isHtml)
-			{
-				var exText = (ex.GetType().Name + ": " + ex.Message).Replace("\r\n", "<br />");
-				builder.Append("<hr/>" + exText + "<hr/>");
-			}
-			if (isHtml) builder.Append("<span style=\"font-family: Courier New; font-size: 10pt;\">");
+			if (isHtml) builder.Append("<span class=\"Mono\">");
 			builder.Append(getText(isHtml, GetClassName(ex)));
-			string message = ex.Message;
-			if (!string.IsNullOrEmpty(message))
+			if (!string.IsNullOrEmpty(ex.Message))
 			{
 				builder.Append(": ");
-				builder.Append(getText(isHtml, message));
+				builder.Append(getText(isHtml, ex.Message));
 			}
-			builder.Append(newLine);
-			StackTrace stackTrace = new StackTrace(ex, needFileLineInfo);
+			//builder.Append(newLine);
+			var stackTrace = new StackTrace(ex, needFileLineInfo);
 			StackTrace fullTrace = null;
 			int startFrameIndex = 0;
 			// If use unstable version.
@@ -233,12 +160,12 @@ namespace JocysCom.ClassLibrary.Runtime
 				builder.Append(newLine);
 				builder.Append(TraceToString(trace, tf, startFrameIndex));
 			}
-			if (ex.InnerException != null)
-			{
-				builder.Append(getText(isHtml, " ---> "));
-				builder.Append(ExceptionToString(ex.InnerException, needFileLineInfo, tf));
-				builder.Append(newLine);
-			}
+			//if (ex.InnerException != null)
+			//{
+			//	builder.Append(getText(isHtml, " ---> "));
+			//	builder.Append(ExceptionToString(ex.InnerException, needFileLineInfo, tf));
+			//	builder.Append(newLine);
+			//}
 			if (isHtml) builder.Append("</span>");
 			return builder.ToString();
 		}
@@ -287,7 +214,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			bool flag = true;
 			bool flag2 = true;
 			var builder = new StringBuilder(0xff);
-			if (isHtml) builder.Append("<span style=\"font-family: Courier New; font-size: 10pt;\">");
+			if (isHtml) builder.Append("<span class=\"Mono\">");
 			for (int i = startFrameIndex; i < st.FrameCount; i++)
 			{
 				StackFrame frame = st.GetFrame(i);
@@ -318,11 +245,13 @@ namespace JocysCom.ClassLibrary.Runtime
 						string name = declaringType.Name.Replace('+', '.');
 						if (isHtml)
 						{
-							if (isForm) builder.Append("<span style=\"font-weight: bold;\">");
+							if (isForm)
+								builder.Append("<span style=\"font-weight: bold;\">");
 							builder.Append(System.Net.WebUtility.HtmlEncode(ns));
 							builder.Append(".");
 							builder.AppendFormat("<span style=\"color: #2B91AF; \">{0}</span>", System.Net.WebUtility.HtmlEncode(name));
-							if (isForm) builder.Append("</span>");
+							if (isForm)
+								builder.Append("</span>");
 						}
 						else
 						{
@@ -330,7 +259,8 @@ namespace JocysCom.ClassLibrary.Runtime
 						}
 						builder.Append(".");
 					}
-					if (isHtml && isForm) builder.Append("<span style=\"font-weight: bold; color: #800000;\">");
+					if (isHtml && isForm)
+						builder.Append("<span style=\"font-weight: bold; color: #800000;\">");
 					builder.Append(method.Name);
 					if ((method is MethodInfo) && ((MethodInfo)method).IsGenericMethod)
 					{
@@ -378,7 +308,8 @@ namespace JocysCom.ClassLibrary.Runtime
 						{
 							if (isClass) builder.Append("<span style=\"color: #2B91AF; \">");
 							builder.Append(System.Net.WebUtility.HtmlEncode(paramType));
-							if (isClass) builder.Append("</span>");
+							if (isClass)
+								builder.Append("</span>");
 							builder.Append(" ");
 							builder.Append(System.Net.WebUtility.HtmlEncode(paramType));
 						}
@@ -451,7 +382,8 @@ namespace JocysCom.ClassLibrary.Runtime
 		{
 			var message = "";
 			AddExceptionMessage(ex, ref message);
-			if (ex.InnerException != null) AddExceptionMessage(ex.InnerException, ref message);
+			if (ex.InnerException != null)
+				AddExceptionMessage(ex.InnerException, ref message);
 			return message;
 		}
 
@@ -464,12 +396,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			message += ex.ToString() + "\r\n";
 			// Add extra exception details.
 			var s = "";
-			if (ex.Data.Keys.Count > 0)
-			{
-				// Add error data values.
-				foreach (var key in ex.Data.Keys)
-					s += string.Format("{0}: {1}\r\n", key, ex.Data[key]);
-			}
+			AddParameters(ref s, ex.Data, TraceFormat.TrailingNewLine);
 			// Exception string to add.
 			var ex1 = ex as ConfigurationErrorsException;
 			if (ex1 != null)

@@ -1,12 +1,9 @@
 ﻿using JocysCom.ClassLibrary.Mail;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
-using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace JocysCom.ClassLibrary.Runtime
 {
@@ -14,9 +11,6 @@ namespace JocysCom.ClassLibrary.Runtime
 	{
 
 		#region Send Mail
-
-		static readonly Regex RxBreaks = new Regex("[\r\n]", RegexOptions.Multiline);
-		static readonly Regex RxMultiSpace = new Regex("[ \u00A0]+");
 
 		/// <summary>
 		/// This is the main function. All other methods in this class must call it and all emails must be sent trough it.
@@ -26,14 +20,33 @@ namespace JocysCom.ClassLibrary.Runtime
 		public virtual void SendMail(MailMessage message, SmtpClientEx client = null, bool forcePreview = false)
 		{
 			var smtp = client ?? SmtpClientEx.Current;
+			// Send preview if forced preview or non error recipient found.
+			var sendPreview = forcePreview || NonErrorRecipientsFound(message);
 			// If not LIVE environment then send preview message to developers instead.
-			if (!IsLive || forcePreview)
+			if (sendPreview)
 				message = GetMailPreview(message, smtp);
 			string fileName;
 			smtp.SendMessage(message, out fileName);
 			// Dispose preview message.
-			if (!IsLive || forcePreview)
+			if (sendPreview)
 				message.Dispose();
+		}
+
+		/// <summary>
+		/// Returns true of only error recipients found.
+		/// </summary>
+		public bool NonErrorRecipientsFound(MailMessage message, List<MailAddress> extraErrorRecipients = null)
+		{
+			var list = MailHelper.ParseEmailAddress(SmtpClientEx.Current.ErrorRecipients);
+			// Add recipients who are allowed to receive original emails.
+			if (extraErrorRecipients != null)
+				list = list.Union(extraErrorRecipients).ToList();
+			var addresses = list.Select(x => x.Address.ToUpper());
+			// Merge recipients with 'Union' command and return true if non error recipients found.
+			return message
+				.To.Union(message.CC).Union(message.Bcc)
+				.Select(x => x.Address.ToUpper())
+				.Except(addresses).Count() > 0;
 		}
 
 		public Exception SendMail(string to, string subject, string body, bool isBodyHtml = false)
@@ -105,47 +118,25 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// </summary>
 		/// <param name="ex">Exception to generate email from.</param>
 		/// <param name="subject">Use custom subject instead of generated from exception</param>
-		public void SendMail(Exception ex, string subject = null, string body = null)
+		/// <param name="body">Extra body text above exception.</param>
+		public void SendException(Exception ex, string subject = null, string body = null)
+		{
+			_GroupException(mailExceptions, ex, subject, body, _SendMail);
+		}
+
+		/// <summary>
+		/// Send exception details as HTML e-mail.
+		/// </summary>
+		/// <param name="ex">Exception to generate email from.</param>
+		/// <param name="subject">Use custom subject instead of generated from exception</param>
+		void _SendMail(Exception ex, string subject, string body)
 		{
 			var smtp = SmtpClientEx.Current;
 			var message = new MailMessage();
 			MailHelper.ApplyRecipients(message, smtp.SmtpFrom, smtp.ErrorRecipients);
-			//------------------------------------------------------
-			// Subject
-			//------------------------------------------------------
-			// If exception found then...
-			if (ex != null)
-			{
-				if (ex.Data != null)
-				{
-					var key = ex.Data.Keys.Cast<object>().FirstOrDefault(x => object.ReferenceEquals(x, "StackTrace"));
-					if (key != null && ex.Data[key] is StackTrace)
-						ex.Data.Remove(key);
-				}
-				// If subject was not specified
-				if (string.IsNullOrEmpty(subject))
-					subject = GetSubjectPrefix(ex, TraceEventType.Error) + ex.Message;
-			}
-			if (string.IsNullOrEmpty(subject))
-				subject = "null";
-			subject = RxBreaks.Replace(subject, " ");
-			subject = RxMultiSpace.Replace(subject, " ");
-			message.Body = body;
-			try
-			{
-				// Cut subject because some mail servers refuse to deliver messages when subject is too large.
-				var maxLength = 255;
-				message.Subject = (subject.Length > maxLength)
-					? subject.Substring(0, maxLength - 3) + "..."
-					: subject;
-			}
-			catch (Exception)
-			{
-				message.Subject = "Bad subject";
-				message.Body += "<div>Subject:" + subject + "</div>\r\n";
-			}
+			message.Subject = subject;
+			message.Body = Current.ExceptionInfo(ex, body);
 			message.IsBodyHtml = true;
-			//------------------------------------------------------
 			SendMail(message);
 			message.Dispose();
 		}
@@ -155,22 +146,20 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <summary>
 		/// Send email to developers and show the exception box (optional)
 		/// </summary>
-		public string ProcessException(Exception ex, string subject = null, bool processExtraAction = true)
+		public string ProcessException(Exception ex, string subject = null, string body = null, bool processExtraAction = true)
 		{
-			var body = ExceptionInfo(ex, "");
 			// Show exception first, because email can fail.
 			var extra = ProcessExceptionExtra;
 			// If set then execute extra exception actions
 			if (processExtraAction && extra != null)
 				extra(ex);
 			// Email exception.
-			var allowToReport = AllowReportExceptionToMail(ex);
-			if (allowToReport && SmtpClientEx.Current.ErrorNotifications && !SuspendError(ex))
+			if (SmtpClientEx.Current.ErrorNotifications && !SuspendError(ex))
 			{
 				// If processing exception fails then it should not be re-thrown or it will go into the loop.
 				try
 				{
-					SendMail(ex, subject, body);
+					SendException(ex, subject, body);
 				}
 				catch (Exception ex2)
 				{
@@ -180,7 +169,8 @@ namespace JocysCom.ClassLibrary.Runtime
 						mailFailed(ex2);
 				}
 			}
-			return body;
+			var messageBody = ExceptionInfo(ex, body);
+			return messageBody;
 		}
 
 		#endregion
@@ -197,13 +187,23 @@ namespace JocysCom.ClassLibrary.Runtime
 				sb.AppendFormat("CC:   {0}\r\n", item);
 			foreach (var item in message.Bcc)
 				sb.AppendFormat("Bcc:   {0}\r\n", item);
+			// Write list of files.
 			var files = message.Attachments;
 			if (files != null && files.Count > 0)
 			{
 				var maxNumbers = files.Count.ToString().Length;
 				var maxContent = files.Max(x => x.ContentStream.Length.ToString().Length);
 				for (int i = 0; i < files.Count; i++)
-					sb.AppendFormat("File: {0," + maxNumbers + "}. {1," + maxContent + "} bytes - {2}\r\n", i, files[i].ContentStream.Length, files[i].Name);
+					sb.AppendFormat("File[{0}]: {1," + maxContent + "} bytes - {2}\r\n", i, files[i].ContentStream.Length, files[i].ContentType);
+			}
+			// Write list of views.
+			var views = message.AlternateViews;
+			if (views != null && views.Count > 0)
+			{
+				var maxNumbers = views.Count.ToString().Length;
+				var maxContent = views.Max(x => x.ContentStream.Length.ToString().Length);
+				for (int i = 0; i < views.Count; i++)
+					sb.AppendFormat("View[{0}]: {1," + maxContent + "} bytes - {2}\r\n", i, views[i].ContentStream.Length, views[i].ContentType);
 			}
 			sb.AppendFormat("Subject: {0}\r\n", message.Subject);
 			sb.AppendFormat("Body Size: {0} bytes\r\n", string.Format("{0}", message.Body).Length);
@@ -238,6 +238,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			string testBody = "";
 			testBody += "In LIVE mode this email would be sent:<br /><br />\r\n";
 			testBody += "<pre>";
+			testBody += string.Format("Source: {0}\r\n", GetSubjectPrefix().Trim(' ', ':'));
 			testBody += System.Net.WebUtility.HtmlEncode(GetMailHeader(message));
 			if (client != null)
 			{
@@ -260,7 +261,7 @@ namespace JocysCom.ClassLibrary.Runtime
 				testBody += "</pre>";
 			}
 			mail.Body = testBody;
-			// Readd attachments.
+			// Read attachments.
 			var files = message.Attachments;
 			if (files != null)
 			{
@@ -274,54 +275,33 @@ namespace JocysCom.ClassLibrary.Runtime
 					}
 				}
 			}
+			// Read views
+			var views = message.AlternateViews;
+			if (views != null)
+			{
+				for (int i = 0; i < views.Count; i++)
+				{
+					var view = views[i];
+					var content = view.ContentType;
+					var name = content.Name;
+					// Re-attach calendar item.
+					if (name.EndsWith(".ics", StringComparison.OrdinalIgnoreCase))
+					{
+						// Add calendar item as attachment.
+						var attachment = new Attachment(view.ContentStream, name, content.MediaType);
+						mail.Attachments.Add(attachment);
+
+						var reader = new System.IO.StreamReader(view.ContentStream);
+						var calendar = reader.ReadToEnd();
+
+
+					}
+				}
+			}
 			return mail;
 		}
 
-		public static string GetSubjectPrefix(Exception ex = null, TraceEventType? type = null)
-		{
-			var asm = Assembly.GetEntryAssembly();
-			string s = "Unknown Entry Assembly";
-			if (asm == null && ex != null)
-			{
-				var frames = new StackTrace(ex).GetFrames();
-				if (frames != null && frames.Length > 0)
-				{
-					asm = frames[0].GetMethod().DeclaringType.Assembly;
-				}
-			}
-			if (asm == null)
-			{
-				asm = Assembly.GetCallingAssembly();
-			}
-			if (asm != null)
-			{
-				var last2Nodes = asm.GetName().Name.Split('.').Reverse().Take(2).Reverse();
-				s = string.Join(".", last2Nodes);
-			}
-			if (type.HasValue)
-				s += string.Format(" {0}", type);
-			ApplyRunModeSuffix(ref s);
-			s += ": ";
-			return s;
-		}
-
 		#endregion
-
-		#region SPAM Prevention
-
-		int? ErrorMailLimitMax;
-		TimeSpan? ErrorMailLimitAge;
-		Dictionary<Type, List<DateTime>> ErrorMailList = new Dictionary<Type, List<DateTime>>();
-
-		public bool AllowReportExceptionToMail(Exception error)
-		{
-			// Maximum 10 errors of same type per 5 minutes (2880 per day).
-			if (!ErrorMailLimitMax.HasValue)
-				ErrorMailLimitMax = ParseInt("ErrorMailLimitMax", 5);
-			if (!ErrorMailLimitAge.HasValue)
-				ErrorMailLimitAge = ParseSpan("ErrorMailLimitAge", new TimeSpan(0, 5, 0));
-			return AllowToReportException(error, ErrorMailList, ErrorMailLimitMax.Value, ErrorMailLimitAge.Value);
-		}
 
 		/// <summary>
 		/// Suspend error if error code (int) value is found inside ex.Data["ErrorCode"].
@@ -349,8 +329,6 @@ namespace JocysCom.ClassLibrary.Runtime
 			return false;
 		}
 
-
-		#endregion
 
 	}
 }

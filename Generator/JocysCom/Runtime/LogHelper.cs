@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.Data;
 using System.Collections;
-using System.Configuration;
-using System.Diagnostics;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
-using System.Net;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace JocysCom.ClassLibrary.Runtime
 {
@@ -18,9 +17,7 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		public LogHelper()
 		{
-			// This class can be inherited therefore make sure that prefix is different.
-			// Get type will return derived class or this class if not derived.
-			_configPrefix = GetType().Name;
+			_configPrefix = typeof(LogHelper).Name + "_";
 			_FileWriter = new IO.LogFileWriter(_configPrefix);
 		}
 
@@ -50,26 +47,20 @@ namespace JocysCom.ClassLibrary.Runtime
 			_Current.Dispose();
 		}
 
-		#region Process Exceptions
+		#region Settings
 
 		/// <summary>
-		/// Windows forms can attach function which will be used when exception is thrown.
-		/// For example it can open window to the user with exception details.
+		/// If used then, can loose information about original line of exception, therefore option is 'false' by default.
 		/// </summary>
-		public ProcessExceptionDelegate ProcessExceptionExtra;
-		public delegate void ProcessExceptionDelegate(Exception ex);
-
-		public static bool IsDebug
-		{
-			get
-			{
-				bool debug = false;
-#if DEBUG
-				debug = true;
-#endif
-				return debug;
-			}
-		}
+		public bool ErrorUseNewStackTrace { get { return ParseBool(_configPrefix + "UseNewStackTrace", false); } }
+		public bool WriteAsHtml { get { return ParseBool(_configPrefix + "WriteAsHtml", true); } }
+		public bool LogThreadExceptions { get { return ParseBool(_configPrefix + "LogThreadExceptions", true); } }
+		public bool LogUnhandledExceptions { get { return ParseBool(_configPrefix + "LogUnhandledExceptions", true); } }
+		public bool LogFirstChanceExceptions { get { return ParseBool(_configPrefix + "LogFirstChanceExceptions", true); } }
+		public bool GroupingEnabled { get { return ParseBool(_configPrefix + "GroupingEnabled", false); } }
+		public TimeSpan GroupingDelay { get { return ParseSpan(_configPrefix + "GroupingDelay", new TimeSpan(0, 5, 0)); } }
+		public static string RunMode { get { return ParseString("RunMode", ParseString("Environment", "TEST")); } }
+		public static bool IsLive { get { return string.Compare(RunMode, "LIVE", true) == 0; } }
 
 		#endregion
 
@@ -117,59 +108,75 @@ namespace JocysCom.ClassLibrary.Runtime
 			return (v == null) ? defaultValue : IPAddress.Parse(v);
 		}
 
-		public static string RunMode { get { return ParseString("RunMode", "TEST"); } }
-		public static bool IsLive { get { return string.Compare(RunMode, "LIVE", true) == 0; } }
+		#endregion
+
+		#region Process Exceptions
+
+		/// <summary>
+		/// Windows forms can attach function which will be used when exception is thrown.
+		/// For example it can open window to the user with exception details.
+		/// </summary>
+		public ProcessExceptionDelegate ProcessExceptionExtra;
+		public delegate void ProcessExceptionDelegate(Exception ex);
+
+		public static bool IsDebug
+		{
+			get
+			{
+				bool debug = false;
+#if DEBUG
+				debug = true;
+#endif
+				return debug;
+			}
+		}
 
 		#endregion
 
 		#region Add To String
 
-		public static void AddParameters(ref string s, IDictionary parameters)
+		public static void AddParameters(ref string s, IDictionary parameters, TraceFormat tf)
 		{
-			// Add parameters.
-			if (parameters != null)
+			if (parameters == null)
+				return;
+			bool isHtml = (tf == TraceFormat.Html);
+			foreach (string key in parameters.Keys)
 			{
-				foreach (string key in parameters.Keys)
+				var pv = parameters[key];
+				string v = pv == null
+					? "null"
+					: pv is DateTime
+						? string.Format("{0:yyyy-MM-dd HH:mm:ss.fff}", pv)
+						: string.Format("{0}", pv);
+				if (isHtml)
 				{
-					string v;
-					object pv = parameters[key];
-					if (pv == null)
-					{
-						v = "<pre>null</pre>";
-					}
-					else
-					{
-						try
-						{
-							v = string.Format("<pre>{0}</pre>", pv);
-							if (v.Contains("<?xml"))
-							{
-								v = "<pre>" + System.Net.WebUtility.HtmlEncode(v) + "</pre>";
-							}
-						}
-						catch (Exception ex2)
-						{
-							v = ex2.Message;
-						}
-					}
+					v = System.Net.WebUtility.HtmlEncode(v);
+					v = "<span class=\"Pre\">" + v + "</span>";
 					AddRow(ref s, key, v);
 				}
+				else
+				{
+					s += string.Format("{0}: {1}\r\n", key, v);
+				}
+
 			}
 		}
 
 		public static void AddStyle(ref string s)
 		{
 			s += "<style type=\"text/css\">\r\n";
-			s += "table tr td { font-family: Tahoma; font-size: 10pt; white-space:nowrap; }\r\n";
-			s += "table tr th { font-family: Tahoma; font-size: 10pt; white-space:nowrap; }\r\n";
-			s += ".Table { border: solid 1px #DDDDDD; border-collapse: collapse; empty-cells: show; }\r\n";
-			s += ".Table tr td { border: solid 1px #DDDDDD; padding: 2px 4px 2px 4px; }\r\n";
-			s += ".Table tr th { border: solid 1px #DDDDDD; padding: 2px 4px 2px 4px; }\r\n";
-			s += ".Head { font-weight: bold; }\r\n";
+			s += "table tr td { font-family: Tahoma; font-size: 10pt; white-space: nowrap; }\r\n";
+			s += "table tr th { font-family: Tahoma; font-size: 10pt; white-space: nowrap; text-align:left; }\r\n";
+			s += ".Table { border: solid 1px #EEEEEE; border-collapse: collapse; empty-cells: show; }\r\n";
+			s += ".Table tr td { border: solid 1px #EEEEEE; padding: 2px 4px 2px 4px; }\r\n";
+			s += ".Table tr th { border: solid 1px #EEEEEE; padding: 2px 4px 2px 4px; background-color: #EEEEEE; }\r\n";
+			s += ".Head { font-weight: bold; text-align:left; }\r\n";
 			s += ".Body {  }\r\n";
+			s += ".Grey { color: #606060; font-weight: normal; }\r\n";
 			s += ".Name { padding-left: 16px; }\r\n";
-			s += ".Value { widht: 100%; }\r\n";
-			s += ".Ex { font-family: Courier New; font-size: 10pt; }\r\n";
+			s += ".Mono { font-family: monospace; font-size: 10pt; }\r\n";
+			s += ".Pre { white-space: pre; font-family: monospace; font-size: 10pt; }\r\n";
+			s += ".Value { width: 100%; }\r\n";
 			s += "</style>\r\n";
 		}
 
@@ -182,7 +189,7 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <summary>Add header row.</summary>
 		public static void AddRow(ref string s, string name)
 		{
-			s += string.Format("<tr><td colspan=\"2\" class=\"Head\">{0}</td></tr>",  name);
+			s += string.Format("<tr><th colspan=\"2\" class=\"Head\">{0}</th></tr>", name);
 		}
 
 		#region Table
@@ -239,32 +246,16 @@ namespace JocysCom.ClassLibrary.Runtime
 			s += string.Format("<tr><td class=\"Name\" valign=\"top\">{0}{1}</td><td>{2}</td></tr>", key, sep, value);
 		}
 
-		protected static void AddException(ref string s, Exception ex)
+		void AddExceptionTrace(ref string s, Exception ex)
 		{
 			if (ex.Data.Count > 0)
 			{
-				AddParameters(ref s, ex.Data);
-				s += "</table>";
-				s += "<table border=\"0\" cellspacing=\"2\">";
+				AddParameters(ref s, ex.Data, TraceFormat.Html);
 			}
-			// if exception is not empty then 
-			//if (!string.IsNullOrEmpty(ex.Message))
-			//{
-			var useHtml = ParseBool(_configPrefix + "ErrorHtmlException", true);
-			if (useHtml)
-			{
-				AddException(ref s, ExceptionToString(ex, true, TraceFormat.Html));
-			}
-			else
-			{
-				AddException(ref s, "<pre>" + ex.ToString() + "</pre>");
-			}
-			//}
-		}
-
-		protected static void AddException(ref string s, string name)
-		{
-			s += string.Format("<tr><td colspan=\"2\" class=\"Ex\">{0}</td></tr>", name);
+			var html = WriteAsHtml
+				? ExceptionToString(ex, true, TraceFormat.Html)
+				: "<pre>" + ex.ToString() + "</pre>";
+			AddRow(ref s, "StackTrace", html);
 		}
 
 		public static void AddConnection(ref string s, string name, string connectionString)
@@ -388,24 +379,6 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		#endregion
 
-		#region Exceptions: SPAM Prevention
-
-		int? ErrorFileLimitMax;
-		TimeSpan? ErrorFileLimitAge;
-		Dictionary<Type, List<DateTime>> ErrorFileList = new Dictionary<Type, List<DateTime>>();
-
-		public bool AllowReportExceptionToFile(Exception error)
-		{
-			// Maximum 10 errors of same type per 5 minutes (2880 per day).
-			if (!ErrorFileLimitMax.HasValue)
-				ErrorFileLimitMax = ParseInt("ErrorFileLimitMax", 5);
-			if (!ErrorFileLimitAge.HasValue)
-				ErrorFileLimitAge = ParseSpan("ErrorFileLimitAge", new TimeSpan(0, 5, 0));
-			return AllowToReportException(error, ErrorFileList, ErrorFileLimitMax.Value, ErrorFileLimitAge.Value);
-		}
-
-		#endregion
-
 		#region Exceptions
 
 		//public static string ExceptionInfo(Exception ex, string body)
@@ -431,54 +404,186 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		public static object WriteLock = new object();
 
-		/// <summary>
-		/// Write exception to file.
-		/// </summary>
-		/// <param name="ex">Exception to write.</param>
-		/// <param name="maxFiles">Maximum files per same exception.</param>
-		/// <param name="logsFolder">Folder where exception reports will be created.</param>
-		/// <param name="writeAsHtml">True - write as HTML, false - write as TEXT.</param>
-		public void WriteException(Exception ex, int maxFiles, string logsFolder, bool writeAsHtml)
+		#endregion
+
+		#region Group Same exceptions
+
+		static readonly Regex RxBreaks = new Regex("[\r\n]", RegexOptions.Multiline);
+		static readonly Regex RxMultiSpace = new Regex("[ \u00A0]+");
+
+		bool _GroupException(List<ExceptionGroup> group, Exception ex, string subject, string body, Action<Exception, string, string> action)
 		{
-			var ev = WritingException;
-			var le = new LogHelperEventArgs() { Exception = ex };
-			if (ev != null)
-				ev(this, le);
-			if (le.Cancel)
-				return;
-			var allowToReport = AllowReportExceptionToFile(ex);
-			if (!allowToReport)
-				return;
-			// Must wrap into lock so that process won't attempt to delete/write same file twice from different threads.
-			lock (WriteLock)
+			//------------------------------------------------------
+			// Subject
+			//------------------------------------------------------
+			// If exception found then...
+			if (ex != null)
 			{
-				// Create file.
-				var prefix = "FCE_" + ex.GetType().Name;
-				var ext = writeAsHtml ? "htm" : "txt";
-				var di = new System.IO.DirectoryInfo(logsFolder);
-				// Create folder if not exists.
-				if (!di.Exists)
-					di.Create();
-				// Get exception files ordered with oldest on top.
-				var files = di.GetFiles(prefix + "*." + ext).OrderBy(x => x.CreationTime).ToArray();
-				// Remove excess files if necessary.
-				if (maxFiles > 0 && files.Count() > 0 && files.Count() > maxFiles)
+				// If exception contains data.
+				if (ex.Data != null)
 				{
-					// Remove oldest file.
-					files[0].Delete();
+					// Remove "StackTrace" value if exists.
+					var key = ex.Data.Keys.Cast<object>().FirstOrDefault(x => object.ReferenceEquals(x, "StackTrace"));
+					if (key != null && ex.Data[key] is StackTrace)
+						ex.Data.Remove(key);
 				}
-				var fileTime = HiResDateTime.Current.Now;
-				var fileName = string.Format("{0}\\{1}_{2:yyyyMMdd_HHmmss.ffffff}.{3}",
-					di.FullName, prefix, fileTime, ext);
-				var fi = new System.IO.FileInfo(fileName);
-				var content = writeAsHtml ? ExceptionInfo(ex, "") : ex.ToString();
-				System.IO.File.AppendAllText(fileName, content);
+				// If subject was not specified then...
+				if (string.IsNullOrEmpty(subject))
+					// Generate subject from exception.
+					subject = GetSubjectPrefix(ex, TraceEventType.Error) + ex.Message;
 			}
+			if (string.IsNullOrEmpty(subject))
+				subject = "null";
+			// Make subject one line and remove extra spaces.
+			subject = RxBreaks.Replace(subject, " ");
+			subject = RxMultiSpace.Replace(subject, " ");
+			// Cut subject because some mail servers refuse to deliver messages when subject is too large.
+			var maxLength = 255;
+			if (subject.Length > maxLength)
+				subject = subject.Substring(0, maxLength - 3) + "...";
+			//------------------------------------------------------
+			// Group.
+			//------------------------------------------------------
+			var notifyNow =
+				ex == null ||
+				!GroupingEnabled ||
+				GroupExceptions(group, ex, subject, body, action);
+			if (notifyNow)
+				action(ex, subject, body);
+			return notifyNow;
+		}
+
+		/// <summary>
+		/// Prevent SPAM by suppressing frequent exceptions.
+		/// For example it can allow maximum 10 errors of same type per 5 minutes (2880 per day).
+		/// Amount of suppressed exceptions will be included inside next exception which is not suppressed.
+		/// </summary>
+		bool GroupExceptions(List<ExceptionGroup> group, Exception ex, string subject, string body, Action<Exception, string, string> action)
+		{
+			var value = ex.StackTrace == null
+				? string.Format("{0}: {1}", ex.GetType().Name, ex.Message)
+				: ex.StackTrace.ToString();
+			// Get checksum.
+			var algorithm = System.Security.Cryptography.SHA256.Create();
+			var bytes = System.Text.Encoding.UTF8.GetBytes(value);
+			var hash = algorithm.ComputeHash(bytes);
+			var guidBytes = new byte[16];
+			Array.Copy(hash, guidBytes, guidBytes.Length);
+			var checksum = new Guid(guidBytes);
+			// Try to get existing exception.
+			lock (group)
+			{
+				var ei = group.FirstOrDefault(x => x.Checksum == checksum);
+				var notifyNow = ei == null;
+				if (ei == null)
+				{
+					ei = new ExceptionGroup(group, GroupingDelay, ex, checksum, subject, body, action);
+					group.Add(ei);
+				}
+				ei.Increment();
+				return notifyNow;
+			}
+		}
+
+		static List<ExceptionGroup> mailExceptions = new List<ExceptionGroup>();
+
+		public class ExceptionGroup : IDisposable
+		{
+			public ExceptionGroup(List<ExceptionGroup> group, TimeSpan delay, Exception ex, Guid checksum, string subject, string body, Action<Exception, string, string> action)
+			{
+				Error = ex;
+				Checksum = checksum;
+				Created = DateTime.Now;
+				Updates = new List<DateTime>();
+				// custom parameters.
+				Subject = subject;
+				Body = body;
+				Group = group;
+				Action = action;
+				// Add timer to flush exceptions.
+				_Timer = new System.Timers.Timer();
+				_Timer.AutoReset = false;
+				_Timer.Interval = delay.TotalMilliseconds;
+				_Timer.Elapsed += _Timer_Elapsed;
+				_Timer.Start();
+			}
+			void _Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+			{
+				// If new exceptions were added then send.
+				if (Updates.Count > 1)
+				{
+					for (int i = 0; i < Updates.Count; i++)
+						Error.Data[string.Format("{0}.Time.{1}", GetType().Name, i)] = Updates[i];
+					Action(Error, Subject, Body);
+				}
+				// Dispose exception group which was sent by email or written to the file.
+				Dispose();
+			}
+			public void Increment()
+			{
+				// If new record then...
+				if (Updates.Count == 0)
+					Error.Data[string.Format("{0}.{1}", GetType().Name, "Checksum")] = Checksum.ToString("N");
+				// Use created time for first record.
+				Updates.Add(Updates.Count == 0 ? Created : DateTime.Now);
+			}
+
+			public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+			protected virtual void Dispose(bool disposing)
+			{
+				if (disposing)
+				{
+					_Timer.Dispose();
+					// Remove this exception group from the list.
+					if (Group.Contains(this))
+						Group.Remove(this);
+					Group = null;
+					Action = null;
+				}
+			}
+
+			System.Timers.Timer _Timer;
+			public Guid Checksum;
+			public Exception Error;
+			public DateTime Created;
+			public List<DateTime> Updates;
+			public string Subject;
+			public string Body;
+			Action<Exception, string, string> Action;
+			List<ExceptionGroup> Group;
 		}
 
 		#endregion
 
 		#region Convert Exception to HTML String
+
+		public static string GetSubjectPrefix(Exception ex = null, TraceEventType? type = null)
+		{
+			var asm = Assembly.GetEntryAssembly();
+			string s = "Unknown Entry Assembly";
+			if (asm == null && ex != null)
+			{
+				var frames = new StackTrace(ex).GetFrames();
+				if (frames != null && frames.Length > 0)
+				{
+					asm = frames[0].GetMethod().DeclaringType.Assembly;
+				}
+			}
+			if (asm == null)
+			{
+				asm = Assembly.GetCallingAssembly();
+			}
+			if (asm != null)
+			{
+				var last2Nodes = asm.GetName().Name.Split('.').Reverse().Take(2).Reverse();
+				s = string.Join(".", last2Nodes);
+			}
+			if (type.HasValue)
+				s += string.Format(" {0}", type);
+			ApplyRunModeSuffix(ref s);
+			s += ": ";
+			return s;
+		}
 
 		public string ExceptionInfo(Exception ex, string body)
 		{
@@ -486,7 +591,8 @@ namespace JocysCom.ClassLibrary.Runtime
 			// Body
 			//------------------------------------------------------
 			string s = string.Empty;
-			if (!string.IsNullOrEmpty(body)) s += "<div>" + body + "</div>";
+			if (!string.IsNullOrEmpty(body))
+				s += "<div>" + body + "</div><br /><br />";
 			//------------------------------------------------------
 			AddStyle(ref s);
 			//------------------------------------------------------
@@ -549,175 +655,103 @@ namespace JocysCom.ClassLibrary.Runtime
 			}
 			AddRow(ref s);
 			s += "</table>";
-			s += "<table border=\"0\" cellspacing=\"2\">";
+			s += "<table border=\"0\" cellspacing=\"2\" class=\"Table\">";
 			ExceptionInfoRecursive(ref s, ex);
 			//------------------------------------------------------
 			s += "</table>";
 			return s;
 		}
 
-		public static void ExceptionInfoRecursive(ref string s, Exception ex)
+		public void ExceptionInfoRecursive(ref string s, Exception ex)
 		{
-			if (ex == null) return;
+			if (ex == null)
+				return;
 			StackFrame frame = GetFormStackFrame(ex);
-			AddRow(ref s, "Exception");
-			AddRow(ref s, "Exception Date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+			AddRow(ref s, string.Format("{0}: <span class=\"Grey\">{1}</span>", GetClassName(ex), ex.Message));
+			AddRow(ref s, "Exception Date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+			// Get targetType and TargetName
+			var mb = ex.TargetSite;
 			if (frame != null && frame.GetMethod() != null && frame.GetMethod().DeclaringType != null)
+				mb = frame.GetMethod();
+			if (mb != null)
 			{
-				Type dt = frame.GetMethod().DeclaringType;
-				AddRow(ref s, "Target.Type", dt.FullName);
-				AddRow(ref s, "Target.Name", frame.GetMethod().Name);
+				AddRow(ref s, "Target.Type", mb.DeclaringType.ToString());
+				AddRow(ref s, "Target.Name", mb.Name);
 			}
-			else if (ex.TargetSite != null)
-			{
-				AddRow(ref s, "Target.Type", ex.TargetSite.DeclaringType.ToString());
-				AddRow(ref s, "Target.Name", ex.TargetSite.Name);
-			}
-			s += "</table>";
-			s += "<table border=\"0\" cellspacing=\"2\">";
-			FillLoaderException(ref s, ex);
-			FillSocketException(ref s, ex);
-			FillThreadAbortException(ref s, ex);
-			FillSqlException(ref s, ex);
+			if (FillLoaderException(ref s, ex)) { }
+			else if (FillSqlException(ref s, ex)) { }
+			else FillOther(ref s, ex);
+			AddExceptionTrace(ref s, ex);
+			// Append inner exception to the end.
 			if (ex.InnerException != null)
+				ExceptionInfoRecursive(ref s, ex.InnerException);
+		}
+
+		public static bool FillSqlException(ref string s, Exception ex)
+		{
+			var ex2 = ex as SqlException;
+			if (ex2 == null)
+				return false;
+			for (int i = 0; i <= ex2.Errors.Count - 1; i++)
+			{
+				var err = ex2.Errors[i];
+				var prefix = string.Format("Errors[{0}]", i + 1);
+				Add(ex2, prefix + ".Source", err.Source);
+				Add(ex2, prefix + ".Server", err.Server);
+				Add(ex2, prefix + ".Location", string.Format("Number {0}, Level {1}, State {2}, Line {3}", err.Number, err.Class, err.State, err.LineNumber));
+				Add(ex2, prefix + ".Message", err.Message);
+				if (!string.IsNullOrEmpty(err.Procedure))
+				{
+					Add(ex2, prefix + ".Procedure", err.Procedure);
+					Add(ex2, prefix + ".Help", "SQL command to display lines of procedure: exec sp_helptext '" + err.Procedure + "'");
+				}
+			}
+			return true;
+		}
+
+		public bool FillLoaderException(ref string s, Exception ex)
+		{
+			var ex2 = ex as ReflectionTypeLoadException;
+			if (ex2 == null)
+				return false;
+			var i = 0;
+			foreach (var ex4 in ex2.LoaderExceptions)
 			{
 				var s1 = "";
-				ExceptionInfoRecursive(ref s1, ex.InnerException);
-				var key = string.Format("InnerException");
-				if (!ex.Data.Contains(key)) ex.Data.Add(key, s1);
+				ExceptionInfoRecursive(ref s1, ex4);
+				var key = string.Format("LoaderExceptions[{0}]", i++);
+				Add(ex2, key, s1);
 			}
-			AddException(ref s, ex);
+			return true;
 		}
 
-
-		public static void FillSocketException(ref string s, Exception ex)
+		public static void FillOther(ref string s, Exception ex)
 		{
-			if (ex.GetType().Equals(typeof(System.Net.Sockets.SocketException)))
+			if (ex == null)
+				return;
+			var parameters = new Dictionary<string, object>();
+			foreach (var pi in ex.GetType().GetProperties())
 			{
-				var exIn = (System.Net.Sockets.SocketException)ex;
-				var key = "SocketException.NativeErrorCode";
-				if (ex.Data.Contains(key)) return;
-				ex.Data.Add(key, exIn.NativeErrorCode);
-				ex.Data.Add("SocketException.SocketErrorCode", exIn.SocketErrorCode);
+				if (!pi.CanRead)
+					continue;
+				// HTML stack trace will be added.
+				if (new string[] { "StackTrace", "TargetSite", "Data", "Message", "InnerException" }.Contains(pi.Name))
+					continue;
+				var value = pi.GetValue(ex);
+				if (value == null)
+					continue;
+				parameters.Add("." + pi.Name, value);
 			}
+			AddParameters(ref s, parameters, TraceFormat.Html);
 		}
 
-		public static void FillThreadAbortException(ref string s, Exception ex)
+		static void Add(Exception ex, string name, object value)
 		{
-			if (ex.GetType().Equals(typeof(System.Threading.ThreadAbortException)))
-			{
-				var exIn = (System.Threading.ThreadAbortException)ex;
-				var key = "ThreadAbortException.ExceptionState";
-				if (ex.Data.Contains(key)) return;
-				ex.Data.Add(key, exIn.ExceptionState);
-			}
-		}
-
-		public static void FillSqlException(ref string s, Exception ex)
-		{
-			// Add Details
-			if (ex.GetType().Equals(typeof(SqlException)))
-			{
-				var exIn = (SqlException)ex;
-				for (int i = 0; i <= exIn.Errors.Count - 1; i++)
-				{
-					SqlError err = exIn.Errors[i];
-					var prefix = string.Format("SqlException[{0}]", i + 1);
-					var key = prefix + ".Source";
-					if (ex.Data.Contains(key)) continue;
-					ex.Data.Add(key, err.Source);
-					ex.Data.Add(prefix + ".Server", err.Server);
-					ex.Data.Add(prefix + ".Location", string.Format("Number {0}, Level {1}, State {2}, Line {3}", err.Number, err.Class, err.State, err.LineNumber));
-					ex.Data.Add(prefix + ".Message", err.Message);
-					if (!string.IsNullOrEmpty(err.Procedure))
-					{
-						ex.Data.Add(prefix + ".Procedure", err.Procedure);
-						ex.Data.Add(prefix + ".Help", "SQL command to display lines of procedure: exec sp_helptext '" + err.Procedure + "'");
-					}
-				}
-			}
-		}
-
-		public static void FillLoaderException(ref string s, Exception ex)
-		{
-			if (ex.GetType().Equals(typeof(ReflectionTypeLoadException)))
-			{
-				var exIn = (ReflectionTypeLoadException)ex;
-				var i = 0;
-				foreach (Exception ex4 in exIn.LoaderExceptions)
-				{
-					var s1 = "";
-					ExceptionInfoRecursive(ref s1, ex4);
-					var key = "LoaderExceptions[" + i.ToString() + "]";
-					if (ex.Data.Contains(key)) return;
-					ex.Data.Add(key, s1);
-					i++;
-				}
-			}
-		}
-
-		#endregion
-
-		#region SPAM prevention.
-
-		/// <summary>
-		/// Prevent SPAM by suppressing frequent exceptions.
-		/// For example it can allow maximum 10 errors of same type per 5 minutes (2880 per day).
-		/// Amount of suppressed exceptions will be included inside next exception which is not suppressed.
-		/// </summary>
-		/// <param name="error">Exception</param>
-		/// <param name="errorList">Contains list of dates when exception type was reported.</param>
-		/// <param name="errorLimitMax">Maximum exceptions per specified time.</param>
-		/// <param name="errorLimitAge">Time for exceptions</param>
-		/// <returns>True - Allow to send exception. False - suppress sending.</returns>
-		public static bool AllowToReportException(Exception error, Dictionary<Type, List<DateTime>> errorList, int errorLimitMax, TimeSpan errorLimitAge)
-		{
-			if (errorLimitMax <= 0) return true;
-			if (errorLimitAge.Ticks <= 0) return true;
-			lock (errorList)
-			{
-				var errorType = error.GetType();
-				List<DateTime> list;
-				if (errorList.ContainsKey(errorType))
-				{
-					list = errorList[errorType];
-				}
-				else
-				{
-					list = new List<DateTime>();
-					errorList.Add(errorType, list);
-				}
-				var n = DateTime.Now;
-				var oldTime = n.Subtract(errorLimitAge);
-				// Remove old exceptions.
-				list.RemoveAll(x => x < oldTime);
-				var count = list.Count();
-				// If limit reached then return.
-				if (count >= errorLimitMax)
-					return false;
-				list.Add(n);
-				if (errorLimitMax == 1 || count > 0)
-				{
-					Upsert(error, "ErrorType", errorType);
-					Upsert(error, "ErrorCount", count);
-					Upsert(error, "Config: ErrorLimitMax", errorLimitMax);
-					Upsert(error, "Config: ErrorLimitAge", errorLimitAge);
-					Upsert(error, "Config: ErrorUseNewStackTrace", LogHelper.ErrorUseNewStackTrace);
-				}
-				return true;
-			}
-		}
-
-		public static void Upsert(Exception ex, object key, object value)
-		{
+			var prefix = ex.GetType().Name;
+			var key = string.Format("{0}.{1}", prefix, name);
 			if (ex.Data.Contains(key))
-			{
-				ex.Data[key] = value;
-			}
-			else
-			{
-				ex.Data.Add(key, value);
-			}
+				return;
+			ex.Data.Add(key, value);
 		}
 
 		#endregion

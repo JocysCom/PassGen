@@ -30,11 +30,11 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneratorControl));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.ListSeparatorComboBox = new System.Windows.Forms.ComboBox();
 			this.ListSizeNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.ListButton = new System.Windows.Forms.Button();
@@ -118,6 +118,7 @@
 			// 
 			// ListSeparatorComboBox
 			// 
+			this.ListSeparatorComboBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.ListSeparatorComboBox.FormattingEnabled = true;
 			this.ListSeparatorComboBox.Items.AddRange(new object[] {
             "\\r\\n",
@@ -127,7 +128,7 @@
             " "});
 			this.ListSeparatorComboBox.Location = new System.Drawing.Point(250, 5);
 			this.ListSeparatorComboBox.Name = "ListSeparatorComboBox";
-			this.ListSeparatorComboBox.Size = new System.Drawing.Size(58, 21);
+			this.ListSeparatorComboBox.Size = new System.Drawing.Size(58, 22);
 			this.ListSeparatorComboBox.TabIndex = 13;
 			this.ListSeparatorComboBox.Text = "\\r\\n";
 			// 
@@ -209,10 +210,10 @@
 			this.Password4TextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.Password4TextBox.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.Password4TextBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Password4TextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Password4TextBox.Location = new System.Drawing.Point(202, 120);
 			this.Password4TextBox.Name = "Password4TextBox";
-			this.Password4TextBox.Size = new System.Drawing.Size(386, 21);
+			this.Password4TextBox.Size = new System.Drawing.Size(386, 22);
 			this.Password4TextBox.TabIndex = 10;
 			this.Password4TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
@@ -232,10 +233,10 @@
 			this.Password3TextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.Password3TextBox.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.Password3TextBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Password3TextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Password3TextBox.Location = new System.Drawing.Point(202, 91);
 			this.Password3TextBox.Name = "Password3TextBox";
-			this.Password3TextBox.Size = new System.Drawing.Size(386, 21);
+			this.Password3TextBox.Size = new System.Drawing.Size(386, 22);
 			this.Password3TextBox.TabIndex = 10;
 			this.Password3TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
@@ -255,10 +256,10 @@
 			this.Password2TextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.Password2TextBox.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.Password2TextBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Password2TextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Password2TextBox.Location = new System.Drawing.Point(202, 62);
 			this.Password2TextBox.Name = "Password2TextBox";
-			this.Password2TextBox.Size = new System.Drawing.Size(386, 21);
+			this.Password2TextBox.Size = new System.Drawing.Size(386, 22);
 			this.Password2TextBox.TabIndex = 10;
 			this.Password2TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
@@ -267,10 +268,10 @@
 			this.Password1TextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.Password1TextBox.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.Password1TextBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Password1TextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Password1TextBox.Location = new System.Drawing.Point(202, 33);
 			this.Password1TextBox.Name = "Password1TextBox";
-			this.Password1TextBox.Size = new System.Drawing.Size(386, 21);
+			this.Password1TextBox.Size = new System.Drawing.Size(386, 22);
 			this.Password1TextBox.TabIndex = 10;
 			this.Password1TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
@@ -425,9 +426,10 @@
 			// 
 			this.CharsExtraTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.CharsExtraTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.CharsExtraTextBox.Location = new System.Drawing.Point(12, 192);
 			this.CharsExtraTextBox.Name = "CharsExtraTextBox";
-			this.CharsExtraTextBox.Size = new System.Drawing.Size(172, 20);
+			this.CharsExtraTextBox.Size = new System.Drawing.Size(172, 22);
 			this.CharsExtraTextBox.TabIndex = 14;
 			this.CharsExtraTextBox.TextChanged += new System.EventHandler(this.FormPresetValue_Changed);
 			// 
@@ -528,9 +530,10 @@
 			// 
 			this.FilterCharsStringTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.FilterCharsStringTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FilterCharsStringTextBox.Location = new System.Drawing.Point(12, 412);
 			this.FilterCharsStringTextBox.Name = "FilterCharsStringTextBox";
-			this.FilterCharsStringTextBox.Size = new System.Drawing.Size(172, 20);
+			this.FilterCharsStringTextBox.Size = new System.Drawing.Size(172, 22);
 			this.FilterCharsStringTextBox.TabIndex = 14;
 			this.FilterCharsStringTextBox.TextChanged += new System.EventHandler(this.FormPresetValue_Changed);
 			// 
@@ -538,9 +541,10 @@
 			// 
 			this.RegexPatternFindTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.RegexPatternFindTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.RegexPatternFindTextBox.Location = new System.Drawing.Point(12, 474);
 			this.RegexPatternFindTextBox.Name = "RegexPatternFindTextBox";
-			this.RegexPatternFindTextBox.Size = new System.Drawing.Size(172, 20);
+			this.RegexPatternFindTextBox.Size = new System.Drawing.Size(172, 22);
 			this.RegexPatternFindTextBox.TabIndex = 14;
 			this.RegexPatternFindTextBox.TextChanged += new System.EventHandler(this.FormPresetValue_Changed);
 			// 
@@ -548,9 +552,10 @@
 			// 
 			this.RegexPatternReplaceTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.RegexPatternReplaceTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.RegexPatternReplaceTextBox.Location = new System.Drawing.Point(12, 513);
 			this.RegexPatternReplaceTextBox.Name = "RegexPatternReplaceTextBox";
-			this.RegexPatternReplaceTextBox.Size = new System.Drawing.Size(172, 20);
+			this.RegexPatternReplaceTextBox.Size = new System.Drawing.Size(172, 22);
 			this.RegexPatternReplaceTextBox.TabIndex = 14;
 			this.RegexPatternReplaceTextBox.TextChanged += new System.EventHandler(this.FormPresetValue_Changed);
 			// 
@@ -605,11 +610,11 @@
 			// 
 			this.CallsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.CallsTextBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.CallsTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.CallsTextBox.ForeColor = System.Drawing.Color.Green;
 			this.CallsTextBox.Location = new System.Drawing.Point(202, 165);
 			this.CallsTextBox.Name = "CallsTextBox";
-			this.CallsTextBox.Size = new System.Drawing.Size(386, 21);
+			this.CallsTextBox.Size = new System.Drawing.Size(386, 22);
 			this.CallsTextBox.TabIndex = 14;
 			this.CallsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.CallsTextBox.TextChanged += new System.EventHandler(this.CallsTextBox_TextChanged);
@@ -620,8 +625,8 @@
 			this.CallsDataGridView.AllowUserToAddRows = false;
 			this.CallsDataGridView.AllowUserToDeleteRows = false;
 			this.CallsDataGridView.AllowUserToResizeRows = false;
-			dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.CallsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle6.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.CallsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
 			this.CallsDataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
 			this.CallsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.CallsDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
@@ -646,9 +651,9 @@
 			// 
 			this._dgwIndex.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this._dgwIndex.DataPropertyName = "Index";
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
-			this._dgwIndex.DefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Gray;
+			this._dgwIndex.DefaultCellStyle = dataGridViewCellStyle7;
 			this._dgwIndex.HeaderText = "Inxed";
 			this._dgwIndex.Name = "_dgwIndex";
 			this._dgwIndex.ReadOnly = true;
@@ -659,8 +664,8 @@
 			// 
 			this._dgwCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this._dgwCode.DataPropertyName = "Code";
-			dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
-			this._dgwCode.DefaultCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Gray;
+			this._dgwCode.DefaultCellStyle = dataGridViewCellStyle8;
 			this._dgwCode.HeaderText = "Code";
 			this._dgwCode.Name = "_dgwCode";
 			this._dgwCode.ReadOnly = true;
@@ -672,8 +677,8 @@
 			// 
 			this._dgwName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this._dgwName.DataPropertyName = "Name";
-			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._dgwName.DefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this._dgwName.DefaultCellStyle = dataGridViewCellStyle9;
 			this._dgwName.HeaderText = "Name";
 			this._dgwName.Name = "_dgwName";
 			this._dgwName.ReadOnly = true;
@@ -866,8 +871,8 @@
 			this.CallNamesDataGridView.AllowUserToAddRows = false;
 			this.CallNamesDataGridView.AllowUserToDeleteRows = false;
 			this.CallNamesDataGridView.AllowUserToResizeRows = false;
-			dataGridViewCellStyle5.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.CallNamesDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle10.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.CallNamesDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
 			this.CallNamesDataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
 			this.CallNamesDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.CallNamesDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
