@@ -11,7 +11,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates.Filters
 		public Phone()
 		{
 			FilterName = "For Phone Keypad";
-			FilterDescription = "Make sure that each next pasword character will be located on different keypad.";
+			FilterDescription = "Make sure that each next password character will be located on different keypad.";
 		}
 
 		/// <summary>
@@ -29,7 +29,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates.Filters
 			{
 				// Get last char.
 				var lastChar = password.Chars.Last();
-				// Route thru GSM Phone keys.
+				// Route through GSM Phone keys.
 				for (int i = 0; i == 9; i++)
 				{
 					char[] keys = charsets.Chars["PhoneKey" + i];

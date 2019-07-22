@@ -185,8 +185,6 @@ namespace JocysCom.Password.Generator.Controls
 					_HelpContent.Add(FilterRememberCheckBox, PassGen.Filters[FilterName.Remember].FilterName + ": " + PassGen.Filters[FilterName.Remember].FilterDescription);
 					_HelpContent.Add(FilterKeyboardCheckBox, PassGen.Filters[FilterName.Keyboard].FilterName + ": " + PassGen.Filters[FilterName.Keyboard].FilterDescription);
 					_HelpContent.Add(FilterPhoneCheckBox, PassGen.Filters[FilterName.Phone].FilterName + ": " + PassGen.Filters[FilterName.Phone].FilterDescription);
-					_HelpContent.Add(FilterEnforceCheckBox, PassGen.Filters[FilterName.Enforce].FilterName + ": " + PassGen.Filters[FilterName.Enforce].FilterDescription);
-					_HelpContent.Add(FilterAsciiCheckBox, PassGen.Filters[FilterName.Ascii].FilterName + ": " + PassGen.Filters[FilterName.Ascii].FilterDescription);
 					_HelpContent.Add(FilterCharsCheckBox, PassGen.Filters[FilterName.Chars].FilterName + ": " + PassGen.Filters[FilterName.Chars].FilterDescription);
 					_HelpContent.Add(FilterCharsStringTextBox, "Specify custom characters to remove from password.");
 					_HelpContent.Add(RegexEnabledCheckBox, "Apply Regular Expression patterns on password.");
@@ -418,9 +416,7 @@ namespace JocysCom.Password.Generator.Controls
 			CharsExtraTextBox.Text = preset.CharsExtra;
 			FilterRememberCheckBox.Checked = preset.FilterRemember;
 			FilterKeyboardCheckBox.Checked = preset.FilterKeyboard;
-			FilterEnforceCheckBox.Checked = preset.FilterEnforce;
 			FilterPhoneCheckBox.Checked = preset.FilterPhone;
-			FilterAsciiCheckBox.Checked = preset.FilterAscii;
 			FilterCharsCheckBox.Checked = preset.FilterChars;
 			FilterCharsStringTextBox.Text = preset.FilterCharsString;
 			ScriptEnabledCheckBox.Checked = preset.ScriptEnabled;
@@ -466,9 +462,7 @@ namespace JocysCom.Password.Generator.Controls
 			preset.CharsExtra = CharsExtraTextBox.Text;
 			preset.FilterRemember = FilterRememberCheckBox.Checked;
 			preset.FilterKeyboard = FilterKeyboardCheckBox.Checked;
-			preset.FilterEnforce = FilterEnforceCheckBox.Checked;
 			preset.FilterPhone = FilterPhoneCheckBox.Checked;
-			preset.FilterAscii = FilterAsciiCheckBox.Checked;
 			preset.FilterChars = FilterCharsCheckBox.Checked;
 			preset.FilterCharsString = FilterCharsStringTextBox.Text;
 			preset.ScriptEnabled = ScriptEnabledCheckBox.Checked;

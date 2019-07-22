@@ -30,11 +30,11 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneratorControl));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.ListSeparatorComboBox = new System.Windows.Forms.ComboBox();
 			this.ListSizeNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.ListButton = new System.Windows.Forms.Button();
@@ -67,7 +67,6 @@
 			this.FilterRememberCheckBox = new System.Windows.Forms.CheckBox();
 			this.FilterKeyboardCheckBox = new System.Windows.Forms.CheckBox();
 			this.FilterPhoneCheckBox = new System.Windows.Forms.CheckBox();
-			this.FilterAsciiCheckBox = new System.Windows.Forms.CheckBox();
 			this.FilterCharsCheckBox = new System.Windows.Forms.CheckBox();
 			this.FilterCharsStringTextBox = new System.Windows.Forms.TextBox();
 			this.RegexPatternFindTextBox = new System.Windows.Forms.TextBox();
@@ -89,7 +88,6 @@
 			this.FavPreset2Button = new System.Windows.Forms.Button();
 			this.FavPreset1Button = new System.Windows.Forms.Button();
 			this.PresetNameComboBox = new System.Windows.Forms.ComboBox();
-			this.FilterEnforceCheckBox = new System.Windows.Forms.CheckBox();
 			this.CallsTimer = new System.Windows.Forms.Timer(this.components);
 			this.FormOptionsTimer = new System.Windows.Forms.Timer(this.components);
 			this.HelpTimer = new System.Windows.Forms.Timer(this.components);
@@ -197,11 +195,11 @@
 			this.HelpTextBox.BackColor = System.Drawing.SystemColors.Control;
 			this.HelpTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.HelpTextBox.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.HelpTextBox.Location = new System.Drawing.Point(3, 583);
+			this.HelpTextBox.Location = new System.Drawing.Point(3, 516);
 			this.HelpTextBox.Multiline = true;
 			this.HelpTextBox.Name = "HelpTextBox";
 			this.HelpTextBox.ReadOnly = true;
-			this.HelpTextBox.Size = new System.Drawing.Size(190, 63);
+			this.HelpTextBox.Size = new System.Drawing.Size(190, 67);
 			this.HelpTextBox.TabIndex = 10;
 			this.HelpTextBox.Text = resources.GetString("HelpTextBox.Text");
 			// 
@@ -504,21 +502,10 @@
 			this.FilterPhoneCheckBox.UseVisualStyleBackColor = true;
 			this.FilterPhoneCheckBox.CheckedChanged += new System.EventHandler(this.FormPresetValue_Changed);
 			// 
-			// FilterAsciiCheckBox
-			// 
-			this.FilterAsciiCheckBox.AutoSize = true;
-			this.FilterAsciiCheckBox.Location = new System.Drawing.Point(12, 370);
-			this.FilterAsciiCheckBox.Name = "FilterAsciiCheckBox";
-			this.FilterAsciiCheckBox.Size = new System.Drawing.Size(77, 17);
-			this.FilterAsciiCheckBox.TabIndex = 15;
-			this.FilterAsciiCheckBox.Text = "ASCII Only";
-			this.FilterAsciiCheckBox.UseVisualStyleBackColor = true;
-			this.FilterAsciiCheckBox.CheckedChanged += new System.EventHandler(this.FormPresetValue_Changed);
-			// 
 			// FilterCharsCheckBox
 			// 
 			this.FilterCharsCheckBox.AutoSize = true;
-			this.FilterCharsCheckBox.Location = new System.Drawing.Point(12, 393);
+			this.FilterCharsCheckBox.Location = new System.Drawing.Point(12, 347);
 			this.FilterCharsCheckBox.Name = "FilterCharsCheckBox";
 			this.FilterCharsCheckBox.Size = new System.Drawing.Size(99, 17);
 			this.FilterCharsCheckBox.TabIndex = 15;
@@ -531,7 +518,7 @@
 			this.FilterCharsStringTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.FilterCharsStringTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FilterCharsStringTextBox.Location = new System.Drawing.Point(12, 412);
+			this.FilterCharsStringTextBox.Location = new System.Drawing.Point(12, 366);
 			this.FilterCharsStringTextBox.Name = "FilterCharsStringTextBox";
 			this.FilterCharsStringTextBox.Size = new System.Drawing.Size(172, 22);
 			this.FilterCharsStringTextBox.TabIndex = 14;
@@ -542,7 +529,7 @@
 			this.RegexPatternFindTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.RegexPatternFindTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RegexPatternFindTextBox.Location = new System.Drawing.Point(12, 474);
+			this.RegexPatternFindTextBox.Location = new System.Drawing.Point(12, 428);
 			this.RegexPatternFindTextBox.Name = "RegexPatternFindTextBox";
 			this.RegexPatternFindTextBox.Size = new System.Drawing.Size(172, 22);
 			this.RegexPatternFindTextBox.TabIndex = 14;
@@ -553,7 +540,7 @@
 			this.RegexPatternReplaceTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.RegexPatternReplaceTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RegexPatternReplaceTextBox.Location = new System.Drawing.Point(12, 513);
+			this.RegexPatternReplaceTextBox.Location = new System.Drawing.Point(12, 467);
 			this.RegexPatternReplaceTextBox.Name = "RegexPatternReplaceTextBox";
 			this.RegexPatternReplaceTextBox.Size = new System.Drawing.Size(172, 22);
 			this.RegexPatternReplaceTextBox.TabIndex = 14;
@@ -562,7 +549,7 @@
 			// FilterPatternToFindLabel
 			// 
 			this.FilterPatternToFindLabel.AutoSize = true;
-			this.FilterPatternToFindLabel.Location = new System.Drawing.Point(9, 458);
+			this.FilterPatternToFindLabel.Location = new System.Drawing.Point(9, 412);
 			this.FilterPatternToFindLabel.Name = "FilterPatternToFindLabel";
 			this.FilterPatternToFindLabel.Size = new System.Drawing.Size(83, 13);
 			this.FilterPatternToFindLabel.TabIndex = 16;
@@ -571,7 +558,7 @@
 			// FilterPatternToReplaceLabel
 			// 
 			this.FilterPatternToReplaceLabel.AutoSize = true;
-			this.FilterPatternToReplaceLabel.Location = new System.Drawing.Point(9, 497);
+			this.FilterPatternToReplaceLabel.Location = new System.Drawing.Point(9, 451);
 			this.FilterPatternToReplaceLabel.Name = "FilterPatternToReplaceLabel";
 			this.FilterPatternToReplaceLabel.Size = new System.Drawing.Size(103, 13);
 			this.FilterPatternToReplaceLabel.TabIndex = 16;
@@ -583,7 +570,7 @@
 			this.RegexEnabledCheckBox.Checked = true;
 			this.RegexEnabledCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.RegexEnabledCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RegexEnabledCheckBox.Location = new System.Drawing.Point(3, 438);
+			this.RegexEnabledCheckBox.Location = new System.Drawing.Point(3, 392);
 			this.RegexEnabledCheckBox.Name = "RegexEnabledCheckBox";
 			this.RegexEnabledCheckBox.Size = new System.Drawing.Size(154, 17);
 			this.RegexEnabledCheckBox.TabIndex = 15;
@@ -598,7 +585,7 @@
 			this.ScriptEnabledCheckBox.Checked = true;
 			this.ScriptEnabledCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.ScriptEnabledCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.ScriptEnabledCheckBox.Location = new System.Drawing.Point(3, 539);
+			this.ScriptEnabledCheckBox.Location = new System.Drawing.Point(3, 493);
 			this.ScriptEnabledCheckBox.Name = "ScriptEnabledCheckBox";
 			this.ScriptEnabledCheckBox.Size = new System.Drawing.Size(87, 17);
 			this.ScriptEnabledCheckBox.TabIndex = 15;
@@ -625,8 +612,8 @@
 			this.CallsDataGridView.AllowUserToAddRows = false;
 			this.CallsDataGridView.AllowUserToDeleteRows = false;
 			this.CallsDataGridView.AllowUserToResizeRows = false;
-			dataGridViewCellStyle6.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.CallsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.CallsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
 			this.CallsDataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
 			this.CallsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.CallsDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
@@ -643,7 +630,7 @@
 			this.CallsDataGridView.Name = "CallsDataGridView";
 			this.CallsDataGridView.RowHeadersVisible = false;
 			this.CallsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.CallsDataGridView.Size = new System.Drawing.Size(244, 428);
+			this.CallsDataGridView.Size = new System.Drawing.Size(244, 369);
 			this.CallsDataGridView.TabIndex = 15;
 			this.CallsDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.CallsDataGridView_CellFormatting);
 			// 
@@ -651,9 +638,9 @@
 			// 
 			this._dgwIndex.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this._dgwIndex.DataPropertyName = "Index";
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Gray;
-			this._dgwIndex.DefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
+			this._dgwIndex.DefaultCellStyle = dataGridViewCellStyle2;
 			this._dgwIndex.HeaderText = "Inxed";
 			this._dgwIndex.Name = "_dgwIndex";
 			this._dgwIndex.ReadOnly = true;
@@ -664,8 +651,8 @@
 			// 
 			this._dgwCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this._dgwCode.DataPropertyName = "Code";
-			dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Gray;
-			this._dgwCode.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
+			this._dgwCode.DefaultCellStyle = dataGridViewCellStyle3;
 			this._dgwCode.HeaderText = "Code";
 			this._dgwCode.Name = "_dgwCode";
 			this._dgwCode.ReadOnly = true;
@@ -677,8 +664,8 @@
 			// 
 			this._dgwName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this._dgwName.DataPropertyName = "Name";
-			dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._dgwName.DefaultCellStyle = dataGridViewCellStyle9;
+			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this._dgwName.DefaultCellStyle = dataGridViewCellStyle4;
 			this._dgwName.HeaderText = "Name";
 			this._dgwName.Name = "_dgwName";
 			this._dgwName.ReadOnly = true;
@@ -723,8 +710,6 @@
 			this.OptionsPanel.Controls.Add(this.ScriptEnabledCheckBox);
 			this.OptionsPanel.Controls.Add(this.RegexEnabledCheckBox);
 			this.OptionsPanel.Controls.Add(this.FilterCharsCheckBox);
-			this.OptionsPanel.Controls.Add(this.FilterAsciiCheckBox);
-			this.OptionsPanel.Controls.Add(this.FilterEnforceCheckBox);
 			this.OptionsPanel.Controls.Add(this.PasswordLengthNumericUpDown);
 			this.OptionsPanel.Controls.Add(this.FilterPhoneCheckBox);
 			this.OptionsPanel.Controls.Add(this.PasswordContainsLabel);
@@ -744,7 +729,7 @@
 			this.OptionsPanel.Dock = System.Windows.Forms.DockStyle.Left;
 			this.OptionsPanel.Location = new System.Drawing.Point(0, 0);
 			this.OptionsPanel.Name = "OptionsPanel";
-			this.OptionsPanel.Size = new System.Drawing.Size(196, 649);
+			this.OptionsPanel.Size = new System.Drawing.Size(196, 590);
 			this.OptionsPanel.TabIndex = 15;
 			// 
 			// PresetSaveButton
@@ -815,17 +800,6 @@
 			this.PresetNameComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ComboBox_DrawItem);
 			this.PresetNameComboBox.SelectedIndexChanged += new System.EventHandler(this.PresetNameComboBox_SelectedIndexChanged);
 			// 
-			// FilterEnforceCheckBox
-			// 
-			this.FilterEnforceCheckBox.AutoSize = true;
-			this.FilterEnforceCheckBox.Location = new System.Drawing.Point(12, 347);
-			this.FilterEnforceCheckBox.Name = "FilterEnforceCheckBox";
-			this.FilterEnforceCheckBox.Size = new System.Drawing.Size(93, 17);
-			this.FilterEnforceCheckBox.TabIndex = 15;
-			this.FilterEnforceCheckBox.Text = "Enforce Chars";
-			this.FilterEnforceCheckBox.UseVisualStyleBackColor = true;
-			this.FilterEnforceCheckBox.CheckedChanged += new System.EventHandler(this.FormPresetValue_Changed);
-			// 
 			// CallsTimer
 			// 
 			this.CallsTimer.Interval = 4000;
@@ -853,7 +827,7 @@
 			this.CallNamesTabControl.Location = new System.Drawing.Point(202, 192);
 			this.CallNamesTabControl.Name = "CallNamesTabControl";
 			this.CallNamesTabControl.SelectedIndex = 0;
-			this.CallNamesTabControl.Size = new System.Drawing.Size(200, 457);
+			this.CallNamesTabControl.Size = new System.Drawing.Size(200, 398);
 			this.CallNamesTabControl.TabIndex = 16;
 			// 
 			// CallsNamesTabPage
@@ -861,7 +835,7 @@
 			this.CallsNamesTabPage.Controls.Add(this.CallNamesDataGridView);
 			this.CallsNamesTabPage.Location = new System.Drawing.Point(4, 22);
 			this.CallsNamesTabPage.Name = "CallsNamesTabPage";
-			this.CallsNamesTabPage.Size = new System.Drawing.Size(192, 431);
+			this.CallsNamesTabPage.Size = new System.Drawing.Size(192, 372);
 			this.CallsNamesTabPage.TabIndex = 0;
 			this.CallsNamesTabPage.Text = "Call Names";
 			this.CallsNamesTabPage.UseVisualStyleBackColor = true;
@@ -871,8 +845,8 @@
 			this.CallNamesDataGridView.AllowUserToAddRows = false;
 			this.CallNamesDataGridView.AllowUserToDeleteRows = false;
 			this.CallNamesDataGridView.AllowUserToResizeRows = false;
-			dataGridViewCellStyle10.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.CallNamesDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle5.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.CallNamesDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
 			this.CallNamesDataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
 			this.CallNamesDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.CallNamesDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
@@ -886,7 +860,7 @@
 			this.CallNamesDataGridView.Name = "CallNamesDataGridView";
 			this.CallNamesDataGridView.RowHeadersVisible = false;
 			this.CallNamesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.CallNamesDataGridView.Size = new System.Drawing.Size(192, 431);
+			this.CallNamesDataGridView.Size = new System.Drawing.Size(192, 372);
 			this.CallNamesDataGridView.TabIndex = 16;
 			this.CallNamesDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.CallNamesDataGridView_CellFormatting);
 			this.CallNamesDataGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.CallNamesDataGridView_DataBindingComplete);
@@ -911,7 +885,7 @@
 			this.CallsTabControl.Location = new System.Drawing.Point(408, 192);
 			this.CallsTabControl.Name = "CallsTabControl";
 			this.CallsTabControl.SelectedIndex = 0;
-			this.CallsTabControl.Size = new System.Drawing.Size(252, 454);
+			this.CallsTabControl.Size = new System.Drawing.Size(252, 395);
 			this.CallsTabControl.TabIndex = 17;
 			// 
 			// CallsTabPage
@@ -919,7 +893,7 @@
 			this.CallsTabPage.Controls.Add(this.CallsDataGridView);
 			this.CallsTabPage.Location = new System.Drawing.Point(4, 22);
 			this.CallsTabPage.Name = "CallsTabPage";
-			this.CallsTabPage.Size = new System.Drawing.Size(244, 428);
+			this.CallsTabPage.Size = new System.Drawing.Size(244, 369);
 			this.CallsTabPage.TabIndex = 0;
 			this.CallsTabPage.Text = "Calls";
 			this.CallsTabPage.UseVisualStyleBackColor = true;
@@ -948,7 +922,7 @@
 			this.Controls.Add(this.Copy3Button);
 			this.Controls.Add(this.Copy4Button);
 			this.Name = "GeneratorControl";
-			this.Size = new System.Drawing.Size(663, 649);
+			this.Size = new System.Drawing.Size(663, 590);
 			((System.ComponentModel.ISupportInitialize)(this.ListSizeNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.RatioNumbersNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.RatioUppercaseNumericUpDown)).EndInit();
@@ -1001,7 +975,6 @@
 		private System.Windows.Forms.CheckBox FilterRememberCheckBox;
 		private System.Windows.Forms.CheckBox FilterKeyboardCheckBox;
 		private System.Windows.Forms.CheckBox FilterPhoneCheckBox;
-		private System.Windows.Forms.CheckBox FilterAsciiCheckBox;
 		private System.Windows.Forms.CheckBox FilterCharsCheckBox;
 		private System.Windows.Forms.TextBox FilterCharsStringTextBox;
 		private System.Windows.Forms.TextBox RegexPatternFindTextBox;
@@ -1021,7 +994,6 @@
 		private System.Windows.Forms.Timer FormOptionsTimer;
 		private System.Windows.Forms.Timer HelpTimer;
 		private System.Windows.Forms.ImageList imageList1;
-		private System.Windows.Forms.CheckBox FilterEnforceCheckBox;
 		public System.Windows.Forms.ComboBox ListSeparatorComboBox;
 		private System.Windows.Forms.TextBox PasswordStrengthTextBox;
 		private System.Windows.Forms.Button PresetSaveButton;

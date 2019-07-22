@@ -27,6 +27,15 @@ namespace JocysCom.ClassLibrary.Security.Password
 			get { return _Log = _Log ?? new StringBuilder(); }
 		}
 
+		public void AppendChar(char c)
+		{
+			if (_Chars == null)
+				_Chars = new char[0];
+			Array.Resize(ref _Chars, _Chars.Length + 1);
+			_Chars[_Chars.Length - 1] = c;
+		}
+
+
 		public void AppendLog(string format, params object[] args)
 		{
 			Log.Append(string.Format(format, args));

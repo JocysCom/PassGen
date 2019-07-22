@@ -11,8 +11,8 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates.Filters
 
 		public Keyboard()
 		{
-			FilterName = "For PC Keyboaard";
-			FilterDescription = "Make sure that each next pasword character will be located on different side of keyboard.";
+			FilterName = "For PC Keyboard";
+			FilterDescription = "Make sure that each next password character will be located on different side of keyboard.";
 		}
 
 		/// <summary>

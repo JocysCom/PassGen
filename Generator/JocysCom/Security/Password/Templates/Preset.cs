@@ -34,7 +34,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 
 		public void SetDefaultChars()
 		{
-			Charsets charsets = new Charsets();
+			var charsets = new Charsets();
 			CharsNumbers = charsets.Strings["Numbers"];
 			CharsUppercase = charsets.Strings["Uppercase"];
 			CharsLowercase = charsets.Strings["Lowercase"];
@@ -49,7 +49,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		{
 			if (_Chars == null)
 			{
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 				if (UseNumbers) for (int i = 0; i < RatioNumbers; i++) sb.Append(CharsNumbers);
 				if (UseUppercase) for (int i = 0; i < RatioUppercase; i++) sb.Append(CharsUppercase);
 				if (UseLowercase) for (int i = 0; i < RatioLowercase; i++) sb.Append(CharsLowercase);
