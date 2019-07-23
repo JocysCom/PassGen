@@ -6,6 +6,7 @@ using System.Configuration;
 using System.IO;
 using System.Diagnostics;
 using System.Reflection;
+using System.Linq;
 
 namespace JocysCom.Password.Generator
 {
@@ -130,23 +131,53 @@ namespace JocysCom.Password.Generator
 
 		static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs e)
 		{
-			string dllName = e.Name.Contains(",") ? e.Name.Substring(0, e.Name.IndexOf(',')) : e.Name.Replace(".dll", "");
-			string path = null;
+			var dllName = e.Name.Contains(",") ? e.Name.Substring(0, e.Name.IndexOf(',')) : e.Name.Replace(".dll", "");
+			Stream sr = null;
 			switch (dllName)
 			{
-				case "JocysCom.ClassLibrary":
-					path = "Resources.JocysCom.ClassLibrary.dll";
+				case "System.Text.Encodings.Web":
+					sr = GetResourceStream(dllName + ".dll");
 					break;
 				default:
 					break;
 			}
-			if (path == null) return null;
-			var assembly = Assembly.GetExecutingAssembly();
-			var sr = assembly.GetManifestResourceStream(typeof(MainForm).Namespace + "." + path);
-			if (sr == null) return null;
-			byte[] bytes = new byte[sr.Length];
+			if (sr == null)
+				return null;
+			var bytes = new byte[sr.Length];
 			sr.Read(bytes, 0, bytes.Length);
-			return Assembly.Load(bytes);
+			var asm = Assembly.Load(bytes);
+			sr.Dispose();
+			return asm;
+		}
+
+		/// <summary>
+		/// Get 32-bit or 64-bit resource depending on x360ce.exe platform.
+		/// </summary>
+		public static Stream GetResourceStream(string name)
+		{
+			var path = GetResourcePath(name);
+			if (path == null)
+				return null;
+			var assembly = Assembly.GetEntryAssembly();
+			var sr = assembly.GetManifestResourceStream(path);
+			return sr;
+		}
+
+		/// <summary>
+		/// Get 32-bit or 64-bit resource depending on x360ce.exe platform.
+		/// </summary>
+		public static string GetResourcePath(string name)
+		{
+			var assembly = Assembly.GetEntryAssembly();
+			var names = assembly.GetManifestResourceNames()
+				.Where(x => x.EndsWith(name));
+			var a = Environment.Is64BitProcess ? ".x64." : ".x86.";
+			// Try to get by architecture first.
+			var path = names.FirstOrDefault(x => x.Contains(a));
+			if (!string.IsNullOrEmpty(path))
+				return path;
+			// Return first found.
+			return names.FirstOrDefault();
 		}
 
 	}

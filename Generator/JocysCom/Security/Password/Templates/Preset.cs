@@ -9,11 +9,14 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 {
 	public partial class Preset
 	{
-		public Preset()
+		public Preset(bool loadDefault = true)
 		{
-			PresetTemplate = Templates.PresetName.Default;
-			Load(Templates.PresetName.Default);
-			SetDefaultChars();
+			if (loadDefault)
+			{
+				PresetTemplate = Templates.PresetName.Default;
+				Load(Templates.PresetName.Default);
+				SetDefaultChars();
+			}
 		}
 
 		public Preset(PresetName name)

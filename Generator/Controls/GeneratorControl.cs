@@ -11,8 +11,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Text.Unicode;
 using System.Windows.Forms;
-using JocysCom.ClassLibrary.Controls.DynamicCompile;
 
 namespace JocysCom.Password.Generator.Controls
 {
@@ -23,6 +23,10 @@ namespace JocysCom.Password.Generator.Controls
 			Settings.Default.SettingsLoaded += Default_SettingsLoaded;
 			InitializeComponent();
 			CallNamesDataGridView.AutoGenerateColumns = false;
+			var list = new List<RangeItem>();
+			list.Add(new RangeItem("Basic Latin", UnicodeRanges.BasicLatin));
+			//list.Add(new RangeItem("Cyrillic", UnicodeRanges.Cyrillic, 0xFF));
+			LanguageComboBox.DataSource = list;
 		}
 
 		private void Default_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
@@ -301,6 +305,7 @@ namespace JocysCom.Password.Generator.Controls
 			var call = GetCurrentCall();
 			if (call != null)
 			{
+				CallsCaseColumn.Visible = call.CallName == "EN: NATO";
 				Settings.Default.CallNameComboBox = call.CallName;
 				//HelpTextBox.Text = call.CallName + ": " + call.CallDescription;
 				for (uint i = 0; i < codes.Length; i++)
@@ -311,6 +316,7 @@ namespace JocysCom.Password.Generator.Controls
 					c.Index = i + 1;
 					callItems.Add(c);
 				}
+
 			}
 			CallsDataGridView.DataSource = callItems;
 		}
@@ -325,23 +331,34 @@ namespace JocysCom.Password.Generator.Controls
 
 		private void CallsDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
-			// Character code.
-			if (e.ColumnIndex == 1)
+			if (e.RowIndex < 0 || e.ColumnIndex < 0)
+				return;
+			var grid = (DataGridView)sender;
+			var row = grid.Rows[e.RowIndex];
+			var column = grid.Columns[e.ColumnIndex];
+			var item = (CallItem)row.DataBoundItem;
+			if (column.Name == CallsCodeColumn.Name)
 			{
-				uint code = (uint)e.Value;
+				var code = (uint)e.Value;
 				e.Value = (code).ToString("X4");
 			}
-			// 
-			if (e.ColumnIndex == 3)
+			else if (column.Name == CallsCaseColumn.Name)
+			{
+				var c = (char)item.Code;
+				if (char.IsUpper(c))
+					e.Value = "Capital";
+				if (char.IsLower(c))
+					e.Value = "small";
+			}
+			if (column.Name == CallsNameColumn.Name || column.Name == CallsDescriptionColumn.Name)
 			{
 				Call call = GetCurrentCall();
 				if (!string.IsNullOrEmpty(call.FontName))
 				{
-					e.CellStyle.Font = new Font("Courier New", 9);// System.Drawing.SystemFonts.GetFontByName("Courier New");
+					// System.Drawing.SystemFonts.GetFontByName("Courier New");
+					e.CellStyle.Font = new Font("Courier New", 9);
 				}
-
-				uint charCode = (uint)CallsDataGridView.Rows[e.RowIndex].Cells[1].Value;
-				char c = (char)charCode;
+				var c = (char)item.Code;
 				Color color;
 				if (char.IsLetter(c) && char.IsUpper(c)) color = System.Drawing.Color.Black;
 				else if (char.IsLetter(c) && char.IsLower(c)) color = System.Drawing.Color.Black;
@@ -826,6 +843,14 @@ namespace JocysCom.Password.Generator.Controls
 		{
 			SelectCall(Settings.Default.CallNameComboBox);
 			CallNamesDataBindingComplete = true;
+		}
+
+		private void LanguageComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var box = (ComboBox)sender;
+			var range = box.SelectedIndex < 0
+				? UnicodeRanges.BasicLatin
+				: ((RangeItem)box.SelectedItem).Range;
 		}
 	}
 }
