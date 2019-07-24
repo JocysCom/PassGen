@@ -129,10 +129,13 @@ namespace JocysCom.Password.Generator.Controls
 		{
 			// Load Calls
 			Calls = new BindingList<Call>();
-			CallName[] callNames = (CallName[])Enum.GetValues(typeof(CallName));
+			var callNames = (CallName[])Enum.GetValues(typeof(CallName));
+			// Make sure NATO is on top of the list.
+			callNames = callNames.OrderBy(x => x != CallName.EN_NATO).ThenBy(x => x.ToString()).ToArray();
 			foreach (var callName in callNames)
 			{
-				Call call = new Call(CallName.EN_Unicode);
+				// Load default from EN Unicode.
+				var call = new Call(CallName.EN_Unicode);
 				call.Load(callName, true);
 				Calls.Add(call);
 			}
