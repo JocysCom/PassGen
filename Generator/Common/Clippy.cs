@@ -32,38 +32,44 @@ namespace Kolibri
 {
 	public class Clippy
 	{
-		[DllImport("kernel32.dll")]
-		private static extern IntPtr GlobalAlloc(uint uFlags, UIntPtr dwBytes);
 
-		[DllImport("kernel32.dll")]
-		private static extern uint GetLastError();
+		internal class NativeMethods
+		{
 
-		[DllImport("kernel32.dll")]
-		private static extern IntPtr LocalFree(IntPtr hMem);
+			[DllImport("kernel32.dll")]
+			internal static extern IntPtr GlobalAlloc(uint uFlags, UIntPtr dwBytes);
 
-		[DllImport("kernel32.dll")]
-		private static extern IntPtr GlobalFree(IntPtr hMem);
+			[DllImport("kernel32.dll")]
+			internal static extern uint GetLastError();
 
-		[DllImport("kernel32.dll")]
-		private static extern IntPtr GlobalLock(IntPtr hMem);
+			[DllImport("kernel32.dll")]
+			internal static extern IntPtr LocalFree(IntPtr hMem);
 
-		[DllImport("kernel32.dll")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool GlobalUnlock(IntPtr hMem);
+			[DllImport("kernel32.dll")]
+			internal static extern IntPtr GlobalFree(IntPtr hMem);
 
-		[DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
-		public static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
+			[DllImport("kernel32.dll")]
+			internal static extern IntPtr GlobalLock(IntPtr hMem);
 
-		[DllImport("user32.dll")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool OpenClipboard(IntPtr hWndNewOwner);
+			[DllImport("kernel32.dll")]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			internal static extern bool GlobalUnlock(IntPtr hMem);
 
-		[DllImport("user32.dll")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool CloseClipboard();
+			[DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
+			internal static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
 
-		[DllImport("user32.dll")]
-		private static extern IntPtr SetClipboardData(uint uFormat, IntPtr data);
+			[DllImport("user32.dll")]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			internal static extern bool OpenClipboard(IntPtr hWndNewOwner);
+
+			[DllImport("user32.dll")]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			internal static extern bool CloseClipboard();
+
+			[DllImport("user32.dll")]
+			internal static extern IntPtr SetClipboardData(uint uFormat, IntPtr data);
+
+		}
 
 		public enum ResultCode
 		{
@@ -82,6 +88,14 @@ namespace Kolibri
 
 		public class Result
 		{
+			public Result() { }
+
+			public Result(uint lastError, ResultCode resultCode = ResultCode.Success)
+			{
+				LastError = lastError;
+				ResultCode = resultCode;
+			}
+
 			public ResultCode ResultCode { get; set; }
 
 			public uint LastError { get; set; }
@@ -136,9 +150,9 @@ namespace Kolibri
 						return new Result { ResultCode = ResultCode.ErrorInvalidArgs };
 					}
 
-					if (!OpenClipboard(IntPtr.Zero))
+					if (!NativeMethods.OpenClipboard(IntPtr.Zero))
 					{
-						return new Result { ResultCode = ResultCode.ErrorOpenClipboard, LastError = GetLastError() };
+						return new Result(NativeMethods.GetLastError()) { ResultCode = ResultCode.ErrorOpenClipboard };
 					}
 
 					try
@@ -167,10 +181,11 @@ namespace Kolibri
 						const int GHND = GMEM_MOVABLE | GMEM_ZEROINIT;
 
 						// IMPORTANT: SetClipboardData requires memory that was acquired with GlobalAlloc using GMEM_MOVABLE.
-						var hGlobal = GlobalAlloc(GHND, (UIntPtr)bytes);
+						var hGlobal = NativeMethods.GlobalAlloc(GHND, (UIntPtr)bytes);
+						var lastError = NativeMethods.GetLastError();
 						if (hGlobal == IntPtr.Zero)
 						{
-							return new Result { ResultCode = ResultCode.ErrorGlobalAlloc, LastError = GetLastError() };
+							return new Result(lastError) { ResultCode = ResultCode.ErrorGlobalAlloc };
 						}
 
 						try
@@ -192,64 +207,64 @@ namespace Kolibri
 
 							try
 							{
-								var target = GlobalLock(hGlobal);
+								var target = NativeMethods.GlobalLock(hGlobal);
 								if (target == IntPtr.Zero)
 								{
-									return new Result { ResultCode = ResultCode.ErrorGlobalLock, LastError = GetLastError() };
+									return new Result(NativeMethods.GetLastError(), ResultCode.ErrorGlobalLock);
 								}
 
 								try
 								{
-									CopyMemory(target, source, bytes);
+									NativeMethods.CopyMemory(target, source, bytes);
 								}
 								finally
 								{
-									var ignore = GlobalUnlock(target);
+									var ignore = NativeMethods.GlobalUnlock(target);
 								}
 
-								if (SetClipboardData(format, hGlobal).ToInt64() != 0)
+								if (NativeMethods.SetClipboardData(format, hGlobal).ToInt64() != 0)
 								{
 									// IMPORTANT: SetClipboardData takes ownership of hGlobal upon success.
 									hGlobal = IntPtr.Zero;
 								}
 								else
 								{
-									return new Result { ResultCode = ResultCode.ErrorSetClipboardData, LastError = GetLastError() };
+									return new Result(NativeMethods.GetLastError(), ResultCode.ErrorSetClipboardData);
 								}
 							}
 							finally
 							{
-								// Marshal.StringToHGlobalUni actually allocates with LocalAlloc, thus we should theorhetically use LocalFree to free the memory...
-								// ... but Marshal.FreeHGlobal actully uses a corresponding version of LocalFree internally, so this works, even though it doesn't
+								// Marshal.StringToHGlobalUni actually allocates with LocalAlloc, thus we should theoretically use LocalFree to free the memory...
+								// ... but Marshal.FreeHGlobal actually uses a corresponding version of LocalFree internally, so this works, even though it doesn't
 								//  behave exactly as expected.
 								Marshal.FreeHGlobal(source);
 							}
 						}
 						catch (OutOfMemoryException)
 						{
-							return new Result { ResultCode = ResultCode.ErrorOutOfMemoryException, LastError = GetLastError() };
+							return new Result { ResultCode = ResultCode.ErrorOutOfMemoryException, LastError = NativeMethods.GetLastError() };
 						}
 						catch (ArgumentOutOfRangeException)
 						{
-							return new Result { ResultCode = ResultCode.ErrorArgumentOutOfRangeException, LastError = GetLastError() };
+							return new Result { ResultCode = ResultCode.ErrorArgumentOutOfRangeException, LastError = NativeMethods.GetLastError() };
 						}
 						finally
 						{
 							if (hGlobal != IntPtr.Zero)
 							{
-								var ignore = GlobalFree(hGlobal);
+								var ignore = NativeMethods.GlobalFree(hGlobal);
 							}
 						}
 					}
 					finally
 					{
-						CloseClipboard();
+						NativeMethods.CloseClipboard();
 					}
 					return new Result { ResultCode = ResultCode.Success };
 				}
 				catch (Exception)
 				{
-					return new Result { ResultCode = ResultCode.ErrorException, LastError = GetLastError() };
+					return new Result { ResultCode = ResultCode.ErrorException, LastError = NativeMethods.GetLastError() };
 				}
 			}
 			catch (Exception)
