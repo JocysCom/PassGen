@@ -33,7 +33,6 @@
 			this.AlwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MinimizeToTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StartWithWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.RevealerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.Preset1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Preset2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,14 +45,14 @@
 			this.ImageList48 = new System.Windows.Forms.ImageList(this.components);
 			this.MainTabControl = new System.Windows.Forms.TabControl();
 			this.GeneratorTabPage = new System.Windows.Forms.TabPage();
-			this.ScriptTabPage = new System.Windows.Forms.TabPage();
-			this.OptionsTabPage = new System.Windows.Forms.TabPage();
-			this.AboutTabPage = new System.Windows.Forms.TabPage();
-			this.ResourcesTabPage = new System.Windows.Forms.TabPage();
 			this.GeneratorPanel = new JocysCom.Password.Generator.Controls.GeneratorControl();
+			this.ScriptTabPage = new System.Windows.Forms.TabPage();
 			this.ScriptPanel = new JocysCom.ClassLibrary.Controls.DynamicCompile.DcControl();
+			this.OptionsTabPage = new System.Windows.Forms.TabPage();
 			this.OptionsPanel = new JocysCom.Password.Generator.Controls.OptionsControl();
+			this.AboutTabPage = new System.Windows.Forms.TabPage();
 			this.AboutPanel = new JocysCom.Password.Generator.Controls.AboutControl();
+			this.ResourcesTabPage = new System.Windows.Forms.TabPage();
 			this.resorcesControl1 = new JocysCom.Password.Generator.Controls.ResorcesControl();
 			this.TopPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBox2)).BeginInit();
@@ -133,7 +132,7 @@
 			// 
 			// MainStatusStrip
 			// 
-			this.MainStatusStrip.Location = new System.Drawing.Point(0, 663);
+			this.MainStatusStrip.Location = new System.Drawing.Point(0, 649);
 			this.MainStatusStrip.Name = "MainStatusStrip";
 			this.MainStatusStrip.Size = new System.Drawing.Size(694, 22);
 			this.MainStatusStrip.TabIndex = 3;
@@ -157,7 +156,6 @@
             this.OpenGeneratorToolStripMenuItem,
             this.toolStripSeparator3,
             this.OptionsToolStripMenuItem,
-            this.RevealerToolStripMenuItem,
             this.toolStripSeparator1,
             this.Preset1ToolStripMenuItem,
             this.Preset2ToolStripMenuItem,
@@ -165,7 +163,7 @@
             this.toolStripSeparator2,
             this.ExitToolStripMenuItem});
 			this.TrayNotifyIconContextMenuStrip.Name = "NotifyIconContextMenuStrip";
-			this.TrayNotifyIconContextMenuStrip.Size = new System.Drawing.Size(166, 176);
+			this.TrayNotifyIconContextMenuStrip.Size = new System.Drawing.Size(166, 154);
 			// 
 			// OpenGeneratorToolStripMenuItem
 			// 
@@ -212,14 +210,6 @@
 			this.StartWithWindowsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
 			this.StartWithWindowsToolStripMenuItem.Text = "Start with Windows";
 			this.StartWithWindowsToolStripMenuItem.Click += new System.EventHandler(this.StartWithWindowsToolStripMenuItem_Click);
-			// 
-			// RevealerToolStripMenuItem
-			// 
-			this.RevealerToolStripMenuItem.Name = "RevealerToolStripMenuItem";
-			this.RevealerToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-			this.RevealerToolStripMenuItem.Text = "Revealer";
-			this.RevealerToolStripMenuItem.Visible = false;
-			this.RevealerToolStripMenuItem.Click += new System.EventHandler(this.RevealerToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -297,7 +287,7 @@
 			this.MainTabControl.Location = new System.Drawing.Point(6, 70);
 			this.MainTabControl.Name = "MainTabControl";
 			this.MainTabControl.SelectedIndex = 0;
-			this.MainTabControl.Size = new System.Drawing.Size(682, 590);
+			this.MainTabControl.Size = new System.Drawing.Size(682, 576);
 			this.MainTabControl.TabIndex = 4;
 			// 
 			// GeneratorTabPage
@@ -308,9 +298,18 @@
 			this.GeneratorTabPage.Location = new System.Drawing.Point(4, 23);
 			this.GeneratorTabPage.Name = "GeneratorTabPage";
 			this.GeneratorTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.GeneratorTabPage.Size = new System.Drawing.Size(674, 563);
+			this.GeneratorTabPage.Size = new System.Drawing.Size(674, 549);
 			this.GeneratorTabPage.TabIndex = 0;
 			this.GeneratorTabPage.Text = "Generator";
+			// 
+			// GeneratorPanel
+			// 
+			this.GeneratorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.GeneratorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.GeneratorPanel.Location = new System.Drawing.Point(3, 3);
+			this.GeneratorPanel.Name = "GeneratorPanel";
+			this.GeneratorPanel.Size = new System.Drawing.Size(668, 543);
+			this.GeneratorPanel.TabIndex = 0;
 			// 
 			// ScriptTabPage
 			// 
@@ -324,6 +323,14 @@
 			this.ScriptTabPage.TabIndex = 3;
 			this.ScriptTabPage.Text = "Script";
 			// 
+			// ScriptPanel
+			// 
+			this.ScriptPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ScriptPanel.Location = new System.Drawing.Point(3, 3);
+			this.ScriptPanel.Name = "ScriptPanel";
+			this.ScriptPanel.Size = new System.Drawing.Size(668, 557);
+			this.ScriptPanel.TabIndex = 0;
+			// 
 			// OptionsTabPage
 			// 
 			this.OptionsTabPage.BackColor = System.Drawing.SystemColors.Control;
@@ -336,6 +343,14 @@
 			this.OptionsTabPage.TabIndex = 1;
 			this.OptionsTabPage.Text = "Options";
 			// 
+			// OptionsPanel
+			// 
+			this.OptionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.OptionsPanel.Location = new System.Drawing.Point(3, 3);
+			this.OptionsPanel.Name = "OptionsPanel";
+			this.OptionsPanel.Size = new System.Drawing.Size(668, 557);
+			this.OptionsPanel.TabIndex = 0;
+			// 
 			// AboutTabPage
 			// 
 			this.AboutTabPage.BackColor = System.Drawing.SystemColors.Control;
@@ -347,6 +362,14 @@
 			this.AboutTabPage.TabIndex = 2;
 			this.AboutTabPage.Text = "About";
 			// 
+			// AboutPanel
+			// 
+			this.AboutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.AboutPanel.Location = new System.Drawing.Point(0, 0);
+			this.AboutPanel.Name = "AboutPanel";
+			this.AboutPanel.Size = new System.Drawing.Size(674, 563);
+			this.AboutPanel.TabIndex = 0;
+			// 
 			// ResourcesTabPage
 			// 
 			this.ResourcesTabPage.BackColor = System.Drawing.SystemColors.Control;
@@ -356,39 +379,6 @@
 			this.ResourcesTabPage.Size = new System.Drawing.Size(674, 563);
 			this.ResourcesTabPage.TabIndex = 4;
 			this.ResourcesTabPage.Text = "Resources";
-			// 
-			// GeneratorPanel
-			// 
-			this.GeneratorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.GeneratorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.GeneratorPanel.Location = new System.Drawing.Point(3, 3);
-			this.GeneratorPanel.Name = "GeneratorPanel";
-			this.GeneratorPanel.Size = new System.Drawing.Size(668, 557);
-			this.GeneratorPanel.TabIndex = 0;
-			// 
-			// ScriptPanel
-			// 
-			this.ScriptPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ScriptPanel.Location = new System.Drawing.Point(3, 3);
-			this.ScriptPanel.Name = "ScriptPanel";
-			this.ScriptPanel.Size = new System.Drawing.Size(668, 557);
-			this.ScriptPanel.TabIndex = 0;
-			// 
-			// OptionsPanel
-			// 
-			this.OptionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.OptionsPanel.Location = new System.Drawing.Point(3, 3);
-			this.OptionsPanel.Name = "OptionsPanel";
-			this.OptionsPanel.Size = new System.Drawing.Size(668, 557);
-			this.OptionsPanel.TabIndex = 0;
-			// 
-			// AboutPanel
-			// 
-			this.AboutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.AboutPanel.Location = new System.Drawing.Point(0, 0);
-			this.AboutPanel.Name = "AboutPanel";
-			this.AboutPanel.Size = new System.Drawing.Size(674, 563);
-			this.AboutPanel.TabIndex = 0;
 			// 
 			// resorcesControl1
 			// 
@@ -402,7 +392,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(694, 685);
+			this.ClientSize = new System.Drawing.Size(694, 671);
 			this.Controls.Add(this.MainTabControl);
 			this.Controls.Add(this.MainStatusStrip);
 			this.Controls.Add(this.TopPanel);
@@ -436,7 +426,6 @@
 		private System.Windows.Forms.ToolStripMenuItem OpenGeneratorToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem OptionsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem RevealerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;

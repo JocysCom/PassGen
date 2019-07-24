@@ -334,33 +334,6 @@ namespace JocysCom.Password.Generator
 
 		#endregion
 
-		#region Password Revealer
-
-		object revealerLock = new object();
-		PasswordRevealer _Revealer;
-		PasswordRevealer Revealer
-		{
-			get
-			{
-				lock (revealerLock)
-				{
-					if (_Revealer == null)
-					{
-						_Revealer = new PasswordRevealer();
-					}
-				}
-				return _Revealer;
-			}
-		}
-
-		private void RevealerToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			RevealerToolStripMenuItem.Checked = !RevealerToolStripMenuItem.Checked;
-			Revealer.IsEnabled = RevealerToolStripMenuItem.Checked;
-		}
-
-		#endregion
-
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
@@ -371,7 +344,6 @@ namespace JocysCom.Password.Generator
 			{
 				if (components != null) components.Dispose();
 				if (_Mutex != null) _Mutex.Dispose();
-				if (_Revealer != null) _Revealer.Dispose();
 			}
 			base.Dispose(disposing);
 		}
