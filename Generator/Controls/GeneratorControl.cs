@@ -615,7 +615,7 @@ namespace JocysCom.Password.Generator.Controls
 			TextBox passTextBox = (TextBox)Controls.Find(tid, true)[0];
 			if (!string.IsNullOrEmpty(passTextBox.Text))
 			{
-				Kolibri.Clippy.PushStringToClipboard(passTextBox.Text);
+				ClipboardHelper.SetClipboardText(passTextBox.Text);
 			}
 			TextBox textBox;
 			// Reset all to black.

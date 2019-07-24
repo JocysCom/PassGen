@@ -271,7 +271,7 @@ namespace JocysCom.Password.Generator
 					Word password = GeneratorPanel.PassGen.NewPassword();
 					if (password.Text.Length > 0)
 					{
-						Kolibri.Clippy.PushStringToClipboard(password.Text);
+						ClipboardHelper.SetClipboardText(password.Text);
 					}
 				}
 				// Allow the MouseDown event handler to process clicks again.

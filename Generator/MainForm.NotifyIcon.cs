@@ -100,7 +100,7 @@ namespace JocysCom.Password.Generator
 				string list = passGen.NewPasswordList(count, separator);
 				if (list.Length > 0)
 				{
-					Kolibri.Clippy.PushStringToClipboard(list);
+					ClipboardHelper.SetClipboardText(list);
 				}
 				TrayNotifyIconContextMenuStrip.Close();
 			}
@@ -109,7 +109,7 @@ namespace JocysCom.Password.Generator
 
 		private void ToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
 		{
-			ToolStripMenuItem s = (ToolStripMenuItem)sender;
+			var s = (ToolStripMenuItem)sender;
 			addNumberItems(s, true);
 		}
 
