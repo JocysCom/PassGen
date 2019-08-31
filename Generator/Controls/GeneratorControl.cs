@@ -214,7 +214,7 @@ namespace JocysCom.Password.Generator.Controls
 					_HelpContent.Add(GenerateButton, "Press to regenerate passwords.");
 					_HelpContent.Add(ListButton, "Generate list of passwords and copy to clipboard.");
 					_HelpContent.Add(CallsTextBox, "Convert any text or password into calls so you can easily pass them through radio or phone conversation. Clean the text field and press [Enter] in order to see full list of names.");
-					_HelpContent.Add(PasswordStrengthTextBox, "Strength of the password. It represents N where 10^N is a number of all possible password variations required to check by brute-force algorithm in order to crack you password successfully.");
+					_HelpContent.Add(PasswordStrengthTextBox, "Strength of the password in bits. It represents N where 2^N is a number of all possible password variations required to check by brute-force algorithm in order to crack you password successfully.");
 					_HelpContent.Add(CallTextLengthTextBox, "Password, string length.");
 					_HelpContent.Add(OptionsPanel, null);
 					foreach (var key in _HelpContent.Keys)
@@ -377,14 +377,53 @@ namespace JocysCom.Password.Generator.Controls
 			CallsTextBox.SelectAll();
 		}
 
+
+		public static Color ColorFromHSV(double hue, double saturation, double value)
+		{
+			int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+			double f = hue / 60 - Math.Floor(hue / 60);
+			value = value * 255;
+			int v = Convert.ToInt32(value);
+			int p = Convert.ToInt32(value * (1 - saturation));
+			int q = Convert.ToInt32(value * (1 - f * saturation));
+			int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+			if (hi == 0)
+				return Color.FromArgb(255, v, t, p);
+			else if (hi == 1)
+				return Color.FromArgb(255, q, v, p);
+			else if (hi == 2)
+				return Color.FromArgb(255, p, v, t);
+			else if (hi == 3)
+				return Color.FromArgb(255, p, q, v);
+			else if (hi == 4)
+				return Color.FromArgb(255, t, p, v);
+			else
+				return Color.FromArgb(255, v, p, q);
+		}
+
 		private void CallsTextBox_TextChanged(object sender, EventArgs e)
 		{
-			CallTextLengthTextBox.Text = CallsTextBox.Text.Length.ToString();
 			int strength = PassGen.GetPasswordStrength(CallsTextBox.Text.ToCharArray());
-			PasswordStrengthTextBox.ForeColor = System.Drawing.Color.DarkGray;
-			if (strength > 8) PasswordStrengthTextBox.ForeColor = System.Drawing.Color.Black; ;
-			if (strength > 12) PasswordStrengthTextBox.ForeColor = System.Drawing.Color.Green;
-			PasswordStrengthTextBox.Text = strength.ToString();
+			// Up to bits, description.
+			var ps = new Dictionary<int, string>();
+			ps.Add(0, "Very Weak - Family"); // Seconds to crack.
+			ps.Add(32, "Weak - Home User");  // Minutes to crack.
+			ps.Add(52, "Weak - Company User");  // Hours to crack.
+			ps.Add(64, "Reasonable - Government, Financial"); // Days to crack
+			ps.Add(80, "Strong - Military"); // Milenniums to crack
+			ps.Add(128, "Very Strong"); // Aeons to crack.
+			var environment = "";
+			foreach (var key in ps.Keys)
+			{
+				if (strength >= key)
+					environment = ps[key];
+			}
+			// Calculate colour hue from red (0°) to green (120°).
+			var hue = strength * 120 / ps.Keys.Max();
+			var colour = ColorFromHSV(hue, 1.0d, 0.4d);
+			PasswordStrengthTextBox.ForeColor = colour;
+			PasswordStrengthTextBox.Text = strength == 0 ? "" : string.Format("{0}-bit - {1}", strength, environment);
+			CallTextLengthTextBox.Text = strength == 0 ? "" : CallsTextBox.Text.Length.ToString();
 			ShowCalls(false);
 			CallsTimer.Stop();
 			CallsTimer.Start();

@@ -11,8 +11,8 @@ IF NOT EXIST Files\nul MKDIR Files
 IF EXIST Files\%nam%.zip DEL %nam%.zip
 IF EXIST Files\%nam%_debug.zip DEL %nam%_debug.zip
 :: Archive application.
-%zip% Files\%nam%.zip "..\bin\Release\%nam%.exe"
+%zip% Files\%nam%.zip "..\bin\Debug\%nam%.exe"
 :: Archive application with debug info.
-%zip% Files\%nam%_debug.zip "..\bin\Debug\%nam%.exe"
-%zip% Files\%nam%_debug.zip "..\bin\Debug\%nam%.pdb"
+::%zip% Files\%nam%_debug.zip "..\bin\Debug\%nam%.exe"
+::%zip% Files\%nam%_debug.zip "..\bin\Debug\%nam%.pdb"
 pause

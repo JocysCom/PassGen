@@ -251,11 +251,12 @@ namespace JocysCom.ClassLibrary.Security.Password
 				(haveExtra ? Preset.CharsExtra.Length : 0);
 			// Calculate number of possible passwords.
 			double number = Math.Pow(chars, (double)passChars.Length);
-			// Calculate number of decimals (zeroes). 10000 => 4
-			int strength = (int)Math.Round(Math.Log10(number));
+			// Strength of the password in bits.
+			// It represents N where 2 ^ N is a number of all possible password variations required
+			// to check by brute-force algorithm in order to crack you password successfully.
+			int strength = (int)Math.Round(Math.Log(number, 2));
 			return strength;
 		}
-
 
 		Word ApplyRegex(Word password)
 		{

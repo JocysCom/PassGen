@@ -30,12 +30,12 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneratorControl));
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.ListSeparatorComboBox = new System.Windows.Forms.ComboBox();
 			this.ListSizeNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.ListButton = new System.Windows.Forms.Button();
@@ -85,6 +85,7 @@
 			this.CallsDescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.CallTextLengthTextBox = new System.Windows.Forms.TextBox();
 			this.OptionsPanel = new System.Windows.Forms.Panel();
+			this.LanguageComboBox = new System.Windows.Forms.ComboBox();
 			this.PresetSaveButton = new System.Windows.Forms.Button();
 			this.FavPreset3Button = new System.Windows.Forms.Button();
 			this.FavPreset2Button = new System.Windows.Forms.Button();
@@ -100,7 +101,8 @@
 			this.NamesNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.CallsTabControl = new System.Windows.Forms.TabControl();
 			this.CallsTabPage = new System.Windows.Forms.TabPage();
-			this.LanguageComboBox = new System.Windows.Forms.ComboBox();
+			this.PasswordStrengthLabel = new System.Windows.Forms.Label();
+			this.CallTextLengthLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.ListSizeNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.RatioNumbersNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.RatioUppercaseNumericUpDown)).BeginInit();
@@ -278,22 +280,23 @@
 			// 
 			// PasswordStrengthTextBox
 			// 
-			this.PasswordStrengthTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.PasswordStrengthTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.PasswordStrengthTextBox.BackColor = System.Drawing.SystemColors.Control;
-			this.PasswordStrengthTextBox.Location = new System.Drawing.Point(630, 166);
+			this.PasswordStrengthTextBox.Location = new System.Drawing.Point(337, 193);
 			this.PasswordStrengthTextBox.Name = "PasswordStrengthTextBox";
-			this.PasswordStrengthTextBox.Size = new System.Drawing.Size(30, 20);
+			this.PasswordStrengthTextBox.Size = new System.Drawing.Size(323, 20);
 			this.PasswordStrengthTextBox.TabIndex = 10;
-			this.PasswordStrengthTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// PasswordContainsLabel
 			// 
 			this.PasswordContainsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.PasswordContainsLabel.AutoSize = true;
 			this.PasswordContainsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.PasswordContainsLabel.Location = new System.Drawing.Point(3, 84);
+			this.PasswordContainsLabel.Location = new System.Drawing.Point(0, 88);
 			this.PasswordContainsLabel.Name = "PasswordContainsLabel";
-			this.PasswordContainsLabel.Size = new System.Drawing.Size(190, 17);
+			this.PasswordContainsLabel.Size = new System.Drawing.Size(100, 13);
 			this.PasswordContainsLabel.TabIndex = 9;
 			this.PasswordContainsLabel.Text = "Password Contains:";
 			this.PasswordContainsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -438,10 +441,11 @@
 			// 
 			this.PasswordLengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.PasswordLengthLabel.AutoSize = true;
 			this.PasswordLengthLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.PasswordLengthLabel.Location = new System.Drawing.Point(3, 242);
 			this.PasswordLengthLabel.Name = "PasswordLengthLabel";
-			this.PasswordLengthLabel.Size = new System.Drawing.Size(190, 17);
+			this.PasswordLengthLabel.Size = new System.Drawing.Size(92, 13);
 			this.PasswordLengthLabel.TabIndex = 9;
 			this.PasswordLengthLabel.Text = "Password Length:";
 			this.PasswordLengthLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -604,7 +608,7 @@
 			this.CallsTextBox.ForeColor = System.Drawing.Color.Green;
 			this.CallsTextBox.Location = new System.Drawing.Point(202, 165);
 			this.CallsTextBox.Name = "CallsTextBox";
-			this.CallsTextBox.Size = new System.Drawing.Size(386, 22);
+			this.CallsTextBox.Size = new System.Drawing.Size(458, 22);
 			this.CallsTextBox.TabIndex = 14;
 			this.CallsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.CallsTextBox.TextChanged += new System.EventHandler(this.CallsTextBox_TextChanged);
@@ -615,8 +619,8 @@
 			this.CallsDataGridView.AllowUserToAddRows = false;
 			this.CallsDataGridView.AllowUserToDeleteRows = false;
 			this.CallsDataGridView.AllowUserToResizeRows = false;
-			dataGridViewCellStyle7.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.CallsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle19.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.CallsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle19;
 			this.CallsDataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
 			this.CallsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.CallsDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
@@ -634,7 +638,7 @@
 			this.CallsDataGridView.Name = "CallsDataGridView";
 			this.CallsDataGridView.RowHeadersVisible = false;
 			this.CallsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.CallsDataGridView.Size = new System.Drawing.Size(244, 369);
+			this.CallsDataGridView.Size = new System.Drawing.Size(244, 342);
 			this.CallsDataGridView.TabIndex = 15;
 			this.CallsDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.CallsDataGridView_CellFormatting);
 			// 
@@ -642,10 +646,10 @@
 			// 
 			this.CallsIndexColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this.CallsIndexColumn.DataPropertyName = "Index";
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Gray;
-			dataGridViewCellStyle8.Format = "0\".\"";
-			this.CallsIndexColumn.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Gray;
+			dataGridViewCellStyle20.Format = "0\".\"";
+			this.CallsIndexColumn.DefaultCellStyle = dataGridViewCellStyle20;
 			this.CallsIndexColumn.HeaderText = "Index";
 			this.CallsIndexColumn.Name = "CallsIndexColumn";
 			this.CallsIndexColumn.ReadOnly = true;
@@ -656,9 +660,9 @@
 			// 
 			this.CallsCodeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this.CallsCodeColumn.DataPropertyName = "Code";
-			dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Gray;
-			this.CallsCodeColumn.DefaultCellStyle = dataGridViewCellStyle9;
+			dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle21.ForeColor = System.Drawing.Color.Gray;
+			this.CallsCodeColumn.DefaultCellStyle = dataGridViewCellStyle21;
 			this.CallsCodeColumn.HeaderText = "Code";
 			this.CallsCodeColumn.Name = "CallsCodeColumn";
 			this.CallsCodeColumn.ReadOnly = true;
@@ -669,8 +673,8 @@
 			// 
 			this.CallsNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 			this.CallsNameColumn.DataPropertyName = "Name";
-			dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.CallsNameColumn.DefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.CallsNameColumn.DefaultCellStyle = dataGridViewCellStyle22;
 			this.CallsNameColumn.HeaderText = "Name";
 			this.CallsNameColumn.Name = "CallsNameColumn";
 			this.CallsNameColumn.ReadOnly = true;
@@ -680,8 +684,8 @@
 			// CallsCaseColumn
 			// 
 			this.CallsCaseColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-			dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Gray;
-			this.CallsCaseColumn.DefaultCellStyle = dataGridViewCellStyle11;
+			dataGridViewCellStyle23.ForeColor = System.Drawing.Color.Gray;
+			this.CallsCaseColumn.DefaultCellStyle = dataGridViewCellStyle23;
 			this.CallsCaseColumn.HeaderText = "Case";
 			this.CallsCaseColumn.Name = "CallsCaseColumn";
 			this.CallsCaseColumn.ReadOnly = true;
@@ -699,9 +703,8 @@
 			// 
 			// CallTextLengthTextBox
 			// 
-			this.CallTextLengthTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.CallTextLengthTextBox.BackColor = System.Drawing.SystemColors.Control;
-			this.CallTextLengthTextBox.Location = new System.Drawing.Point(594, 166);
+			this.CallTextLengthTextBox.Location = new System.Drawing.Point(248, 193);
 			this.CallTextLengthTextBox.Name = "CallTextLengthTextBox";
 			this.CallTextLengthTextBox.Size = new System.Drawing.Size(30, 20);
 			this.CallTextLengthTextBox.TabIndex = 10;
@@ -748,6 +751,19 @@
 			this.OptionsPanel.Name = "OptionsPanel";
 			this.OptionsPanel.Size = new System.Drawing.Size(196, 590);
 			this.OptionsPanel.TabIndex = 15;
+			// 
+			// LanguageComboBox
+			// 
+			this.LanguageComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.LanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.LanguageComboBox.FormattingEnabled = true;
+			this.LanguageComboBox.Location = new System.Drawing.Point(3, 60);
+			this.LanguageComboBox.MaxDropDownItems = 32;
+			this.LanguageComboBox.Name = "LanguageComboBox";
+			this.LanguageComboBox.Size = new System.Drawing.Size(167, 21);
+			this.LanguageComboBox.TabIndex = 20;
+			this.LanguageComboBox.SelectedIndexChanged += new System.EventHandler(this.LanguageComboBox_SelectedIndexChanged);
 			// 
 			// PresetSaveButton
 			// 
@@ -841,10 +857,10 @@
 			this.CallNamesTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.CallNamesTabControl.Controls.Add(this.CallsNamesTabPage);
-			this.CallNamesTabControl.Location = new System.Drawing.Point(202, 192);
+			this.CallNamesTabControl.Location = new System.Drawing.Point(202, 219);
 			this.CallNamesTabControl.Name = "CallNamesTabControl";
 			this.CallNamesTabControl.SelectedIndex = 0;
-			this.CallNamesTabControl.Size = new System.Drawing.Size(200, 398);
+			this.CallNamesTabControl.Size = new System.Drawing.Size(200, 371);
 			this.CallNamesTabControl.TabIndex = 16;
 			// 
 			// CallsNamesTabPage
@@ -852,7 +868,7 @@
 			this.CallsNamesTabPage.Controls.Add(this.CallNamesDataGridView);
 			this.CallsNamesTabPage.Location = new System.Drawing.Point(4, 22);
 			this.CallsNamesTabPage.Name = "CallsNamesTabPage";
-			this.CallsNamesTabPage.Size = new System.Drawing.Size(192, 372);
+			this.CallsNamesTabPage.Size = new System.Drawing.Size(192, 345);
 			this.CallsNamesTabPage.TabIndex = 0;
 			this.CallsNamesTabPage.Text = "Call Names";
 			this.CallsNamesTabPage.UseVisualStyleBackColor = true;
@@ -862,8 +878,8 @@
 			this.CallNamesDataGridView.AllowUserToAddRows = false;
 			this.CallNamesDataGridView.AllowUserToDeleteRows = false;
 			this.CallNamesDataGridView.AllowUserToResizeRows = false;
-			dataGridViewCellStyle12.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.CallNamesDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle12;
+			dataGridViewCellStyle24.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.CallNamesDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle24;
 			this.CallNamesDataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
 			this.CallNamesDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.CallNamesDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
@@ -877,7 +893,7 @@
 			this.CallNamesDataGridView.Name = "CallNamesDataGridView";
 			this.CallNamesDataGridView.RowHeadersVisible = false;
 			this.CallNamesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.CallNamesDataGridView.Size = new System.Drawing.Size(192, 372);
+			this.CallNamesDataGridView.Size = new System.Drawing.Size(192, 345);
 			this.CallNamesDataGridView.TabIndex = 16;
 			this.CallNamesDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.CallNamesDataGridView_CellFormatting);
 			this.CallNamesDataGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.CallNamesDataGridView_DataBindingComplete);
@@ -899,10 +915,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.CallsTabControl.Controls.Add(this.CallsTabPage);
-			this.CallsTabControl.Location = new System.Drawing.Point(408, 192);
+			this.CallsTabControl.Location = new System.Drawing.Point(408, 219);
 			this.CallsTabControl.Name = "CallsTabControl";
 			this.CallsTabControl.SelectedIndex = 0;
-			this.CallsTabControl.Size = new System.Drawing.Size(252, 395);
+			this.CallsTabControl.Size = new System.Drawing.Size(252, 368);
 			this.CallsTabControl.TabIndex = 17;
 			// 
 			// CallsTabPage
@@ -910,23 +926,32 @@
 			this.CallsTabPage.Controls.Add(this.CallsDataGridView);
 			this.CallsTabPage.Location = new System.Drawing.Point(4, 22);
 			this.CallsTabPage.Name = "CallsTabPage";
-			this.CallsTabPage.Size = new System.Drawing.Size(244, 369);
+			this.CallsTabPage.Size = new System.Drawing.Size(244, 342);
 			this.CallsTabPage.TabIndex = 0;
 			this.CallsTabPage.Text = "Calls";
 			this.CallsTabPage.UseVisualStyleBackColor = true;
 			// 
-			// LanguageComboBox
+			// PasswordStrengthLabel
 			// 
-			this.LanguageComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.LanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.LanguageComboBox.FormattingEnabled = true;
-			this.LanguageComboBox.Location = new System.Drawing.Point(3, 60);
-			this.LanguageComboBox.MaxDropDownItems = 32;
-			this.LanguageComboBox.Name = "LanguageComboBox";
-			this.LanguageComboBox.Size = new System.Drawing.Size(167, 21);
-			this.LanguageComboBox.TabIndex = 20;
-			this.LanguageComboBox.SelectedIndexChanged += new System.EventHandler(this.LanguageComboBox_SelectedIndexChanged);
+			this.PasswordStrengthLabel.AutoSize = true;
+			this.PasswordStrengthLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.PasswordStrengthLabel.Location = new System.Drawing.Point(284, 197);
+			this.PasswordStrengthLabel.Name = "PasswordStrengthLabel";
+			this.PasswordStrengthLabel.Size = new System.Drawing.Size(47, 13);
+			this.PasswordStrengthLabel.TabIndex = 9;
+			this.PasswordStrengthLabel.Text = "Strength";
+			this.PasswordStrengthLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// CallTextLengthLabel
+			// 
+			this.CallTextLengthLabel.AutoSize = true;
+			this.CallTextLengthLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.CallTextLengthLabel.Location = new System.Drawing.Point(202, 196);
+			this.CallTextLengthLabel.Name = "CallTextLengthLabel";
+			this.CallTextLengthLabel.Size = new System.Drawing.Size(40, 13);
+			this.CallTextLengthLabel.TabIndex = 9;
+			this.CallTextLengthLabel.Text = "Length";
+			this.CallTextLengthLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// GeneratorControl
 			// 
@@ -951,6 +976,8 @@
 			this.Controls.Add(this.ListButton);
 			this.Controls.Add(this.Copy3Button);
 			this.Controls.Add(this.Copy4Button);
+			this.Controls.Add(this.CallTextLengthLabel);
+			this.Controls.Add(this.PasswordStrengthLabel);
 			this.Name = "GeneratorControl";
 			this.Size = new System.Drawing.Size(663, 590);
 			((System.ComponentModel.ISupportInitialize)(this.ListSizeNumericUpDown)).EndInit();
@@ -1040,5 +1067,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn CallsCaseColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn CallsDescriptionColumn;
 		public System.Windows.Forms.ComboBox LanguageComboBox;
+		private System.Windows.Forms.Label PasswordStrengthLabel;
+		private System.Windows.Forms.Label CallTextLengthLabel;
 	}
 }

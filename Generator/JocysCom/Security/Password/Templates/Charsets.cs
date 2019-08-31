@@ -55,33 +55,17 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 			string lowercase = string.Empty;
 			string uppercase = string.Empty;
 			string symbols = string.Empty;
-			//List<string> list = new List<string>(); 
-			//string s = string.Empty;
-			for (int i = 1; i < 127; i++)
+			for (int i = 1; i <= 127; i++)
 			{
 				var c = System.Text.Encoding.ASCII.GetChars(new byte[] { (byte)i }).First();
-				if (Char.IsControl(c)) continue;
-				//list.Add(string.Format("{0} - {1} - {2}", i, c, Char.GetUnicodeCategory(c)));
-				if (Char.IsNumber(c))
-				{
+				if (char.IsNumber(c))
 					numbers += c.ToString();
-				}
-				else if (Char.IsLetter(c) && Char.IsLower(c))
-				{
+				else if (char.IsLetter(c) && char.IsLower(c))
 					lowercase += c.ToString();
-				}
-				else if (Char.IsLetter(c) && Char.IsUpper(c))
-				{
+				else if (char.IsLetter(c) && char.IsUpper(c))
 					uppercase += c.ToString();
-				}
-				else if ((Char.IsSymbol(c) || Char.IsPunctuation(c)))
-				{
+				else if (!char.IsControl(c) && !char.IsWhiteSpace(c))
 					symbols += c.ToString();
-				}
-				else
-				{
-					//s += c.ToString();
-				}
 			}
 			Strings.Add("Numbers", numbers);
 			Strings.Add("Uppercase", uppercase);
