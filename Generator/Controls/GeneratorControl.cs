@@ -411,7 +411,7 @@ namespace JocysCom.Password.Generator.Controls
 			ps.Add(52, "Weak - Company User");  // Hours to crack.
 			ps.Add(64, "Reasonable - Government, Financial"); // Days to crack
 			ps.Add(80, "Strong - Military"); // Milenniums to crack
-			ps.Add(128, "Very Strong"); // Aeons to crack.
+			ps.Add(128, "Very Strong - Military"); // Aeons to crack.
 			var environment = "";
 			foreach (var key in ps.Keys)
 			{
