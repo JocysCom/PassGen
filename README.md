@@ -6,9 +6,7 @@ This program can generate easy to remember passwords which look like real words 
 
 Programs allows you to generate customized password right from the tray icon. 
 
-![https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/tray_hover.png](https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/tray_hover.png)
-
-![https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/tray_menu.png](https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/tray_menu.png)
+![https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/tray_menu.png](https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/tray_menu.png) ![https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/tray_hover.png](https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/tray_hover.png)
 
 ![https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/password_generator.png](https://raw.githubusercontent.com/JocysCom/PassGen/master/Generator/Documents/Screenshots/password_generator.png)
 
