@@ -31,7 +31,6 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DcControl));
 			this.DataTempFolderLabel = new System.Windows.Forms.Label();
-			this.CodeTextBox = new System.Windows.Forms.TextBox();
 			this.OpenCodeFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.CodeFileSystemWatcher = new System.IO.FileSystemWatcher();
 			this.OutputTextBox = new System.Windows.Forms.TextBox();
@@ -44,6 +43,7 @@
 			this.CodeTabPage = new System.Windows.Forms.TabPage();
 			this.CodeLineTextBox = new System.Windows.Forms.TextBox();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.CodeTextBox = new FastColoredTextBoxNS.FastColoredTextBox();
 			this.MainToolStrip = new System.Windows.Forms.ToolStrip();
 			this.OpenToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.SaveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -51,9 +51,10 @@
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.AutoLoadToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.AutoRunToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.AutoStripSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.LanguageToolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
 			this.CheckToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.EntryToolStripLabel = new System.Windows.Forms.ToolStripLabel();
 			this.EntryToolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
 			this.RunToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -71,6 +72,7 @@
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.CodeTextBox)).BeginInit();
 			this.MainToolStrip.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -84,17 +86,6 @@
 			this.DataTempFolderLabel.TabIndex = 31;
 			this.DataTempFolderLabel.Text = "Temp Folder:";
 			// 
-			// CodeTextBox
-			// 
-			this.CodeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.CodeTextBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.CodeTextBox.Location = new System.Drawing.Point(0, 0);
-			this.CodeTextBox.Multiline = true;
-			this.CodeTextBox.Name = "CodeTextBox";
-			this.CodeTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.CodeTextBox.Size = new System.Drawing.Size(804, 158);
-			this.CodeTextBox.TabIndex = 32;
-			// 
 			// CodeFileSystemWatcher
 			// 
 			this.CodeFileSystemWatcher.EnableRaisingEvents = true;
@@ -105,12 +96,12 @@
 			// OutputTextBox
 			// 
 			this.OutputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.OutputTextBox.Location = new System.Drawing.Point(6, 6);
+			this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
 			this.OutputTextBox.Multiline = true;
 			this.OutputTextBox.Name = "OutputTextBox";
 			this.OutputTextBox.ReadOnly = true;
 			this.OutputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.OutputTextBox.Size = new System.Drawing.Size(356, 117);
+			this.OutputTextBox.Size = new System.Drawing.Size(203, 55);
 			this.OutputTextBox.TabIndex = 32;
 			this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
 			// 
@@ -128,7 +119,7 @@
 			this.ResultsTabControl.Location = new System.Drawing.Point(0, 0);
 			this.ResultsTabControl.Name = "ResultsTabControl";
 			this.ResultsTabControl.SelectedIndex = 0;
-			this.ResultsTabControl.Size = new System.Drawing.Size(804, 155);
+			this.ResultsTabControl.Size = new System.Drawing.Size(810, 170);
 			this.ResultsTabControl.TabIndex = 36;
 			this.ResultsTabControl.SelectedIndexChanged += new System.EventHandler(this.ResultsTabControl_SelectedIndexChanged);
 			// 
@@ -138,7 +129,7 @@
 			this.OutputTabPage.Controls.Add(this.OutputTextBox);
 			this.OutputTabPage.Location = new System.Drawing.Point(4, 22);
 			this.OutputTabPage.Name = "OutputTabPage";
-			this.OutputTabPage.Size = new System.Drawing.Size(796, 129);
+			this.OutputTabPage.Size = new System.Drawing.Size(802, 144);
 			this.OutputTabPage.TabIndex = 0;
 			this.OutputTabPage.Text = "Output";
 			this.OutputTabPage.UseVisualStyleBackColor = true;
@@ -148,14 +139,12 @@
 			this.OutputDataGridView.AllowUserToAddRows = false;
 			this.OutputDataGridView.AllowUserToDeleteRows = false;
 			this.OutputDataGridView.AllowUserToOrderColumns = true;
-			this.OutputDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.OutputDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.OutputDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.OutputDataGridView.Location = new System.Drawing.Point(365, 3);
+			this.OutputDataGridView.Location = new System.Drawing.Point(504, 0);
 			this.OutputDataGridView.Name = "OutputDataGridView";
 			this.OutputDataGridView.ReadOnly = true;
-			this.OutputDataGridView.Size = new System.Drawing.Size(428, 117);
+			this.OutputDataGridView.Size = new System.Drawing.Size(298, 58);
 			this.OutputDataGridView.TabIndex = 36;
 			// 
 			// ErrorsTabPage
@@ -205,10 +194,8 @@
 			// 
 			// splitContainer1
 			// 
-			this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.splitContainer1.Location = new System.Drawing.Point(3, 28);
+			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.Location = new System.Drawing.Point(0, 25);
 			this.splitContainer1.Name = "splitContainer1";
 			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
@@ -219,9 +206,42 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.ResultsTabControl);
-			this.splitContainer1.Size = new System.Drawing.Size(804, 317);
-			this.splitContainer1.SplitterDistance = 158;
+			this.splitContainer1.Size = new System.Drawing.Size(810, 474);
+			this.splitContainer1.SplitterDistance = 300;
 			this.splitContainer1.TabIndex = 37;
+			// 
+			// CodeTextBox
+			// 
+			this.CodeTextBox.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+			this.CodeTextBox.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*" +
+    "(?<range>:)\\s*(?<range>[^;]+);";
+			this.CodeTextBox.AutoScrollMinSize = new System.Drawing.Size(23, 12);
+			this.CodeTextBox.BackBrush = null;
+			this.CodeTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.CodeTextBox.CharHeight = 12;
+			this.CodeTextBox.CharWidth = 6;
+			this.CodeTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.CodeTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+			this.CodeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.CodeTextBox.Font = new System.Drawing.Font("Consolas", 8.25F);
+			this.CodeTextBox.IsReplaceMode = false;
+			this.CodeTextBox.Location = new System.Drawing.Point(0, 0);
+			this.CodeTextBox.Name = "CodeTextBox";
+			this.CodeTextBox.Paddings = new System.Windows.Forms.Padding(0);
+			this.CodeTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+			this.CodeTextBox.Size = new System.Drawing.Size(810, 300);
+			this.CodeTextBox.TabIndex = 32;
+			this.CodeTextBox.Zoom = 100;
 			// 
 			// MainToolStrip
 			// 
@@ -232,9 +252,10 @@
             this.toolStripSeparator3,
             this.AutoLoadToolStripButton,
             this.AutoRunToolStripButton,
-            this.toolStripSeparator1,
+            this.AutoStripSeparator,
             this.LanguageToolStripComboBox,
             this.CheckToolStripButton,
+            this.toolStripSeparator2,
             this.EntryToolStripLabel,
             this.EntryToolStripComboBox,
             this.RunToolStripButton});
@@ -299,10 +320,10 @@
 			this.AutoRunToolStripButton.Text = "Auto Run";
 			this.AutoRunToolStripButton.Click += new System.EventHandler(this.AutoRunToolStripButton_Click);
 			// 
-			// toolStripSeparator1
+			// AutoStripSeparator
 			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			this.AutoStripSeparator.Name = "AutoStripSeparator";
+			this.AutoStripSeparator.Size = new System.Drawing.Size(6, 25);
 			// 
 			// LanguageToolStripComboBox
 			// 
@@ -324,6 +345,11 @@
 			this.CheckToolStripButton.Text = "&Check";
 			this.CheckToolStripButton.ToolTipText = "Check code";
 			this.CheckToolStripButton.Click += new System.EventHandler(this.CheckToolStripButton_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
 			// 
 			// EntryToolStripLabel
 			// 
@@ -353,7 +379,7 @@
             this.ChangedToolStripStatusLabel,
             this.LoadedToolStripStatusLabel,
             this.FileToolStripStatusLabel});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 352);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 477);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(810, 22);
 			this.statusStrip1.TabIndex = 39;
@@ -389,7 +415,7 @@
 			this.Controls.Add(this.DataTempFolderLabel);
 			this.Controls.Add(this.MainToolStrip);
 			this.Name = "DcControl";
-			this.Size = new System.Drawing.Size(810, 374);
+			this.Size = new System.Drawing.Size(810, 499);
 			this.Load += new System.EventHandler(this.DcControl_Load);
 			((System.ComponentModel.ISupportInitialize)(this.CodeFileSystemWatcher)).EndInit();
 			this.ResultsTabControl.ResumeLayout(false);
@@ -401,10 +427,10 @@
 			this.CodeTabPage.ResumeLayout(false);
 			this.CodeTabPage.PerformLayout();
 			this.splitContainer1.Panel1.ResumeLayout(false);
-			this.splitContainer1.Panel1.PerformLayout();
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.CodeTextBox)).EndInit();
 			this.MainToolStrip.ResumeLayout(false);
 			this.MainToolStrip.PerformLayout();
 			this.statusStrip1.ResumeLayout(false);
@@ -424,7 +450,6 @@
 		private System.Windows.Forms.TabControl ResultsTabControl;
 		private System.Windows.Forms.TabPage OutputTabPage;
 		private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel ChangedToolStripStatusLabel;
@@ -433,7 +458,6 @@
 		private System.Windows.Forms.ToolStrip MainToolStrip;
 		private System.Windows.Forms.TabPage ErrorsTabPage;
 		private System.Windows.Forms.DataGridView OutputDataGridView;
-		public System.Windows.Forms.TextBox CodeTextBox;
 		public System.Windows.Forms.ToolStripButton AutoLoadToolStripButton;
 		public System.Windows.Forms.ToolStripButton AutoRunToolStripButton;
 		public System.Windows.Forms.ToolStripButton ReloadToolStripButton;
@@ -447,5 +471,8 @@
         private System.Windows.Forms.ToolStripLabel EntryToolStripLabel;
 		private System.Windows.Forms.TabPage CodeTabPage;
 		private System.Windows.Forms.TextBox CodeLineTextBox;
+		public FastColoredTextBoxNS.FastColoredTextBox CodeTextBox;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		public System.Windows.Forms.ToolStripSeparator AutoStripSeparator;
 	}
 }

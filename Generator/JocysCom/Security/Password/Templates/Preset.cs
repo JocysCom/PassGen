@@ -1,9 +1,9 @@
-﻿using System;
+﻿using JocysCom.ClassLibrary.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Reflection;
-using JocysCom.ClassLibrary.Runtime;
+using System.Text;
 
 namespace JocysCom.ClassLibrary.Security.Password.Templates
 {

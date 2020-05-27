@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Namespace1
 {
-  public partial class Class1
-    {
+	public partial class Class1
+	{
 
-      public string Main(string s)
-      {
-        return "abc_" + s;
-      }
+		public string Main(string s)
+		{
+			return "abc_" + s;
+		}
 
-    }
+	}
 }

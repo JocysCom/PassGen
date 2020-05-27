@@ -6,12 +6,12 @@ Imports System.Text
 
 Namespace Namespace1
 
-  Partial Public Class Class1
+	Partial Public Class Class1
 
-	Public Function Main(ByVal s As String) As String
-	  Return "abc_" + s
-	End Function
+		Public Function Main(ByVal s As String) As String
+			Return "abc_" + s
+		End Function
 
-  End Class
+	End Class
 
 End Namespace

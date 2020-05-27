@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
@@ -11,7 +12,7 @@ using System.Xml.Serialization;
 
 namespace JocysCom.ClassLibrary.Runtime
 {
-	public class Serializer
+	public static class Serializer
 	{
 
 		#region Helper Functions
@@ -83,15 +84,15 @@ namespace JocysCom.ClassLibrary.Runtime
 		#region Bytes
 
 		static object ByteSerializersLock = new object();
-		static Dictionary<Type, NetDataContractSerializer> ByteSerializers;
-		static NetDataContractSerializer GetByteSerializer(Type type)
+		static Dictionary<Type, BinaryFormatter> ByteSerializers;
+		static BinaryFormatter GetByteSerializer(Type type)
 		{
 			lock (ByteSerializersLock)
 			{
-				if (ByteSerializers == null) ByteSerializers = new Dictionary<Type, NetDataContractSerializer>();
+				if (ByteSerializers == null) ByteSerializers = new Dictionary<Type, BinaryFormatter>();
 				if (!ByteSerializers.ContainsKey(type))
 				{
-					ByteSerializers.Add(type, new NetDataContractSerializer());
+					ByteSerializers.Add(type, new BinaryFormatter());
 				}
 			}
 			return ByteSerializers[type];
@@ -150,7 +151,7 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		static object JsonSerializersLock = new object();
 		static Dictionary<Type, DataContractJsonSerializer> JsonSerializers;
-		static DataContractJsonSerializer GetJsonSerializer(Type type)
+		public static DataContractJsonSerializer GetJsonSerializer(Type type, DataContractJsonSerializerSettings settings = null)
 		{
 			lock (JsonSerializersLock)
 			{
@@ -159,8 +160,11 @@ namespace JocysCom.ClassLibrary.Runtime
 				{
 					// Simple dictionary format looks like this: { "Key1": "Value1", "Key2": "Value2" }
 					// DataContractJsonSerializerSettings requires .NET 4.5
-					var settings = new DataContractJsonSerializerSettings();
-					settings.UseSimpleDictionaryFormat = true;
+					if (settings == null)
+					{
+						settings = new DataContractJsonSerializerSettings();
+						settings.UseSimpleDictionaryFormat = true;
+					}
 					var serializer = new DataContractJsonSerializer(type, settings);
 					JsonSerializers.Add(type, serializer);
 				}
@@ -229,11 +233,11 @@ namespace JocysCom.ClassLibrary.Runtime
 			var result =
 				from ch in json
 				let quotes = ch == '"' ? quoteCount++ : quoteCount
-				let lineBreak = ch == ',' && quotes % 2 == 0 ? ch + Environment.NewLine + String.Concat(Enumerable.Repeat(ident, indentation)) : null
-				let openChar = ch == '{' || ch == '[' ? ch + Environment.NewLine + String.Concat(Enumerable.Repeat(ident, ++indentation)) : ch.ToString()
-				let closeChar = ch == '}' || ch == ']' ? Environment.NewLine + String.Concat(Enumerable.Repeat(ident, --indentation)) + ch : ch.ToString()
+				let lineBreak = ch == ',' && quotes % 2 == 0 ? ch + Environment.NewLine + string.Concat(Enumerable.Repeat(ident, indentation)) : null
+				let openChar = ch == '{' || ch == '[' ? ch + Environment.NewLine + string.Concat(Enumerable.Repeat(ident, ++indentation)) : ch.ToString()
+				let closeChar = ch == '}' || ch == ']' ? Environment.NewLine + string.Concat(Enumerable.Repeat(ident, --indentation)) + ch : ch.ToString()
 				select lineBreak == null ? openChar.Length > 1 ? openChar : closeChar : lineBreak;
-			return String.Concat(result);
+			return string.Concat(result);
 		}
 
 		#endregion
@@ -262,7 +266,7 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		static object XmlSerializersLock = new object();
 		static Dictionary<Type, XmlSerializer> XmlSerializers;
-		static XmlSerializer GetXmlSerializer(Type type)
+		public static XmlSerializer GetXmlSerializer(Type type)
 		{
 			lock (XmlSerializersLock)
 			{
@@ -295,9 +299,18 @@ namespace JocysCom.ClassLibrary.Runtime
 			lock (serializer) { serializer.Serialize(ms, o); }
 			ms.Seek(0, SeekOrigin.Begin);
 			var doc = new XmlDocument();
-			doc.Load(ms);
+			doc.XmlResolver = null;
+			// Settings used to protect from:
+			// CWE-611: Improper Restriction of XML External Entity Reference('XXE')
+			// https://cwe.mitre.org/data/definitions/611.html
+			var settings = new XmlReaderSettings();
+			settings.DtdProcessing =  DtdProcessing.Ignore;
+			settings.XmlResolver = null;
+			settings.CloseInput = false;
+			var reader = XmlReader.Create(ms, settings);
+			doc.Load(reader);
+			reader.Dispose();
 			ms.Close();
-			ms = null;
 			return doc;
 		}
 
@@ -461,32 +474,55 @@ namespace JocysCom.ClassLibrary.Runtime
 			}
 		}
 
+		// Example how to add the missing namespaces.
+		// 
+		// Create a new NameTable
+		//var nameTable = new NameTable();
+		// Create a new NamespaceManager
+		//var nsMgr = new XmlNamespaceManager(nameTable);
+		// Add namespaces used in the XML
+		//nsMgr.AddNamespace("xlink", "urn:http://namespaceurl.com");
+		// Create the XmlParserContext using the previous declared XmlNamespaceManager
+		//var inputContext = new XmlParserContext(null, nsMgr, null, XmlSpace.None);
+
 		/// <summary>
 		/// De-serialize object from XML string. XML string must not contain Byte Order Mark (BOM).
 		/// </summary>
 		/// <param name="xml">XML string representing object.</param>
 		/// <param name="type">Type of object.</param>
+		/// <param name="inputContext">You can use inputContext to add missing namespaces.</param>
 		/// <returns>Object.</returns>
-		public static object DeserializeFromXmlString(string xml, Type type)
+		public static object DeserializeFromXmlString(string xml, Type type, XmlParserContext inputContext = null, bool ignoreNamespaces = false)
 		{
 			// Note: If you are getting de-serialization error in XML document(1,1) then there is a chance that
 			// you are trying to de-serialize string which contains Byte Order Mark (BOM) which must not be there.
 			// Probably you used "var xml = System.Text.Encoding.GetString(bytes)" directly on file content.
 			// You should use "StreamReader" on file content, because this method will strip BOM properly
 			// when converting bytes to string.
-			var sr = new StringReader(xml);
-				// Settings used to protect from
-				// CWE-611: Improper Restriction of XML External Entity Reference('XXE')
-				// https://cwe.mitre.org/data/definitions/611.html
+			// Settings used to protect from
+			// CWE-611: Improper Restriction of XML External Entity Reference('XXE')
+			// https://cwe.mitre.org/data/definitions/611.html
 			var settings = new XmlReaderSettings();
 			settings.DtdProcessing = DtdProcessing.Ignore;
 			settings.XmlResolver = null;
+			object o;
+			var serializer = GetXmlSerializer(type);
 			// Stream 'sr' will be disposed by the reader.
-			using (var reader = XmlReader.Create(sr, settings))
+			using (var sr = new StringReader(xml))
 			{
-				object o;
-				var serializer = GetXmlSerializer(type);
-				lock (serializer) { o = serializer.Deserialize(reader); }
+				if (ignoreNamespaces)
+				{
+					using (var tr = new XmlTextReader(sr))
+					{
+						// Ignore namespaces.
+						tr.Namespaces = false;
+						using (var reader = XmlReader.Create(tr, settings))
+							lock (serializer) { o = serializer.Deserialize(reader); }
+					}
+					return o;
+				}
+				using (var reader = XmlReader.Create(sr, settings, inputContext))
+					lock (serializer) { o = serializer.Deserialize(reader); }
 				return o;
 			}
 		}

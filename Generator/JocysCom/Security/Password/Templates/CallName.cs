@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace JocysCom.ClassLibrary.Security.Password.Templates
+﻿namespace JocysCom.ClassLibrary.Security.Password.Templates
 {
 	public enum CallName
 	{

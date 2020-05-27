@@ -8,7 +8,7 @@ namespace JocysCom.ClassLibrary.Runtime
 	{
 		static List<ExceptionGroup> fileExceptions = new List<ExceptionGroup>();
 
-		public int MaxFiles { get { return ParseInt(_configPrefix + "MaxFiles", 10); } }
+		public int MaxFiles { get { return _SP.Parse("MaxFiles", 10); } }
 
 		/// <summary>
 		/// Write exception details to file.
@@ -17,9 +17,10 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <param name="subject">Use custom subject instead of generated from exception</param>
 		public void WriteException(Exception ex, string subject = null, string body = null)
 		{
+			if (!LogToFile)
+				return;
 			_GroupException(fileExceptions, ex, subject, body, _WriteFile);
 		}
-
 
 		void _WriteFile(Exception ex, string subject, string body)
 		{
@@ -35,19 +36,23 @@ namespace JocysCom.ClassLibrary.Runtime
 				// Create file.
 				var prefix = "FCE_" + ex.GetType().Name;
 				var ext = WriteAsHtml ? ".htm" : ".txt";
-				var di = new System.IO.DirectoryInfo(_LogFolder);
+				var di = new System.IO.DirectoryInfo(_OverrideLogFolder ?? DefaultLogsFolder);
 				// Create folder if not exists.
 				if (!di.Exists)
 					di.Create();
 				// Get exception files ordered with oldest on top.
 				var files = di.GetFiles(prefix + "*." + ext).OrderBy(x => x.CreationTime).ToArray();
 				// Remove excess files if necessary.
-				if (MaxFiles > 0 && files.Count() > 0 && files.Count() > MaxFiles)
+				if (MaxFiles > 0 && files.Length > 0 && files.Length > MaxFiles)
 				{
 					// Remove oldest file.
 					files[0].Delete();
 				}
+#if NETSTANDARD
+				var fileTime = DateTime.Now;
+#else
 				var fileTime = HiResDateTime.Current.Now;
+#endif
 				var fileName = string.Format("{0}\\{1}_{2:yyyyMMdd_HHmmss.ffffff}{3}",
 					di.FullName, prefix, fileTime, ext);
 				var fi = new System.IO.FileInfo(fileName);

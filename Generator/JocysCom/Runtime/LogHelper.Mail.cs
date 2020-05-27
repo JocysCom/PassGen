@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Security;
 using System.Text;
 
 namespace JocysCom.ClassLibrary.Runtime
@@ -37,6 +38,8 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// </summary>
 		public bool NonErrorRecipientsFound(MailMessage message, List<MailAddress> extraErrorRecipients = null)
 		{
+			if (message == null)
+				throw new ArgumentNullException(nameof(message));
 			var list = MailHelper.ParseEmailAddress(SmtpClientEx.Current.ErrorRecipients);
 			// Add recipients who are allowed to receive original emails.
 			if (extraErrorRecipients != null)
@@ -46,7 +49,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			return message
 				.To.Union(message.CC).Union(message.Bcc)
 				.Select(x => x.Address.ToUpper())
-				.Except(addresses).Count() > 0;
+				.Except(addresses).Any();
 		}
 
 		public Exception SendMail(string to, string subject, string body, bool isBodyHtml = false)
@@ -121,6 +124,8 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <param name="body">Extra body text above exception.</param>
 		public void SendException(Exception ex, string subject = null, string body = null)
 		{
+			if (!LogToMail)
+				return;
 			_GroupException(mailExceptions, ex, subject, body, _SendMail);
 		}
 
@@ -148,13 +153,18 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// </summary>
 		public string ProcessException(Exception ex, string subject = null, string body = null, bool processExtraAction = true)
 		{
+			// Process global (there is a chance that app settings are not available yet.
+			var extra = ProcessExceptionExtraGlobal;
+			// If set then execute extra exception actions
+			if (processExtraAction && extra != null)
+				extra(ex);
 			// Show exception first, because email can fail.
-			var extra = ProcessExceptionExtra;
+			extra = ProcessExceptionExtra;
 			// If set then execute extra exception actions
 			if (processExtraAction && extra != null)
 				extra(ex);
 			// Email exception.
-			if (SmtpClientEx.Current.ErrorNotifications && !SuspendError(ex))
+			if ((SmtpClientEx.Current.ErrorNotifications || LogToMail) && !SuspendError(ex))
 			{
 				// If processing exception fails then it should not be re-thrown or it will go into the loop.
 				try
@@ -228,6 +238,8 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <returns>Preview Message.</returns>
 		public static MailMessage GetMailPreview(MailMessage message, SmtpClientEx client = null)
 		{
+			if (message == null)
+				throw new ArgumentNullException(nameof(message));
 			var smtp = SmtpClientEx.Current;
 			var mail = new MailMessage();
 			mail.IsBodyHtml = true;
@@ -290,11 +302,9 @@ namespace JocysCom.ClassLibrary.Runtime
 						// Add calendar item as attachment.
 						var attachment = new Attachment(view.ContentStream, name, content.MediaType);
 						mail.Attachments.Add(attachment);
-
-						var reader = new System.IO.StreamReader(view.ContentStream);
-						var calendar = reader.ReadToEnd();
-
-
+						//var reader = new System.IO.StreamReader(view.ContentStream);
+						//var calendar = reader.ReadToEnd();
+						//reader.Dispose();
 					}
 				}
 			}
@@ -308,6 +318,8 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// </summary>
 		public bool SuspendError(Exception ex)
 		{
+			if (ex == null)
+				throw new ArgumentNullException(nameof(ex));
 			if (!ex.Data.Keys.Cast<object>().Contains(Mail.SmtpClientEx.ErrorCode))
 				return false;
 			var errorCode = ex.Data[Mail.SmtpClientEx.ErrorCode] as int?;

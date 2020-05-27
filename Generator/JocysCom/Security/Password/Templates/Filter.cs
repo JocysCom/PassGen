@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace JocysCom.ClassLibrary.Security.Password.Templates
+﻿namespace JocysCom.ClassLibrary.Security.Password.Templates
 {
 	public partial class Filter
 	{
@@ -17,8 +12,10 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 			return chars;
 		}
 
-		public virtual void ValidateInput(Generator generator, Word password, char[] chars){
-			if (chars.Length == 0){
+		public virtual void ValidateInput(Generator generator, Word password, char[] chars)
+		{
+			if (chars.Length == 0)
+			{
 				password.AppendLog("Error: Chars list supplied to '{0}' filter is empty.\r\n", FilterName);
 			}
 		}

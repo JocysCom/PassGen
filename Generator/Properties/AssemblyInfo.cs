@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jocys.com")]
 [assembly: AssemblyProduct("Password Generator")]
-[assembly: AssemblyCopyright("Copyright © Jocys.com 2019")]
+[assembly: AssemblyCopyright("Copyright © Jocys.com 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.4.6.0")]
-[assembly: AssemblyFileVersion("2.4.6.0")]
+[assembly: AssemblyVersion("2.4.7.0")]
+[assembly: AssemblyFileVersion("2.4.7.0")]

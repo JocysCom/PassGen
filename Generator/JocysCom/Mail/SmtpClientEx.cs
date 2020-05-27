@@ -2,11 +2,13 @@
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Configuration;
 using System.Net.Mail;
 using System.Net.NetworkInformation;
 using System.Reflection;
+#if !NETSTANDARD
+using System.Net.Configuration;
 using System.Web;
+#endif
 
 namespace JocysCom.ClassLibrary.Mail
 {
@@ -76,7 +78,7 @@ namespace JocysCom.ClassLibrary.Mail
 			set
 			{
 				if (string.IsNullOrEmpty(value))
-					throw new ArgumentNullException("value");
+					throw new ArgumentNullException(nameof(value));
 				if (localHostName != null)
 					localHostName.SetValue(this, value);
 			}
@@ -101,6 +103,8 @@ namespace JocysCom.ClassLibrary.Mail
 
 		public static void SetErrorCode(Exception ex, int errorCode)
 		{
+			if (ex == null)
+				throw new ArgumentNullException(nameof(ex));
 			if (errorCode == 0)
 				return;
 			if (ex.Data.Keys.OfType<string>().Contains(ErrorCode))
@@ -130,34 +134,42 @@ namespace JocysCom.ClassLibrary.Mail
 			//
 			// Override settings from <configuration>\<appSettings>
 			//
+			var sp = Configuration.SettingsParser.Current;
+			string settingsFrom = null;
+#if !NETSTANDARD
 			System.Configuration.Configuration config;
 			var settings = GetCurrentSmtpSettings(out config);
-			SmtpFrom = Runtime.LogHelper.ParseString("SmtpFrom", settings.From);
+			settingsFrom = settings.From;
+#endif
+			SmtpFrom = sp.Parse("SmtpFrom", settingsFrom);
 			var credentials = (NetworkCredential)Credentials ?? new NetworkCredential();
-			credentials.Domain = Runtime.LogHelper.ParseString("SmtpDomain", credentials.Domain);
-			credentials.UserName = Runtime.LogHelper.ParseString("SmtpUsername", credentials.UserName);
-			credentials.Password = Runtime.LogHelper.ParseString("SmtpPassword", credentials.Password);
+			credentials.Domain = sp.Parse("SmtpDomain", credentials.Domain);
+			credentials.UserName = sp.Parse("SmtpUsername", credentials.UserName);
+			credentials.Password = sp.Parse("SmtpPassword", credentials.Password);
 			if (!string.IsNullOrEmpty(credentials.UserName))
 				Credentials = credentials;
-			Host = Runtime.LogHelper.ParseString("SmtpServer", Host);
-			Port = Runtime.LogHelper.ParseInt("SmtpPort", Port);
-			EnableSsl = Runtime.LogHelper.ParseBool("SmtpEnableSsl", EnableSsl);
-			DeliveryMethod = Runtime.LogHelper.ParseEnum("ErrorDeliveryMethod", DeliveryMethod);
-			PickupDirectoryLocation = Runtime.LogHelper.ParseString("SmtpPickupFolder", PickupDirectoryLocation);
-			Timeout = Runtime.LogHelper.ParseInt("SmtpTimeout", Timeout);
+			var host = sp.Parse("SmtpServer", Host);
+			if (!string.IsNullOrEmpty(host))
+				Host = host;
+			Port = sp.Parse("SmtpPort", Port);
+			EnableSsl = sp.Parse("SmtpEnableSsl", EnableSsl);
+			DeliveryMethod = sp.Parse("ErrorDeliveryMethod", DeliveryMethod);
+			PickupDirectoryLocation = sp.Parse("SmtpPickupFolder", PickupDirectoryLocation);
+			Timeout = sp.Parse("SmtpTimeout", Timeout);
 			// Set local IP address and port.
 			SmtpLocalAddress = IPAddress.Any;
-			var localAddress = Runtime.LogHelper.ParseString("SmtpLocalAddress", "");
+			var localAddress = sp.Parse("SmtpLocalAddress", "");
+			bool _ignore;
 			if (!string.IsNullOrEmpty(localAddress))
-				IPAddress.TryParse(localAddress, out SmtpLocalAddress);
-			SmtpLocalPort = Runtime.LogHelper.ParseInt("SmtpLocalPort", 0);
+				_ignore = IPAddress.TryParse(localAddress, out SmtpLocalAddress);
+			SmtpLocalPort = sp.Parse("SmtpLocalPort", 0);
 			// Other settings.
-			SmtpSendCopyTo = Runtime.LogHelper.ParseString("SmtpSendCopyTo", "");
-			ErrorRecipients = Runtime.LogHelper.ParseString("ErrorRecipients", "");
+			SmtpSendCopyTo = sp.Parse("SmtpSendCopyTo", "");
+			ErrorRecipients = sp.Parse("ErrorRecipients", "");
 			var errorNotifications = !string.IsNullOrEmpty(ErrorRecipients);
-			ErrorNotifications = Runtime.LogHelper.ParseBool("ErrorNotifications", errorNotifications);
-			ErrorCodeSuspended = Runtime.LogHelper.ParseString("ErrorCodeSuspended", "");
-			SmtpFixHostName = Runtime.LogHelper.ParseBool("SmtpFixHostName", false);
+			ErrorNotifications = sp.Parse("ErrorNotifications", errorNotifications);
+			ErrorCodeSuspended = sp.Parse("ErrorCodeSuspended", "");
+			SmtpFixHostName = sp.Parse("SmtpFixHostName", false);
 			if (SmtpFixHostName)
 			{
 				// Fully qualified domain name (FQDN) fix.
@@ -166,6 +178,8 @@ namespace JocysCom.ClassLibrary.Mail
 					LocalHostName = ip.HostName + "." + ip.DomainName;
 			}
 		}
+
+#if !NETSTANDARD
 
 		/// <summary>Get configuration settings from current web.config or app.config.</summary>
 		static System.Configuration.Configuration GetCurrentConfiguration()
@@ -190,6 +204,8 @@ namespace JocysCom.ClassLibrary.Mail
 			return settings.Smtp;
 		}
 
+#endif
+
 		static long _WriteMailCount = 0;
 
 		public void SendMessage(MailMessage message, out string fileName)
@@ -208,13 +224,16 @@ namespace JocysCom.ClassLibrary.Mail
 					var Tls12 = 0x0C00; //  3072
 					ServicePointManager.SecurityProtocol |= (SecurityProtocolType)(Tls11 | Tls12);
 				}
-				// Bind to local IP address.
-				ServicePoint.BindIPEndPointDelegate =
+				if (SmtpLocalAddress != IPAddress.Any || SmtpLocalPort > 0)
+				{
+					// Bind to local IP address.
+					ServicePoint.BindIPEndPointDelegate =
 					delegate (ServicePoint servicePoint, IPEndPoint remoteEndPoint, int retryCount)
 					{
 						var endpoint = new IPEndPoint(SmtpLocalAddress, SmtpLocalPort);
 						return endpoint;
 					};
+				}
 			}
 			// Override file name.
 			else if (DeliveryMethod == SmtpDeliveryMethod.SpecifiedPickupDirectory)
@@ -233,7 +252,7 @@ namespace JocysCom.ClassLibrary.Mail
 			// Send Email.
 			// CWE-201: Information Exposure Through Send Data
 			// CWE-209: Information Exposure Through an Error Message
-			// Note: Generic shared method. Mitigated by design.
+			// Note: Mitigated by design. Generic shared method.
 			Send(message);
 		}
 
@@ -272,6 +291,8 @@ namespace JocysCom.ClassLibrary.Mail
 		/// <param name="message"></param>
 		public static void AddSmtpSendCopyToRecipients(MailMessage message, string recipients)
 		{
+			if (message == null)
+				throw new ArgumentNullException(nameof(message));
 			var addresses = MailHelper.ParseEmailAddress(recipients);
 			var hosts = addresses.Select(x => x.Host.ToLower()).Distinct().ToArray();
 			if (hosts.Length == 0)

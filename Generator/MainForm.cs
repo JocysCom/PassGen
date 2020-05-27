@@ -95,6 +95,7 @@ namespace JocysCom.Password.Generator
 			ScriptPanel.AutoLoadToolStripButton.Visible = false;
 			ScriptPanel.AutoRunToolStripButton.Checked = false;
 			ScriptPanel.AutoRunToolStripButton.Visible = false;
+			ScriptPanel.AutoStripSeparator.Visible = false;
 			ScriptPanel.SupressRunDefaultFunction = true;
 			ScriptPanel.RunToolStripButton.Click += new EventHandler(ControlAutoRunButton_Click);
 			OptionsPanel.Initialize();

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace JocysCom.ClassLibrary.Security.Password.Templates
@@ -55,7 +54,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 			foreach (string[] item in Data)
 			{
 				uint code = 0;
-				if (item[0].StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
+				if (item[0].StartsWith("0x", StringComparison.OrdinalIgnoreCase))
 				{
 					code = uint.Parse(item[0].Substring(2), System.Globalization.NumberStyles.HexNumber);
 				}
@@ -77,7 +76,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		public string CallName
 		{
 			get { return _CallName; }
-			set { _CallName = value; NotifyPropertyChanged("CallName"); }
+			set { _CallName = value; OnPropertyChanged(); }
 		}
 
 		string _CallDescription;
@@ -85,7 +84,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		public string CallDescription
 		{
 			get { return _CallDescription; }
-			set { _CallDescription = value; NotifyPropertyChanged("CallDescription"); }
+			set { _CallDescription = value; OnPropertyChanged(); }
 		}
 
 		string _FontName;
@@ -93,7 +92,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		public string FontName
 		{
 			get { return _FontName; }
-			set { _FontName = value; NotifyPropertyChanged("FontName"); }
+			set { _FontName = value; OnPropertyChanged(); }
 		}
 
 		[DataMember]
@@ -106,7 +105,7 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private void NotifyPropertyChanged(string propertyName = "")
+		internal void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			var ev = PropertyChanged;
 			if (ev == null) return;
@@ -114,7 +113,6 @@ namespace JocysCom.ClassLibrary.Security.Password.Templates
 		}
 
 		#endregion
-
 
 	}
 }

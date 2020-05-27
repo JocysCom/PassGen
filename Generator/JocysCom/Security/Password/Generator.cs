@@ -30,19 +30,20 @@ namespace JocysCom.ClassLibrary.Security.Password
 		private Preset _Preset;
 		public Preset Preset
 		{
-			get { return _Preset; }
+			get => _Preset;
 			set
 			{
 				_Preset = value;
-				if (PresetChanged != null) PresetChanged(this, new EventArgs());
+				if (PresetChanged != null)
+					PresetChanged(this, new EventArgs());
 			}
 		}
 
-		Random rnd = new Random();
+		private readonly Random rnd = new Random();
 
 		public EventHandler<EventArgs> PresetChanged;
 
-		string _splitString(string s, string separator)
+		private string _splitString(string s, string separator)
 		{
 			s.ToCharArray();
 			return string.Join(separator, s.ToCharArray().Select(x => x.ToString()).ToArray());
@@ -50,10 +51,11 @@ namespace JocysCom.ClassLibrary.Security.Password
 
 		public string NewPasswordList(int count, string separator)
 		{
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < count; i++)
+			var sb = new StringBuilder();
+			for (var i = 0; i < count; i++)
 			{
-				if (i > 0) sb.Append(separator);
+				if (i > 0)
+					sb.Append(separator);
 				sb.Append(NewPassword().Text);
 			}
 			return sb.ToString();
@@ -73,27 +75,32 @@ namespace JocysCom.ClassLibrary.Security.Password
 			if (Preset.UseUppercase)
 			{
 				charsCount += Preset.CharsUppercase.Length;
-				for (int i = 0; i < Preset.RatioUppercase; i++) types.Add(CharType.Uppercase);
+				for (var i = 0; i < Preset.RatioUppercase; i++)
+					types.Add(CharType.Uppercase);
 			}
 			if (Preset.UseLowercase)
 			{
 				charsCount += Preset.CharsLowercase.Length;
-				for (int i = 0; i < Preset.RatioLowercase; i++) types.Add(CharType.Lowercase);
+				for (var i = 0; i < Preset.RatioLowercase; i++)
+					types.Add(CharType.Lowercase);
 			}
 			if (Preset.UseNumbers)
 			{
 				charsCount += Preset.CharsNumbers.Length;
-				for (int i = 0; i < Preset.RatioNumbers; i++) types.Add(CharType.Number);
+				for (var i = 0; i < Preset.RatioNumbers; i++)
+					types.Add(CharType.Number);
 			}
 			if (Preset.UseSymbols)
 			{
 				charsCount += Preset.CharsSymbols.Length;
-				for (int i = 0; i < Preset.RatioSymbols; i++) types.Add(CharType.Symbol);
+				for (var i = 0; i < Preset.RatioSymbols; i++)
+					types.Add(CharType.Symbol);
 			}
 			if (Preset.UseExtra)
 			{
 				charsCount += Preset.CharsExtra.Length;
-				for (int i = 0; i < Preset.RatioExtra; i++) types.Add(CharType.Extra);
+				for (var i = 0; i < Preset.RatioExtra; i++)
+					types.Add(CharType.Extra);
 			}
 			// Types must contains types of all chars.
 			if (types.Count == 0)
@@ -101,27 +108,29 @@ namespace JocysCom.ClassLibrary.Security.Password
 				password.AppendLog("Error: chars list is empty!\r\n");
 				return password;
 			}
-			var list = new Dictionary<CharType, string>();
-			list.Add(CharType.Uppercase, Preset.CharsUppercase);
-			list.Add(CharType.Lowercase, Preset.CharsLowercase);
-			list.Add(CharType.Number, Preset.CharsNumbers);
-			list.Add(CharType.Symbol, Preset.CharsSymbols);
-			list.Add(CharType.Extra, Preset.CharsExtra);
+			var list = new Dictionary<CharType, string>
+			{
+				{ CharType.Uppercase, Preset.CharsUppercase },
+				{ CharType.Lowercase, Preset.CharsLowercase },
+				{ CharType.Number, Preset.CharsNumbers },
+				{ CharType.Symbol, Preset.CharsSymbols },
+				{ CharType.Extra, Preset.CharsExtra }
+			};
 			//password.AppendLog("Info: Chars To Use: {0}\r\n", new string(charsToUse));
 			// Now we can create our password.
 			for (var i = 0; i < Preset.PasswordLength; i++)
 			{
 				var charsToGenerate = Preset.PasswordLength - i;
 				var missing = new List<CharType>();
-				if (Preset.UseUppercase && password.Chars.Intersect(Preset.CharsUppercase).Count() == 0)
+				if (Preset.UseUppercase && !password.Chars.Intersect(Preset.CharsUppercase).Any())
 					missing.Add(CharType.Uppercase);
-				if (Preset.UseLowercase && password.Chars.Intersect(Preset.CharsLowercase).Count() == 0)
+				if (Preset.UseLowercase && !password.Chars.Intersect(Preset.CharsLowercase).Any())
 					missing.Add(CharType.Lowercase);
-				if (Preset.UseNumbers && password.Chars.Intersect(Preset.CharsNumbers).Count() == 0)
+				if (Preset.UseNumbers && !password.Chars.Intersect(Preset.CharsNumbers).Any())
 					missing.Add(CharType.Number);
-				if (Preset.UseSymbols && password.Chars.Intersect(Preset.CharsSymbols).Count() == 0)
+				if (Preset.UseSymbols && !password.Chars.Intersect(Preset.CharsSymbols).Any())
 					missing.Add(CharType.Symbol);
-				if (Preset.UseExtra && password.Chars.Intersect(Preset.CharsExtra).Count() == 0)
+				if (Preset.UseExtra && !password.Chars.Intersect(Preset.CharsExtra).Any())
 					missing.Add(CharType.Extra);
 				// Get random type according to rate.
 				var charType = types[rnd.Next(types.Count)];
@@ -152,9 +161,11 @@ namespace JocysCom.ClassLibrary.Security.Password
 			if (!Preset.FilterRemember && !Preset.FilterKeyboard && !Preset.FilterPhone)
 				Shuffle(password.Chars);
 			// Apply regular expressions to password.
-			if (Preset.RegexEnabled) password = ApplyRegex(password);
+			if (Preset.RegexEnabled)
+				password = ApplyRegex(password);
 			// Apply script to password.
-			if (Preset.ScriptEnabled) password = ApplyScript(password);
+			if (Preset.ScriptEnabled)
+				password = ApplyScript(password);
 			// If password is empty then...
 			if (password.Chars.Length != Preset.PasswordLength)
 			{
@@ -164,33 +175,39 @@ namespace JocysCom.ClassLibrary.Security.Password
 			return password;
 		}
 
-		Dictionary<FilterName, Filter> _Filters;
+		private Dictionary<FilterName, Filter> _Filters;
 		public Dictionary<FilterName, Filter> Filters
 		{
 			get
 			{
 				if (_Filters == null)
 				{
-					_Filters = new Dictionary<FilterName, Filter>();
-					_Filters.Add(FilterName.Remember, new Templates.Filters.Remember());
-					_Filters.Add(FilterName.Keyboard, new Templates.Filters.Keyboard());
-					_Filters.Add(FilterName.Phone, new Templates.Filters.Phone());
-					_Filters.Add(FilterName.Chars, new Templates.Filters.Chars());
+					_Filters = new Dictionary<FilterName, Filter>
+					{
+						{ FilterName.Remember, new Templates.Filters.Remember() },
+						{ FilterName.Keyboard, new Templates.Filters.Keyboard() },
+						{ FilterName.Phone, new Templates.Filters.Phone() },
+						{ FilterName.Chars, new Templates.Filters.Chars() }
+					};
 				}
 				return _Filters;
 			}
 		}
 
-		char[] FilterChars(Word password, char[] chars)
+		private char[] FilterChars(Word password, char[] chars)
 		{
-			if (Preset.FilterRemember) chars = Filters[FilterName.Remember].GetChars(this, password, chars);
-			if (Preset.FilterKeyboard) chars = Filters[FilterName.Keyboard].GetChars(this, password, chars);
-			if (Preset.FilterPhone) chars = Filters[FilterName.Phone].GetChars(this, password, chars);
-			if (Preset.FilterChars) chars = Filters[FilterName.Chars].GetChars(this, password, chars);
+			if (Preset.FilterRemember)
+				chars = Filters[FilterName.Remember].GetChars(this, password, chars);
+			if (Preset.FilterKeyboard)
+				chars = Filters[FilterName.Keyboard].GetChars(this, password, chars);
+			if (Preset.FilterPhone)
+				chars = Filters[FilterName.Phone].GetChars(this, password, chars);
+			if (Preset.FilterChars)
+				chars = Filters[FilterName.Chars].GetChars(this, password, chars);
 			return chars;
 		}
 
-		T[] Shuffle<T>(T[] array)
+		private T[] Shuffle<T>(T[] array)
 		{
 			var i = array.Length;
 			T temporaryValue;
@@ -209,40 +226,42 @@ namespace JocysCom.ClassLibrary.Security.Password
 			return array;
 		}
 
-		Controls.DynamicCompile.DcEngine engine;
+		private Controls.DynamicCompile.DcEngine engine;
 
 		//-------------------------------------------------------
 		public Word ApplyScript(Word password)
 		{
 			password.AppendLog("Info: ApplyScript to '{0}'\r\n", password.Text);
-			LanguageType language = (LanguageType)Enum.Parse(typeof(LanguageType), Preset.ScriptLanguage);
+			// If thre is no code then return original password.
+			if (string.IsNullOrEmpty(Preset.ScriptCode))
+				return password;
+			var language = (LanguageType)Enum.Parse(typeof(LanguageType), Preset.ScriptLanguage);
 			if (engine == null
 				|| engine.SourceCode != Preset.ScriptCode
 				|| engine.Language != language
 				|| Preset.ScriptEntry != Preset.ScriptEntry)
 			{
 				engine = new Controls.DynamicCompile.DcEngine(Preset.ScriptCode, language, Preset.ScriptEntry);
-				engine.CurrentAssembly = null;
 			}
-			string result = (string)engine.Run(this, password);
-			if (result != null) password.Chars = result.ToCharArray();
+			var result = (string)engine.Run(this, password);
+			if (result != null)
+				password.Chars = result.ToCharArray();
 			return password;
 		}
 
 		public int GetPasswordStrength(char[] passChars)
 		{
 			// Find which chars were used.
-			bool haveUppercase = passChars.Intersect(Preset.CharsUppercase).Count() > 0;
-			bool haveLowercase = passChars.Intersect(Preset.CharsLowercase).Count() > 0;
-			bool haveNumbers = passChars.Intersect(Preset.CharsNumbers).Count() > 0;
-			bool haveSymbols = passChars.Intersect(Preset.CharsSymbols).Count() > 0;
-			bool haveExtra = Preset.CharsExtra.Length > 0 && passChars
+			var haveUppercase = passChars.Intersect(Preset.CharsUppercase).Any();
+			var haveLowercase = passChars.Intersect(Preset.CharsLowercase).Any();
+			var haveNumbers = passChars.Intersect(Preset.CharsNumbers).Any();
+			var haveSymbols = passChars.Intersect(Preset.CharsSymbols).Any();
+			var haveExtra = Preset.CharsExtra.Length > 0 && passChars
 				.Intersect(Preset.CharsUppercase)
 				.Intersect(Preset.CharsLowercase)
 				.Intersect(Preset.CharsNumbers)
 				.Intersect(Preset.CharsSymbols)
-				.Intersect(Preset.CharsExtra)
-				.Count() > 0;
+				.Intersect(Preset.CharsExtra).Any();
 			// Calculate total number of used chars. 
 			double chars = (haveUppercase ? Preset.CharsUppercase.Length : 0) +
 				(haveLowercase ? Preset.CharsLowercase.Length : 0) +
@@ -250,19 +269,19 @@ namespace JocysCom.ClassLibrary.Security.Password
 				(haveSymbols ? Preset.CharsSymbols.Length : 0) +
 				(haveExtra ? Preset.CharsExtra.Length : 0);
 			// Calculate number of possible passwords.
-			double number = Math.Pow(chars, (double)passChars.Length);
+			var number = Math.Pow(chars, passChars.Length);
 			// Strength of the password in bits.
 			// It represents N where 2 ^ N is a number of all possible password variations required
 			// to check by brute-force algorithm in order to crack you password successfully.
-			int strength = (int)Math.Round(Math.Log(number, 2));
+			var strength = (int)Math.Round(Math.Log(number, 2));
 			return strength;
 		}
 
-		Word ApplyRegex(Word password)
+		private Word ApplyRegex(Word password)
 		{
 			try
 			{
-				Regex rx = new Regex(Preset.RegexPatternFind);
+				var rx = new Regex(Preset.RegexPatternFind);
 				var s = new string(password.Chars);
 				password.Chars = rx.Replace(s, Preset.RegexPatternReplace).ToCharArray();
 			}

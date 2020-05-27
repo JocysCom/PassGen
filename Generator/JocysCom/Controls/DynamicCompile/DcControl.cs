@@ -1,10 +1,7 @@
 ﻿// http://www.west-wind.com/presentations/dynamicCode/DynamicCode.htm
 // http://www.codeproject.com/KB/dotnet/DotNetScript.aspx
 using System;
-using System.CodeDom;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -28,8 +25,7 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 
 		public void LoadFile(string fileName)
 		{
-			//if (string.IsNullOrEmpty(fileName)) return;
-			string contents = string.Empty;
+			string contents;
 			try
 			{
 				contents = File.ReadAllText(fileName);
@@ -39,9 +35,15 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			var ln = LanguageType.CSharp;
 			switch (extension)
 			{
-				case ".cs": ln = LanguageType.CSharp; break;
-				case ".vb": ln = LanguageType.VB; break;
-				case ".js": ln = LanguageType.JScript; break;
+				case ".cs":
+					ln = LanguageType.CSharp;
+					break;
+				case ".vb":
+					ln = LanguageType.VB;
+					break;
+				case ".js":
+					ln = LanguageType.JScript;
+					break;
 				default:
 					throw new NotSupportedException(extension);
 			}
@@ -59,10 +61,7 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			LoadScript(ln, contents);
 		}
 
-		LanguageType CurrentLanguage
-		{
-			get { return (LanguageType)Enum.Parse(typeof(LanguageType), (string)LanguageToolStripComboBox.SelectedItem); }
-		}
+		private LanguageType CurrentLanguage => (LanguageType)Enum.Parse(typeof(LanguageType), (string)LanguageToolStripComboBox.SelectedItem);
 
 		public void Clear()
 		{
@@ -89,7 +88,8 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 				ErrorsTextBox.AppendText(engine.ErrorsLog.ToString());
 			}
 			EntryToolStripComboBox.Items.Clear();
-			if (entryPoints.Length > 0) EntryToolStripComboBox.Items.AddRange(entryPoints);
+			if (entryPoints.Length > 0)
+				EntryToolStripComboBox.Items.AddRange(entryPoints);
 			if (EntryToolStripComboBox.Items.Contains(selected))
 			{
 				EntryToolStripComboBox.Text = selected;
@@ -98,7 +98,8 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			{
 				EntryToolStripComboBox.Text = EntryToolStripComboBox.Items.Cast<string>().First();
 			}
-			if (AutoRunToolStripButton.Checked && EntryToolStripComboBox.Text.Length > 0) Run();
+			if (AutoRunToolStripButton.Checked && EntryToolStripComboBox.Text.Length > 0)
+				Run();
 			return true;
 		}
 
@@ -106,10 +107,12 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 		{
 			var code = CodeTextBox.Text.Trim();
 			var entry = EntryToolStripComboBox.Text;
-			if (code == "") return;
-			if (entry == "") entry = "Main";
+			if (code == "")
+				return;
+			if (entry == "")
+				entry = "Main";
 			var engine = new DcEngine(code, CurrentLanguage, entry);
-			object results = engine.Run(parameters);
+			var results = engine.Run(parameters);
 			if (results == null)
 			{
 				OutputTextBox.Text = "null";
@@ -136,8 +139,8 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			}
 		}
 
-		int changed = 0;
-		int loaded = 0;
+		private int changed = 0;
+		private int loaded = 0;
 
 		private void CodeFileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
 		{
@@ -158,10 +161,13 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			OutputTextBox.BringToFront();
 			LanguageToolStripComboBox.SelectedIndex = 0;
 			var autoRun = AutoRunToolStripButton.Checked;
-			if (autoRun) AutoRunToolStripButton.Checked = false;
+			if (autoRun)
+				AutoRunToolStripButton.Checked = false;
 			var fi = new FileInfo(FileToolStripStatusLabel.Text);
-			if (fi.Exists) LoadFile(FileToolStripStatusLabel.Text);
-			if (autoRun) AutoRunToolStripButton.Checked = true;
+			if (fi.Exists)
+				LoadFile(FileToolStripStatusLabel.Text);
+			if (autoRun)
+				AutoRunToolStripButton.Checked = true;
 			UpdateStats();
 		}
 
@@ -194,7 +200,8 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 		{
 			// we use a new thread to run it
 			//new Thread(new ThreadStart(RunTheProg)).Start();
-			if (!SupressRunDefaultFunction) Run("cde");
+			if (!SupressRunDefaultFunction)
+				Run("cde");
 		}
 
 		public bool SupressRunDefaultFunction;
@@ -207,7 +214,8 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			OpenCodeFileDialog.InitialDirectory = fi.DirectoryName;
 			OpenCodeFileDialog.RestoreDirectory = true;
 			OpenCodeFileDialog.DefaultExt = "*.cs; *.vb";
-			if (OpenCodeFileDialog.ShowDialog() != DialogResult.OK) return;
+			if (OpenCodeFileDialog.ShowDialog() != DialogResult.OK)
+				return;
 			FileToolStripStatusLabel.Text = OpenCodeFileDialog.FileName;
 			LoadFile(FileToolStripStatusLabel.Text);
 		}
@@ -244,18 +252,35 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			var current = rx.Replace(CodeTextBox.Text.Trim(), "");
 			var replace = string.IsNullOrEmpty(current);
 			var keys = (LanguageType[])Enum.GetValues(typeof(LanguageType));
-			for (int i = 0; i < keys.Length; i++)
+			for (var i = 0; i < keys.Length; i++)
 			{
 				var template = Templates[keys[i]];
-				if (template == null) template = "";
+				if (template == null)
+					template = "";
 				if (current == rx.Replace(template, ""))
 				{
 					replace = true;
 					break;
 				}
 			}
-			var key = (LanguageType)Enum.Parse(typeof(LanguageType), LanguageToolStripComboBox.Text);
-			if (replace) CodeTextBox.Text = Templates[key];
+			var language = (LanguageType)Enum.Parse(typeof(LanguageType), LanguageToolStripComboBox.Text);
+			switch (language)
+			{
+				case LanguageType.CSharp:
+					CodeTextBox.Language = FastColoredTextBoxNS.Language.CSharp;
+					break;
+				case LanguageType.VB:
+					CodeTextBox.Language = FastColoredTextBoxNS.Language.VB;
+					break;
+				case LanguageType.JScript:
+					CodeTextBox.Language = FastColoredTextBoxNS.Language.JS;
+					break;
+				default:
+					CodeTextBox.Language = FastColoredTextBoxNS.Language.Custom;
+					break;
+			}
+			if (replace)
+				CodeTextBox.Text = Templates[language];
 			Check();
 		}
 
@@ -267,23 +292,26 @@ namespace JocysCom.ClassLibrary.Controls.DynamicCompile
 			LoadedToolStripStatusLabel.Text = string.Format("Loaded: {0}", loaded);
 		}
 
-		Dictionary<LanguageType, string> _Templates;
-		Dictionary<LanguageType, string> Templates
+		private Dictionary<LanguageType, string> _Templates;
+
+		private Dictionary<LanguageType, string> Templates
 		{
 			get
 			{
 				if (_Templates == null)
 				{
-					_Templates = new Dictionary<LanguageType, string>();
-					_Templates.Add(LanguageType.CSharp, Helper.GetResource<string>(@"DynamicCompile\Templates\CSharp.cs"));
-					_Templates.Add(LanguageType.JScript, Helper.GetResource<string>(@"DynamicCompile\Templates\JScript.js"));
-					_Templates.Add(LanguageType.VB, Helper.GetResource<string>(@"DynamicCompile\Templates\VB.vb"));
+					_Templates = new Dictionary<LanguageType, string>
+					{
+						{ LanguageType.CSharp, Helper.FindResource<string>(@"DynamicCompile.Templates.CSharp.cs") },
+						{ LanguageType.JScript, Helper.FindResource<string>(@"DynamicCompile.Templates.JScript.js") },
+						{ LanguageType.VB, Helper.FindResource<string>(@"DynamicCompile.Templates.VB.vb") }
+					};
 				}
 				return _Templates;
 			}
 		}
 
-		object providerLock = new object();
+		private readonly object providerLock = new object();
 
 
 		private void ResultsTabControl_SelectedIndexChanged(object sender, EventArgs e)

@@ -1,7 +1,7 @@
 ﻿namespace JocysCom.ClassLibrary.Security.Password.Templates
 {
 
-	public enum CharType: int
+	public enum CharType : int
 	{
 		Uppercase,
 		Lowercase,
