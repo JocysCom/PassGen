@@ -30,7 +30,7 @@ namespace JocysCom.ClassLibrary.Security.Password
 		private Preset _Preset;
 		public Preset Preset
 		{
-			get => _Preset;
+			get { return _Preset; }
 			set
 			{
 				_Preset = value;
