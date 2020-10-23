@@ -20,23 +20,27 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <param name="client"></param>
 		public virtual void SendMail(MailMessage message, SmtpClientEx client = null, bool forcePreview = false)
 		{
+			if (message == null)
+				throw new ArgumentNullException(nameof(message));
 			var smtp = client ?? SmtpClientEx.Current;
 			// If non-live environment then send preview, except if all recipients are known.
 			var sendPreview = !IsLive && NonErrorRecipientsFound(message);
 			// If not LIVE environment then send preview message to developers instead.
+			MailMessage preview = null;
 			if (forcePreview || sendPreview)
-				message = GetMailPreview(message, smtp);
+				preview = GetMailPreview(message, smtp);
 			string fileName;
-			smtp.SendMessage(message, out fileName);
+			// Send preview if available, otherwise send original message.
+			smtp.SendMessage(preview ?? message, out fileName);
 			// Dispose preview message.
-			if (sendPreview)
-				message.Dispose();
+			if (preview != null)
+				preview.Dispose();
 		}
 
 		/// <summary>
 		/// Returns true of only error recipients found.
 		/// </summary>
-		public bool NonErrorRecipientsFound(MailMessage message, List<MailAddress> extraErrorRecipients = null)
+		public static bool NonErrorRecipientsFound(MailMessage message, List<MailAddress> extraErrorRecipients = null)
 		{
 			if (message == null)
 				throw new ArgumentNullException(nameof(message));
@@ -124,7 +128,7 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <param name="body">Extra body text above exception.</param>
 		public void SendException(Exception ex, string subject = null, string body = null)
 		{
-			if (!LogToMail)
+			if (!(SmtpClientEx.Current.ErrorNotifications || LogToMail))
 				return;
 			_GroupException(mailExceptions, ex, subject, body, _SendMail);
 		}
@@ -137,13 +141,18 @@ namespace JocysCom.ClassLibrary.Runtime
 		void _SendMail(Exception ex, string subject, string body)
 		{
 			var smtp = SmtpClientEx.Current;
-			var message = new MailMessage();
-			MailHelper.ApplyRecipients(message, smtp.SmtpFrom, smtp.ErrorRecipients);
-			message.Subject = subject;
-			message.Body = Current.ExceptionInfo(ex, body);
-			message.IsBodyHtml = true;
-			SendMail(message);
-			message.Dispose();
+			var m = new MailMessage();
+			MailHelper.ApplyRecipients(m, smtp.SmtpFrom, smtp.ErrorRecipients);
+			// Add headers, which can be used on server side to group errors.
+			if (!string.IsNullOrEmpty(ex.Source))
+				m.Headers.Add(XLogHelperErrorSource, ex.Source);
+			m.Headers.Add(XLogHelperErrorType, ex.GetType().FullName);
+			m.Headers.Add(XLogHelperErrorCode, ex.HResult.ToString());
+			m.Subject = subject;
+			m.Body = Current.ExceptionInfo(ex, body);
+			m.IsBodyHtml = true;
+			SendMail(m);
+			m.Dispose();
 		}
 
 		public ProcessExceptionDelegate ProcessExceptionMailFailed;
@@ -189,6 +198,8 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		public static string GetMailHeader(MailMessage message)
 		{
+			if (message == null)
+				throw new ArgumentNullException(nameof(message));
 			var sb = new StringBuilder();
 			sb.AppendFormat("From: {0}\r\n", message.From);
 			foreach (var item in message.To)
@@ -316,7 +327,7 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// <summary>
 		/// Suspend error if error code (int) value is found inside ex.Data["ErrorCode"].
 		/// </summary>
-		public bool SuspendError(Exception ex)
+		public static bool SuspendError(Exception ex)
 		{
 			if (ex == null)
 				throw new ArgumentNullException(nameof(ex));

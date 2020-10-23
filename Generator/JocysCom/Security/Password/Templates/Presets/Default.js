@@ -24,7 +24,7 @@
     "FilterPhone":false,
     "FilterAscii":false,
     "FilterChars":false,
-	"FilterCharsString":"O0QIl1",
+	"FilterCharsString":"QO0Il15S",
 	"ScriptEnabled": false,
 	"ScriptLanguage": "JScript",
 	"ScriptEntry": "Class1.Main",

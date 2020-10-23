@@ -6,7 +6,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-#if !NETSTANDARD
+#if NETSTANDARD
+#elif NETCOREAPP
+#else
+using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Data.SqlClient;
 #endif
 
@@ -56,15 +60,58 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// </summary>
 		public bool ErrorUseNewStackTrace { get { return _SP.Parse("UseNewStackTrace", false); } }
 		public bool WriteAsHtml { get { return _SP.Parse("WriteAsHtml", true); } }
-		public bool LogToFile { get { return _SP.Parse("LogToFile", false); } }
-		public bool LogToMail { get { return _SP.Parse("LogToMail", false); } }
-		public bool LogExceptions { get { return _SP.Parse("LogExceptions", false); } }
-		public bool LogThreadExceptions { get { return _SP.Parse("LogThreadExceptions", true); } }
-		public bool LogUnhandledExceptions { get { return _SP.Parse("LogUnhandledExceptions", true); } }
-		public bool LogFirstChanceExceptions { get { return _SP.Parse("LogFirstChanceExceptions", true); } }
-		public bool LogUnobservedTaskExceptions { get { return _SP.Parse("LogUnobservedTaskExceptions", true); } }
+
+		public bool LogToFile
+		{
+			get { return _LogToFile ?? _SP.Parse("LogToFile", false); }
+			set { _LogToFile = value; }
+		}
+		private bool? _LogToFile;
+
+		public bool LogToMail
+		{
+			get { return _LogToMail ?? _SP.Parse("LogToMail", false); }
+			set { _LogToMail = value; }
+		}
+		private bool? _LogToMail;
+
+		public bool LogExceptions
+		{
+			get { return _LogExceptions ?? _SP.Parse("LogExceptions", false); }
+			set { _LogExceptions = value; }
+		}
+		private bool? _LogExceptions;
+
+		public bool LogThreadExceptions
+		{
+			get { return _LogThreadExceptions ?? _SP.Parse("LogThreadExceptions", true); }
+			set { _LogThreadExceptions = value; }
+		}
+		private bool? _LogThreadExceptions;
+
+		public bool LogUnhandledExceptions
+		{
+			get { return _LogUnhandledExceptions ?? _SP.Parse("LogUnhandledExceptions", true); }
+			set { _LogUnhandledExceptions = value; }
+		}
+		private bool? _LogUnhandledExceptions;
+
+		public bool LogFirstChanceExceptions
+		{
+			get { return _LogFirstChanceExceptions ?? _SP.Parse("LogFirstChanceExceptions", true); }
+			set { _LogFirstChanceExceptions = value; }
+		}
+		private bool? _LogFirstChanceExceptions;
+
+		public bool LogUnobservedTaskExceptions
+		{
+			get { return _LogUnobservedTaskExceptions ?? _SP.Parse("LogUnobservedTaskExceptions", true); }
+			set { _LogUnobservedTaskExceptions = value; }
+		}
+		private bool? _LogUnobservedTaskExceptions;
+
 		public bool GroupingEnabled { get { return _SP.Parse("GroupingEnabled", false); } }
-		public TimeSpan GroupingDelay { get { return _SP.ParseTimeSpan("GroupingDelay", new TimeSpan(0, 5, 0)); } }
+		public TimeSpan GroupingDelay { get { return _SP.Parse("GroupingDelay", new TimeSpan(0, 5, 0)); } }
 		public static string RunMode
 		{
 			get
@@ -106,14 +153,15 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		#region Add To String
 
-		public static void AddParameters(ref string s, IDictionary parameters, TraceFormat tf)
+		public static void AddParameters(ref string s, IDictionary parameters, TraceFormat tf = TraceFormat.Html)
 		{
 			if (parameters == null)
 				return;
 			bool isHtml = (tf == TraceFormat.Html);
-			foreach (string key in parameters.Keys)
+			foreach (var key in parameters.Keys)
 			{
 				var pv = parameters[key];
+				var k = string.Format("{0}", key);
 				string v = pv == null
 					? "null"
 					: pv is DateTime
@@ -123,13 +171,12 @@ namespace JocysCom.ClassLibrary.Runtime
 				{
 					v = System.Net.WebUtility.HtmlEncode(v);
 					v = "<span class=\"Pre\">" + v + "</span>";
-					AddRow(ref s, key, v);
+					AddRow(ref s, k, v);
 				}
 				else
 				{
 					s += string.Format("{0}: {1}\r\n", key, v);
 				}
-
 			}
 		}
 
@@ -151,97 +198,82 @@ namespace JocysCom.ClassLibrary.Runtime
 			s += "</style>\r\n";
 		}
 
-		/// <summary>Add empty row.</summary>
-		public static void AddRow(ref string s)
-		{
-			s += string.Format("<tr><td colspan=\"2\"> </td></tr>");
-		}
-
-		/// <summary>Add header row.</summary>
-		public static void AddRow(ref string s, string name)
-		{
-			s += string.Format("<tr><th colspan=\"2\" class=\"Head\">{0}</th></tr>", name);
-		}
-
 		#region Table
 
-		public static void AddStyle(StringBuilder sb)
+		public static void StartTable(ref string s)
 		{
-			if (sb == null)
-				throw new ArgumentNullException(nameof(sb));
-			var s = "";
-			AddStyle(ref s);
-			sb.Append(s);
+			s += "<table class=\"Table\">";
 		}
 
-		public static void AddTable(StringBuilder sb)
+		public static void EndTable(ref string s)
 		{
-			if (sb == null)
-				throw new ArgumentNullException(nameof(sb));
-			sb.Append("<table class=\"Table\">");
+			s += "</table>";
 		}
 
-		public static void EndTable(StringBuilder sb)
+		/// <summary>Add multiple head columns.</summary>
+		public static void AddHeadRows(ref string s, params object[] args)
 		{
-			if (sb == null)
-				throw new ArgumentNullException(nameof(sb));
-			sb.Append("</table>");
-		}
-
-		/// <summary>Add head rows.</summary>
-		public static void AddHeadRows(StringBuilder sb, params object[] args)
-		{
-			if (sb == null)
-				throw new ArgumentNullException(nameof(sb));
-			sb.Append("<tr>");
+			s += "<tr>";
 			foreach (var arg in args)
 			{
 				var v = System.Net.WebUtility.HtmlEncode(string.Format("{0}", arg));
-				sb.AppendFormat("<th class=\"Head\">{0}</th>", v);
+				s += string.Format("<th class=\"Head\">{0}</th>", v);
 			}
-			sb.Append("</tr>");
+			s += "</tr>";
 		}
 
-		/// <summary>Add body rows.</summary>
-		public static void AddBodyRows(StringBuilder sb, params object[] args)
+		/// <summary>Add multiple body columns.</summary>
+		public static void AddBodyRows(ref string s, params object[] args)
 		{
-			if (sb == null)
-				throw new ArgumentNullException(nameof(sb));
-			sb.Append("<tr>");
+			s += "<tr>";
 			foreach (var arg in args)
 			{
 				var v = System.Net.WebUtility.HtmlEncode(string.Format("{0}", arg));
-				sb.AppendFormat("<td class=\"Body\">{0}</td>", v);
+				s += string.Format("<td class=\"Body\">{0}</td>", v);
 			}
-			sb.Append("</tr>");
+			s += "</tr>";
 		}
 
 		#endregion
 
 		/// <summary>Add row with key and value cells.</summary>
-		public static void AddRow(ref string s, string key, string value)
+		public static void AddRow(ref string s, string key = null, string value = null)
 		{
-			string sep = "";
-			if (!string.IsNullOrEmpty(key))
-				sep = ":";
-			s += string.Format("<tr><td class=\"Name\" valign=\"top\">{0}{1}</td><td>{2}</td></tr>", key, sep, value);
+			// If empty row then...
+			if (key == null && value == null)
+				s += "<tr><td colspan=\"2\"> </td></tr>";
+			// If head row then...
+			else if (key != null && value == null)
+				s += string.Format("<tr><th colspan=\"2\" class=\"Head\">{0}</th></tr>", key);
+			// if key anbd value specified.
+			else
+				s += string.Format("<tr><td class=\"Name\" valign=\"top\">{0}{1}</td><td>{2}</td></tr>",
+					key,
+					string.IsNullOrEmpty(key) ? "" : ":",
+					value
+				);
 		}
 
 		void AddExceptionTrace(ref string s, Exception ex)
 		{
 			if (ex.Data.Count > 0)
 				AddParameters(ref s, ex.Data, TraceFormat.Html);
+			bool containsFileAndLineNumber = false;
 			var html = WriteAsHtml
-				? ExceptionToString(ex, true, TraceFormat.Html)
+				? ExceptionToString(ex, true, TraceFormat.Html, out containsFileAndLineNumber)
 				: "<pre>" + ex.ToString() + "</pre>";
 			if (ex.TargetSite != null && ex.TargetSite.DeclaringType != null && ex.TargetSite.DeclaringType.Assembly != null)
 				AddRow(ref s, "Target.Declaring.Assembly", ex.TargetSite.DeclaringType.Assembly.FullName);
+			if (containsFileAndLineNumber)
+				AddRow(ref s, "StackTraceFile", "Yes");
 			AddRow(ref s, "StackTrace", html);
 		}
 
 		public static void AddConnection(ref string s, string name, string connectionString)
 		{
-#if !NETSTANDARD
+#if NETSTANDARD // .NET Standard
+#elif NETCOREAPP // .NET Core
+#else // .NET Framework
 			var cb = new System.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
 			s += string.Format("<tr><td class=\"Name\"  valign=\"top\">{0}:</td><td class=\"Value\" valign=\"top\">{1}.{2}</td></tr>", name, cb.DataSource, cb.InitialCatalog);
 #endif
@@ -286,7 +318,9 @@ namespace JocysCom.ClassLibrary.Runtime
 		public WriteLogDelegate WriteLogCustom;
 		public WriteLogDelegate WriteLogConsole = new WriteLogDelegate(_WriteConsole);
 
-#if !NETSTANDARD
+#if NETSTANDARD
+#elif NETCOREAPP
+#else
 		public WriteLogDelegate WriteLogEvent = new WriteLogDelegate(_WriteEvent);
 #endif
 		public WriteLogDelegate WriteLogFile = new WriteLogDelegate(_WriteFile);
@@ -300,8 +334,9 @@ namespace JocysCom.ClassLibrary.Runtime
 
 
 
-#if !NETSTANDARD
-
+#if NETSTANDARD
+#elif NETCOREAPP
+#else
 		// Requires 'EventLogInstaller' requires reference to System.Configuration.Install.dll
 		public static EventLogInstaller AppEventLogInstaller;
 
@@ -344,7 +379,9 @@ namespace JocysCom.ClassLibrary.Runtime
 			// If custom logging is enabled then write custom log (can be used to send emails).
 			if (WriteLogCustom != null)
 				WriteLogCustom(message, type);
-#if !NETSTANDARD
+#if NETSTANDARD
+#elif NETCOREAPP
+#else
 			// If event logging is enabled and important then write event.
 			if (WriteLogEvent != null && type != EventLogEntryType.Information)
 				WriteLogEvent(message, type);
@@ -360,12 +397,12 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		public static void WriteWarning(string format, params object[] args)
 		{
-			Current.WriteLog(args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Warning);
+			Current.WriteLog(args != null && args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Warning);
 		}
 
 		public static void WriteInfo(string format, params object[] args)
 		{
-			Current.WriteLog(args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Information);
+			Current.WriteLog(args != null && args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Information);
 		}
 
 		#endregion
@@ -387,9 +424,11 @@ namespace JocysCom.ClassLibrary.Runtime
 			if (!IsLive)
 			{
 				string rm = "(" + RunMode + ")";
-				if (s == null) s = rm;
+				if (s == null)
+					s = rm;
 				s = s.TrimEnd();
-				if (!s.Contains(rm)) s += " " + rm;
+				if (!s.Contains(rm))
+					s += " " + rm;
 			}
 		}
 
@@ -421,7 +460,7 @@ namespace JocysCom.ClassLibrary.Runtime
 				// If subject was not specified then...
 				if (string.IsNullOrEmpty(subject))
 					// Generate subject from exception.
-					subject = GetSubjectPrefix(ex, TraceEventType.Error) + ex.Message;
+					subject = GetSubjectPrefix(ex, TraceLevel.Error) + ex.Message;
 			}
 			if (string.IsNullOrEmpty(subject))
 				subject = "null";
@@ -549,7 +588,7 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		#region Convert Exception to HTML String
 
-		public static string GetSubjectPrefix(Exception ex = null, TraceEventType? type = null)
+		public static string GetSubjectPrefix(Exception ex = null, TraceLevel? type = null)
 		{
 			var asm = Assembly.GetEntryAssembly();
 			string s = "Unknown Entry Assembly";
@@ -585,26 +624,40 @@ namespace JocysCom.ClassLibrary.Runtime
 			return s;
 		}
 
-		public string ExceptionInfo(Exception ex, string body)
+		public const string XLogHelperErrorSource = "X-LogHelper-ErrorSource";
+		public const string XLogHelperErrorType = "X-LogHelper-ErrorType";
+		public const string XLogHelperErrorCode = "X-LogHelper-ErrorCode";
+
+		public string ExceptionInfo(Exception ex, string body, bool addHead = false)
 		{
 			//------------------------------------------------------
 			// Body
 			//------------------------------------------------------
-			string s = string.Empty;
+			var s = "";
+			if (addHead)
+			{
+				// Wrap into html element and specify UTF-8 encoding.
+				s += "<html><head>" +
+					"<meta charset=\"UTF-8\" />" +
+					"<meta name=\"" + XLogHelperErrorSource + "\" content=\"" + ex.Source + "\">" +
+					"<meta name=\"" + XLogHelperErrorType + "\" content=\"" + ex.GetType().FullName + "\">" +
+					"<meta name=\"" + XLogHelperErrorCode + "\" content=\"" + ex.HResult + "\">" +
+					"</head><body>";
+			}
 			if (!string.IsNullOrEmpty(body))
 				s += "<div>" + body + "</div><br /><br />";
 			//------------------------------------------------------
 			AddStyle(ref s);
 			//------------------------------------------------------
-			s += "<table border=\"0\" cellspacing=\"2\">";
+			StartTable(ref s);
 			var rm = RunMode;
 			if (!string.IsNullOrEmpty(rm))
-			{
 				rm = " (" + rm + ")";
-			}
 			var asm = System.Reflection.Assembly.GetEntryAssembly();
-			if (asm == null) Assembly.GetCallingAssembly();
-			if (asm == null) Assembly.GetExecutingAssembly();
+			if (asm == null)
+				Assembly.GetCallingAssembly();
+			if (asm == null)
+				Assembly.GetExecutingAssembly();
 			AddRow(ref s, "Product");
 			if (asm != null)
 			{
@@ -615,6 +668,32 @@ namespace JocysCom.ClassLibrary.Runtime
 			}
 			AddRow(ref s, "Machine", System.Environment.MachineName);
 			AddRow(ref s, "Username", System.Environment.UserName);
+
+#if NETSTANDARD // .NET Standard
+#elif NETCOREAPP // .NET Core
+#else // .NET Framework
+			// Add OS Version.
+			//AddRow(ref s, "OS Version", System.Environment.OSVersion.ToString());
+			var subKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion";
+			var key = Microsoft.Win32.Registry.LocalMachine;
+			var skey = key.OpenSubKey(subKey);
+			var osProductName = skey.GetValue("ProductName").ToString();
+			//var osEditionID = skey.GetValue("EditionID").ToString();
+			var osReleaseId = skey.GetValue("ReleaseId").ToString();
+			var osCurrentMajorVersionNumber = skey.GetValue("CurrentMajorVersionNumber", "").ToString();
+			var osCurrentMinorVersionNumber = skey.GetValue("CurrentMinorVersionNumber", "").ToString();
+			var osCurrentBuildNumber = skey.GetValue("CurrentBuildNumber", "").ToString();
+			var osUBR = skey.GetValue("UBR", "").ToString();
+			skey.Close();
+			var osVersion = string.Format("{0} {1} [Version {2}.{3}.{4}.{5}]",
+				osProductName, osReleaseId,
+					osCurrentMajorVersionNumber,
+					osCurrentMinorVersionNumber,
+					osCurrentBuildNumber,
+					osUBR
+			);
+			AddRow(ref s, "OS Version", osVersion);
+#endif
 			if (asm != null)
 			{
 				var bd = Configuration.AssemblyInfo.GetBuildDateTime(asm.Location);
@@ -645,8 +724,10 @@ namespace JocysCom.ClassLibrary.Runtime
 			foreach (var method in methods)
 			{
 				var uiMethod = GetType().GetMethods().FirstOrDefault(x => x.Name == method);
+				// If method was found then...
 				if (uiMethod != null)
 				{
+					// Add rows.
 					var uim = GetType().GetMethod(method, new Type[] { typeof(string).MakeByRefType() });
 					var args = new object[] { s };
 					uim.Invoke(this, args);
@@ -654,11 +735,12 @@ namespace JocysCom.ClassLibrary.Runtime
 				}
 			}
 			AddRow(ref s);
-			s += "</table>";
-			s += "<table border=\"0\" cellspacing=\"2\" class=\"Table\">";
+			EndTable(ref s);
+			StartTable(ref s);
 			ExceptionInfoRecursive(ref s, ex);
-			//------------------------------------------------------
-			s += "</table>";
+			EndTable(ref s);
+			if (addHead)
+				s += "</body></html>";
 			return s;
 		}
 
@@ -678,9 +760,12 @@ namespace JocysCom.ClassLibrary.Runtime
 				AddRow(ref s, "Target.Type", mb.DeclaringType.ToString());
 				AddRow(ref s, "Target.Name", mb.Name);
 			}
-			if (FillLoaderException(ref s, ex)) { }
-			else if (FillSqlException(ref s, ex)) { }
-			else FillOther(ref s, ex);
+			if (FillLoaderException(ref s, ex))
+			{ }
+			else if (FillSqlException(ref s, ex))
+			{ }
+			else
+				FillOther(ref s, ex);
 			AddExceptionTrace(ref s, ex);
 			// Append inner exception to the end.
 			if (ex.InnerException != null)
@@ -689,24 +774,25 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		public static bool FillSqlException(ref string s, Exception ex)
 		{
-#if NETSTANDARD
+#if NETSTANDARD // .NET Standard
 			return false;
-#else
-
+#elif NETCOREAPP // .NET Core
+			return false;
+#else // .NET Framework
 			var ex2 = ex as SqlException;
 			if (ex2 == null)
 				return false;
 			for (int i = 0; i <= ex2.Errors.Count - 1; i++)
 			{
 				var err = ex2.Errors[i];
-				var prefix = string.Format("Errors[{0}]", i + 1);
-				Add(ex2, prefix + ".Source", err.Source);
-				Add(ex2, prefix + ".Server", err.Server);
-				Add(ex2, prefix + ".Location", string.Format("Number {0}, Level {1}, State {2}, Line {3}", err.Number, err.Class, err.State, err.LineNumber));
-				Add(ex2, prefix + ".Message", err.Message);
+				var prefix = string.Format("Errors[{0}].", i + 1);
+				Add(ex2, prefix + nameof(err.Source), err.Source);
+				Add(ex2, prefix + nameof(err.Server), err.Server);
+				Add(ex2, prefix + "Location", string.Format("Number {0}, Level {1}, State {2}, Line {3}", err.Number, err.Class, err.State, err.LineNumber));
+				Add(ex2, prefix + nameof(err.Message), err.Message);
 				if (!string.IsNullOrEmpty(err.Procedure))
 				{
-					Add(ex2, prefix + ".Procedure", err.Procedure);
+					Add(ex2, prefix + nameof(err.Procedure), err.Procedure);
 					Add(ex2, prefix + ".Help", "SQL command to display lines of procedure: exec sp_helptext '" + err.Procedure + "'");
 				}
 			}
@@ -723,7 +809,7 @@ namespace JocysCom.ClassLibrary.Runtime
 			foreach (var ex4 in ex2.LoaderExceptions)
 			{
 				var s1 = "";
-				ExceptionInfoRecursive(ref s1, ex4);
+				ExceptionInfoRecursive(ref s, ex4);
 				var key = string.Format("LoaderExceptions[{0}]", i++);
 				Add(ex2, key, s1);
 			}
@@ -735,28 +821,68 @@ namespace JocysCom.ClassLibrary.Runtime
 			if (ex == null)
 				return;
 			var parameters = new Dictionary<string, object>();
-			foreach (var pi in ex.GetType().GetProperties())
+			var pis = ex.GetType().GetProperties();
+			foreach (var pi in pis)
 			{
 				if (!pi.CanRead)
 					continue;
-				// HTML stack trace will be added.
-				if (new string[] { "StackTrace", "TargetSite", "Data", "Message", "InnerException" }.Contains(pi.Name))
+				// Skip some properties, like "StackTrace" or "Data",
+				// because they will be added by other parts of this code.
+				if (new string[] {
+					nameof(Exception.StackTrace),
+					nameof(Exception.TargetSite),
+					nameof(Exception.Data),
+					nameof(Exception.Message),
+					nameof(Exception.InnerException),
+				}.Contains(pi.Name))
 					continue;
-				var value = pi.GetValue(ex);
+				object value = null;
+				// Sometimes retrieving exception value throws exception.
+				// Wrap into try catch so that error reporting won't brake on this line.
+				try
+				{
+					value = pi.GetValue(ex);
+				}
+				catch (Exception) { }
 				if (value == null)
 					continue;
-				parameters.Add("." + pi.Name, value);
+				var key = "." + pi.Name;
+				if (pi.Name == nameof(Exception.HResult) && value is int)
+					value = string.Format("{0} (0x{1:X8})", value, value);
+				parameters.Add(key, value);
 			}
 			AddParameters(ref s, parameters, TraceFormat.Html);
 		}
 
-		static void Add(Exception ex, string name, object value)
+		public static void Add(IDictionary data, object name, object value)
 		{
+			if (data == null)
+				throw new ArgumentNullException(nameof(data));
+			var i = 0;
+			// Loop until success.
+			while (true)
+			{
+				var key = string.Format("{0}{1}", name,
+					i == 0 ? "" : string.Format(" ({0})", i));
+				// If list already contains this key then...
+				if (data.Contains(key))
+				{
+					// Increase index and try again.
+					i++;
+					continue;
+				}
+				data.Add(key, value);
+				break;
+			}
+		}
+
+		public static void Add(Exception ex, string name, object value)
+		{
+			if (ex == null)
+				throw new ArgumentNullException(nameof(ex));
 			var prefix = ex.GetType().Name;
 			var key = string.Format("{0}.{1}", prefix, name);
-			if (ex.Data.Contains(key))
-				return;
-			ex.Data.Add(key, value);
+			Add(ex.Data, key, value);
 		}
 
 		#endregion

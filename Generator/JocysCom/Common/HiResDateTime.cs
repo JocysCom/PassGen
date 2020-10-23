@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if NETCOREAPP // .NET Core
+#elif NETSTANDARD // .NET Standard
+#else // .NET Framework
+using System;
 using System.Diagnostics;
 
 namespace JocysCom.ClassLibrary
@@ -114,3 +117,4 @@ namespace JocysCom.ClassLibrary
 
 	}
 }
+#endif
