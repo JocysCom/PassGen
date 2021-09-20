@@ -614,7 +614,7 @@ namespace JocysCom.Password.Generator.Controls
 			lock (imageLock)
 			{
 				return JocysCom.ClassLibrary.Helper
-					.GetResource<System.Drawing.Image>(Assembly.GetExecutingAssembly(), @"Sources\Images\" + iconType + ".png");
+					.GetResource<System.Drawing.Image>(@"Sources\Images\" + iconType + ".png", Assembly.GetExecutingAssembly());
 			}
 		}
 

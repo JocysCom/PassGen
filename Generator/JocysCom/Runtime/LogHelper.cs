@@ -310,7 +310,7 @@ namespace JocysCom.ClassLibrary.Runtime
 
 		#region Write Log
 
-		public delegate void WriteLogDelegate(string message, EventLogEntryType type);
+		public delegate void WriteLogDelegate(string message, TraceLevel type);
 
 		/// <summary>
 		/// User can override these methods. Default methods are assigned.
@@ -325,7 +325,7 @@ namespace JocysCom.ClassLibrary.Runtime
 #endif
 		public WriteLogDelegate WriteLogFile = new WriteLogDelegate(_WriteFile);
 
-		internal static void _WriteConsole(string message, EventLogEntryType type)
+		internal static void _WriteConsole(string message, TraceLevel type)
 		{
 			// If user can see interface (console) then write to the console.
 			if (Environment.UserInteractive)
@@ -340,12 +340,12 @@ namespace JocysCom.ClassLibrary.Runtime
 		// Requires 'EventLogInstaller' requires reference to System.Configuration.Install.dll
 		public static EventLogInstaller AppEventLogInstaller;
 
-		internal static void _WriteEvent(string message, EventLogEntryType type)
+		internal static void _WriteEvent(string message, TraceLevel type)
 		{
 			var li = AppEventLogInstaller;
 			if (li == null)
 				return;
-			var ei = new EventInstance(0, 0, type);
+			var ei = new EventInstance(0, 0, ConvertToEventLogEntryType(type));
 			var el = new EventLog();
 			el.Log = li.Log;
 			el.Source = li.Source;
@@ -353,12 +353,27 @@ namespace JocysCom.ClassLibrary.Runtime
 			el.Close();
 		}
 
+		public static EventLogEntryType ConvertToEventLogEntryType(TraceLevel level)
+		{
+			switch (level)
+			{
+				case TraceLevel.Error:
+					return EventLogEntryType.Error;
+				case TraceLevel.Warning:
+					return EventLogEntryType.Warning;
+				case TraceLevel.Info:
+					return EventLogEntryType.Information;
+				default:
+					return default;
+			}
+		}
+
 #endif
 
 		public IO.LogFileWriter FileWriter { get { return _FileWriter; } }
 		IO.LogFileWriter _FileWriter;
 
-		internal static void _WriteFile(string message, EventLogEntryType type)
+		internal static void _WriteFile(string message, TraceLevel type)
 		{
 			// If LogStreamWriter is not null (check inside the function) then write to file.
 			Current.FileWriter.WriteLine(message);
@@ -368,7 +383,7 @@ namespace JocysCom.ClassLibrary.Runtime
 		/// Writes log message to various destination types (console window, file, event and custom)
 		/// </summary>
 		/// <remarks>Appends line break.</remarks>
-		public void WriteLog(string message, EventLogEntryType type)
+		public void WriteLog(string message, TraceLevel type)
 		{
 			// If console logging available then...
 			if (WriteLogConsole != null)
@@ -383,7 +398,7 @@ namespace JocysCom.ClassLibrary.Runtime
 #elif NETCOREAPP
 #else
 			// If event logging is enabled and important then write event.
-			if (WriteLogEvent != null && type != EventLogEntryType.Information)
+			if (WriteLogEvent != null && type != TraceLevel.Info)
 				WriteLogEvent(message, type);
 #endif
 		}
@@ -392,17 +407,18 @@ namespace JocysCom.ClassLibrary.Runtime
 		{
 			if (ex == null)
 				throw new ArgumentNullException(nameof(ex));
-			Current.WriteLog(ex.ToString(), EventLogEntryType.Error);
+			Current.WriteLog(ex.ToString(), TraceLevel.Error);
 		}
 
+		
 		public static void WriteWarning(string format, params object[] args)
 		{
-			Current.WriteLog(args != null && args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Warning);
+			Current.WriteLog(args != null && args.Length > 0 ? string.Format(format, args) : format, TraceLevel.Warning);
 		}
 
 		public static void WriteInfo(string format, params object[] args)
 		{
-			Current.WriteLog(args != null && args.Length > 0 ? string.Format(format, args) : format, EventLogEntryType.Information);
+			Current.WriteLog(args != null && args.Length > 0 ? string.Format(format, args) : format, TraceLevel.Info);
 		}
 
 		#endregion
@@ -650,22 +666,14 @@ namespace JocysCom.ClassLibrary.Runtime
 			AddStyle(ref s);
 			//------------------------------------------------------
 			StartTable(ref s);
+			var ai = Configuration.AssemblyInfo.Entry;
 			var rm = RunMode;
 			if (!string.IsNullOrEmpty(rm))
 				rm = " (" + rm + ")";
-			var asm = System.Reflection.Assembly.GetEntryAssembly();
-			if (asm == null)
-				Assembly.GetCallingAssembly();
-			if (asm == null)
-				Assembly.GetExecutingAssembly();
 			AddRow(ref s, "Product");
-			if (asm != null)
-			{
-				var ai = new Configuration.AssemblyInfo(asm);
-				var name = ai.Company + " " + ai.Product + " " + ai.Version.ToString(4);
-				ApplyRunModeSuffix(ref name);
-				AddRow(ref s, "Name", name);
-			}
+			var name = ai.Company + " " + ai.Product + " " + ai.Version.ToString(4);
+			ApplyRunModeSuffix(ref name);
+			AddRow(ref s, "Name", name);
 			AddRow(ref s, "Machine", System.Environment.MachineName);
 			AddRow(ref s, "Username", System.Environment.UserName);
 
@@ -677,23 +685,24 @@ namespace JocysCom.ClassLibrary.Runtime
 			var subKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion";
 			var key = Microsoft.Win32.Registry.LocalMachine;
 			var skey = key.OpenSubKey(subKey);
-			var osProductName = skey.GetValue("ProductName").ToString();
-			//var osEditionID = skey.GetValue("EditionID").ToString();
-			var osReleaseId = skey.GetValue("ReleaseId").ToString();
-			var osCurrentMajorVersionNumber = skey.GetValue("CurrentMajorVersionNumber", "").ToString();
-			var osCurrentMinorVersionNumber = skey.GetValue("CurrentMinorVersionNumber", "").ToString();
-			var osCurrentBuildNumber = skey.GetValue("CurrentBuildNumber", "").ToString();
-			var osUBR = skey.GetValue("UBR", "").ToString();
+			var osProductName = string.Format("{0}", skey.GetValue("ProductName"));
+			//var osEditionID = string.Format("{0}", skey.GetValue("EditionID"));
+			var osReleaseId = string.Format("{0}", skey.GetValue("ReleaseId"));
+			var osCurrentVersion = string.Format("{0}.{1}", skey.GetValue("CurrentMajorVersionNumber"), skey.GetValue("CurrentMinorVersionNumber"));
+			if (osCurrentVersion.Trim() == ".")
+				osCurrentVersion = string.Format("{0}", skey.GetValue("currentVersion"));
+			var osCurrentBuildNumber = string.Format("{0}", skey.GetValue("CurrentBuildNumber"));
+			var osUBR = string.Format("{0}", skey.GetValue("UBR"));
 			skey.Close();
-			var osVersion = string.Format("{0} {1} [Version {2}.{3}.{4}.{5}]",
+			var osVersion = string.Format("{0} {1} [Version {2}.{3}.{4}]",
 				osProductName, osReleaseId,
-					osCurrentMajorVersionNumber,
-					osCurrentMinorVersionNumber,
+					osCurrentVersion,
 					osCurrentBuildNumber,
 					osUBR
 			);
 			AddRow(ref s, "OS Version", osVersion);
 #endif
+			var asm = ai.Assembly;
 			if (asm != null)
 			{
 				var bd = Configuration.AssemblyInfo.GetBuildDateTime(asm.Location);

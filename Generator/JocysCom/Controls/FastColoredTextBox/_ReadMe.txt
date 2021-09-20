@@ -15,4 +15,4 @@ License: GNU Lesser General Public License (LGPLv3)
 
 Email: pavel_torgashov@ukr.net.
 
-Copyright (C) Pavel Torgashov, 2011-2016. 
+Copyright (C) Pavel Torgashov, 2011-2016.
