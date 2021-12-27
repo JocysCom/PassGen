@@ -5,10 +5,14 @@ SELECT DISTINCT * FROM (
 	SELECT LOWER(SUBSTRING([Name], LEN([NAME]) - 2, 1)) as FnL, SUBSTRING([Name], LEN([NAME]) - 1, 2) as FnEnd 
 	FROM [Test].[Anonymous].[FirstName]
 	WHERE LEN([Name]) >= 3
+	AND LOWER(SUBSTRING([Name], LEN([Name]) - 2, 1)) <> LOWER(SUBSTRING([Name], LEN([NAME]) - 1, 1))
+	AND LOWER(SUBSTRING([Name], LEN([NAME]) - 1, 1)) <> LOWER(SUBSTRING([Name], LEN([NAME]), 1))
 	UNION
 	SELECT LOWER(SUBSTRING([Name], LEN([NAME]) - 2, 1)) as FnL, SUBSTRING([Name], LEN([NAME]) - 1, 2) as FnEnd 
 	FROM [Test].[Anonymous].[LastName]
 	WHERE LEN([Name]) >= 3
+	AND LOWER(SUBSTRING([Name], LEN([Name]) - 2, 1)) <> LOWER(SUBSTRING([Name], LEN([NAME]) - 1, 1))
+	AND LOWER(SUBSTRING([Name], LEN([NAME]) - 1, 1)) <> LOWER(SUBSTRING([Name], LEN([NAME]), 1))
 ) t1
 ORDER BY FnL, FnEnd
 
